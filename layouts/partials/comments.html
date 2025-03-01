@@ -1,0 +1,56 @@
+{{- if .Site.Params.comments.enabled }}
+  {{- if eq .Site.Params.comments.provider "giscus" }}
+    <!-- Giscus评论系统 -->
+    <div id="comments" class="comments">
+      <script src="https://giscus.app/client.js"
+        data-repo="{{ .Site.Params.comments.repo }}"
+        data-repo-id="{{ .Site.Params.comments.repoID }}"
+        data-category="{{ .Site.Params.comments.category }}"
+        data-category-id="{{ .Site.Params.comments.categoryID }}"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+      </script>
+    </div>
+    <!-- End Giscus评论系统 -->
+  {{ else if eq .Site.Params.comments.provider "disqus" }}
+    <!-- Disqus评论系统 -->
+    <div id="comments" class="comments">
+      <div id="disqus_thread"></div>
+      <script>
+        var disqus_config = function () {
+          this.page.url = "{{ .Permalink }}";  // Replace with your page's canonical URL
+          this.page.identifier = "{{ .File.UniqueID }}"; // Replace with your page's unique identifier
+        };
+        (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = "https://YOUR_DISQUS_SHORTNAME.disqus.com/embed.js";
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+      <noscript>
+        请启用 JavaScript 以查看评论。
+      </noscript>
+    </div>
+    <!-- End Disqus评论系统 -->
+  {{ else if eq .Site.Params.comments.provider "utterances" }}
+    <!-- Utterances评论系统 -->
+    <div id="comments" class="comments">
+      <script src="https://utteranc.es/client.js"
+        repo="{{ .Site.Params.comments.repo }}"
+        issue-term="pathname"
+        label="Comments"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+      </script>
+    </div>
+    <!-- End Utterances评论系统 -->
+  {{ end }}
+{{ end }}

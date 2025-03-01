@@ -1,65 +1,202 @@
-baseURL: "https://lanshi.xyz/"
-languageCode: "zh-cn"
-title: "lanshi个人博客"
-theme: "hugo-PaperMod"
-enableEmoji: true
-disableHugoGeneratorInject: true
-
+# 基本站点配置
+baseURL: "https://lanshi.xyz/"                  # 网站的基础URL，通常是你的域名
+languageCode: "zh-CN"                            # 网站使用的语言代码（中文简体）
+title: "lanshi个人博客"                           # 网站标题
+theme: "hugo-PaperMod"                                # 使用的主题名称
+enableEmoji: true                                # 是否启用Emoji支持
+disableHugoGeneratorInject: true                 # 是否禁用Hugo生成器元标签
+sectionPagesMenu: main
+# 基本参数
 params:
-  buildDrafts: false # 不生成草稿文章
-  author: "lanshi47" # 设置博主作者信息
-  description: "lanshi的博客，记录IT学习资源、教程和个人作品展示。"
-  keywords: ["Programmer", "PaperMod", "博客", "IT教程", "学习记录"]
-  showReadingTime: true # 显示阅读时长
-  showToc: true         # 开启目录显示
-  tocOpen: false        # 目录默认收起
-  themeToggle: true
-  favicon: "images/favicon.ico"         # 网站 favicon 图标
-  logo: "images/logo.png"               # 自定义网站的 logo
-  headerDepth: 3     
-  enableReadingTime: true   # 显示阅读时长
-  disableEstimatedReadingTime: false  # 显示字数统计
-  showLastUpdated: true     # 开启文章的最后更新时间显示
-  disableSearch: false   # 启用站点搜索功能
-  enableGitInfo: true
-  enableRobotsTXT: true
-  canonifyURLs: true
+  buildDrafts: false                             # 是否生成草稿文章。设为 true 时，`hugo` 命令将包括草稿页面
+  author: "lanshi47"                              # 博主的作者信息
+  description: "lanshi的博客，记录IT学习资源、教程和个人作品展示。" # 网站描述，用于SEO
+  keywords: ["Programmer", "PaperMod", "博客", "IT教程", "学习记录"]  # 网站关键词，用于SEO
+  showReadingTime: true                          # 是否显示文章的预计阅读时间
+  showToc: true                                  # 是否显示文章的目录（Table of Contents）
+  tocOpen: false                                 # 目录是否默认展开
+  themeToggle: true                              # 是否启用主题切换按钮（如暗黑/亮色模式切换）
+  favicon: "images/favicon.ico"                  # 网站的 favicon 图标路径
+  logo: "images/logo.png"                        # 自定义网站的 logo 路径
+  headerDepth: 3                                 # 头部标题的深度，用于生成目录
+  enableReadingTime: true                        # 是否启用阅读时间功能
+  disableEstimatedReadingTime: false             # 是否禁用预计阅读时间
+  showLastUpdated: true                          # 是否显示文章的最后更新时间
+  disableSearch: false                           # 是否禁用站内搜索功能
+  enableGitInfo: true                            # 是否启用从Git信息中提取作者和日期
+  enableRobotsTXT: true                          # 是否生成 robots.txt 文件
+  canonifyURLs: true                             # 是否将相对URL转换为绝对URL
 
-comments:
-  provider: giscus # 启用 Giscus
-  repo: "lanshi47/Blog_comments" # your GitHub repo, 格式为 “用户名/仓库名”
-  repoID: "R_kgDOOBWQzw" # 你的 repoID，保持与 Giscus 向导保持一致
-  category: "Announcements" # Discussions 的具体类别
-  categoryID: "DIC_kwDOOBWQz84Cnc1e" # 对应的 category ID
+  # 评论配置
+  comments:
+    provider: giscus                             # 评论系统提供者，可以选择 "giscus", "disqus", "utterances" 等
+    repo: "lanshi47/Blog_comments"              # GitHub 仓库，格式为 “用户名/仓库名” (仅适用于 giscus)
+    repoID: "R_kgDOOBWQzw"                        # GitHub 仓库的 ID（仅适用于 giscus）
+    category: "Announcements"                    # Giscus 使用的类别名称
+    categoryID: "DIC_kwDOOBWQz84Cnc1e"            # Giscus 使用的类别 ID
 
-share:
-  facebook: true
-  twitter: true
-  linkedin: true
-  weibo: true
-  telegram: true
+  # 分享按钮配置
+  share:
+    facebook: true                                # 是否显示 Facebook 分享按钮
+    twitter: true                                 # 是否显示 Twitter 分享按钮
+    linkedin: true                                # 是否显示 LinkedIn 分享按钮
+    weibo: true                                   # 是否显示微博分享按钮
+    telegram: true                                # 是否显示 Telegram 分享按钮
+    # 其他可选的分享平台可以根据需要添加
 
-googleAnalytics: "G-B5B8VFF5M8"
+  googleAnalytics: "G-B5B8VFF5M8"                # Google Analytics 的跟踪ID
 
-menu:
-  main:
-    - identifier: "resume"
-      name: "简历"
-      url: "/resume/"
-      weight: 1
-    - identifier: "portfolio"
-      name: "作品集"
-      url: "/portfolio/"
-      weight: 2
-    - identifier: "learning"
-      name: "学习笔记"
-      url: "/categories/学习笔记/"
-      weight: 3
-    - identifier: "post"
-      name: "文章"
-      url: "/posts/"
-      weight: "4"
+  # 菜单配置
+  menu:
+    main:
+      - identifier: "resume"                     # 菜单项的唯一标识符
+        name: "简历"                             # 菜单项显示的名称
+        url: "/resume/"                          # 菜单项链接的URL
+        weight: 1                                # 菜单项的排序权重，数值越小越靠前
+      - identifier: "portfolio"
+        name: "作品集"
+        url: "/portfolio/"
+        weight: 2
+      - identifier: "learning"
+        name: "学习笔记"
+        url: "/categories/学习笔记/"
+        weight: 3
+      - identifier: "post"
+        name: "文章"
+        url: "/posts/"
+        weight: 4
+      - identifier: "categories"
+        name: "分类"
+        url: /categories/
+        weight: 10
+      - identifier: "tags"
+        name: "标签"
+        url: /tags/
+        weight: 20
+      - identifier: "example"
+        name: "example.org"
+        url: https://example.org
+        weight: 30
 
-sitemap:
-  changefreq: "daily"
-  priority: 0.5
+  # Sitemap配置，用于SEO
+  sitemap:
+    changefreq: "daily"                            # Sitemap中URL的更改频率（可选值：always, hourly, daily, weekly, monthly, yearly, never）
+    priority: 0.5                                  # Sitemap中URL的优先级（范围：0.0 - 1.0）
+
+  # 构建时间相关配置
+  buildFuture: false                              # 是否构建发布时间在未来的内容
+  buildExpired: false                             # 是否构建过期内容
+
+  # 资源压缩配置
+  minify:
+    disableXML: true                               # 是否禁用XML压缩
+    minifyOutput: true                             # 是否启用输出压缩（CSS/JS）
+
+  # 环境变量
+  env: production                                  # 当前环境，可设为 "production", "development" 等
+
+  # 日期格式
+  DateFormat: "January 2, 2006"                    # 日期显示格式，基于 Go 的时间格式
+
+  # 主题切换配置
+  defaultTheme: auto                               # 默认主题，可设为 "dark", "light", "auto"
+  disableThemeToggle: false                        # 是否禁用主题切换功能
+
+  # 阅读时间和分享按钮配置
+  ShowReadingTime: true                            # 是否显示阅读时间（冗余配置，已在上方设置）
+  ShowShareButtons: true                           # 是否显示分享按钮
+  ShowPostNavLinks: true                           # 是否显示文章导航链接（上一页/下一页）
+  ShowBreadCrumbs: true                            # 是否显示面包屑导航
+  ShowCodeCopyButtons: false                       # 是否显示代码复制按钮
+  ShowWordCount: true                              # 是否显示字数统计
+  ShowRssButtonInSectionTermList: true             # 是否在分类/标签列表中显示 RSS 按钮
+  UseHugoToc: true                                 # 是否使用 Hugo 自带的目录生成
+  disableSpecial1stPost: false                      # 是否禁用特殊的第一个文章展示
+  disableScrollToTop: false                         # 是否禁用“回到顶部”按钮
+  comments: false                                   # 是否全局禁用评论功能（注意：子配置中已启用 giscus）
+  hidemeta: false                                   # 是否隐藏元数据（如作者、日期）
+  hideSummary: false                                # 是否隐藏摘要
+  showtoc: false                                    # 是否在页面中显示目录（冗余配置，已在上方设置）
+  tocopen: false                                    # 目录是否默认展开（冗余配置，已在上方设置）
+
+  # 资源配置
+  assets:
+    favicon: "/images/favicon.ico"                   # 网站的 favicon 图标路径
+    favicon16x16: "/images/favicon-16x16.png"        # 16x16 favicon 图标路径
+    favicon32x32: "/images/favicon-32x32.png"        # 32x32 favicon 图标路径
+    apple_touch_icon: "/images/apple-touch-icon.png" # Apple Touch 图标路径
+    safari_pinned_tab: "/images/safari-pinned-tab.svg" # Safari 固定标签页图标路径
+
+  # 标签配置
+  label:
+    text: "Home"                                     # 标签的文本
+    icon: /images/icons/home.svg                      # 标签的图标路径
+    iconHeight: 35                                   # 图标的高度
+
+  # Profile 模式配置
+  profileMode:
+    enabled: false                                   # 是否启用 Profile 模式
+    title: "lanshi个人博客"                            # Profile 模式下显示的标题
+    subtitle: "记录IT学习与成长"                        # Profile 模式下显示的副标题
+    imageUrl: "/images/profile.jpg"                  # Profile 图片的URL
+    imageWidth: 120                                  # Profile 图片的宽度
+    imageHeight: 120                                 # Profile 图片的高度
+    imageTitle: "我的头像"                             # Profile 图片的标题
+    buttons:
+      - name: Posts                                   # 按钮名称
+        url: /posts/                                   # 按钮链接URL
+      - name: Tags
+        url: /tags/
+
+  # 首页信息配置
+  homeInfoParams:
+    Title: "欢迎来到lanshi的个人博客"                             # 首页欢迎标题
+    Content: "Welcome to lanshi's blog"                    # 首页欢迎内容
+
+  # 社交图标配置
+  socialIcons:
+    - name: x                                        # 社交平台名称，如 "github", "twitter"
+      url: "https://x.com/"                          # 对应的社交平台链接
+    - name: stackoverflow
+      url: "https://stackoverflow.com"
+    - name: github
+      url: "https://github.com/lanshi47"
+
+  # 分析配置
+  analytics:
+    google:
+      SiteVerificationTag: "XYZabc"                 # Google 搜索站点验证标签
+    bing:
+      SiteVerificationTag: "XYZabc"                 # Bing 搜索站点验证标签
+    yandex:
+      SiteVerificationTag: "XYZabc"                 # Yandex 搜索站点验证标签
+
+  # 封面图配置
+  cover:
+    hidden: true                                    # 是否隐藏封面图
+    hiddenInList: true                              # 是否在列表页隐藏封面图
+    hiddenInSingle: true                            # 是否在单页隐藏封面图
+
+  # 编辑文章链接配置
+  editPost:
+    URL: "https://github.com/lanshi47/Blog_comments/content" # 编辑文章的URL，通常指向GitHub编辑页面
+    Text: "Suggest Changes"                          # 显示的文本
+    appendFilePath: true                             # 是否在URL后追加文件路径
+
+  # 搜索配置
+  fuseOpts:
+    isCaseSensitive: false                           # 搜索是否区分大小写
+    shouldSort: true                                 # 是否对搜索结果进行排序
+    location: 0                                      # 搜索范围位置偏移
+    distance: 1000                                   # 允许的最大编辑距离
+    threshold: 0.4                                   # 搜索匹配的阈值
+    minMatchCharLength: 0                            # 最小匹配字符长度
+    limit: 10                                        # 搜索结果的最大数量
+    keys: ["title", "permalink", "summary", "content"] # 搜索时索引的字段
+
+# 代码高亮配置
+pygmentsUseClasses: true                            # 是否使用 Pygments 的 CSS 类进行代码高亮
+markup:
+  highlight:
+    noClasses: false                                 # 是否避免使用 CSS 类进行高亮，使用内联样式
+style: monokai                                       # 代码高亮的主题样式，可选值见 Hugo 文档
