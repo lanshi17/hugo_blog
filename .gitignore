@@ -1,0 +1,49 @@
+# Hugo generated files
+public/
+resources/
+hugo_stats.json
+
+# Logs and backups
+*.log
+*.bak
+*.swp
+*.swo
+*.DS_Store
+*.tmp
+
+# System Files
+Thumbs.db
+.DS_Store
+._*
+
+# Environment Files
+.env
+.env.local
+
+# Node.js dependencies if you are using node_modules (for assets)
+node_modules/
+
+# Vim/OS Editor Temporary Files
+*~
+*.swp
+*.swo
+
+# Output of optional Hugo server live-reload logs
+hs_err_pid*.log
+
+# IDE / Editor Directories
+.idea/
+.vscode/
+
+# Compiled files (if you build it locally before hosting)
+dist/
+
+# Deployment files (Nginx/certificates don't need to go in the repo)
+certificates/
+*.crt
+*.key
+
+# Linux temporary files or backup generated files
+*.bak
+*.old
+*~
