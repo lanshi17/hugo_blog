@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>https://lanshi.xyz/</loc>
-    <lastmod>2025-02-28T23:08:45+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/posts/</loc>
-    <lastmod>2025-02-28T23:08:45+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/categories/</loc>
-  </url><url>
-    <loc>https://lanshi.xyz/tags/</loc>
-  </url>
-</urlset>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"><url><loc>https://lanshi.xyz/</loc><lastmod>2025-02-28T23:08:45+08:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url><loc>https://lanshi.xyz/posts/</loc><lastmod>2025-02-28T23:08:45+08:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url><loc>https://lanshi.xyz/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/learn/</loc><changefreq>daily</changefreq><priority>0.5</priority></url><url><loc>https://lanshi.xyz/portfolio/project1/</loc><changefreq>daily</changefreq><priority>0.5</priority></url><url><loc>https://lanshi.xyz/resume/</loc><changefreq>daily</changefreq><priority>0.5</priority></url><url><loc>https://lanshi.xyz/categories/</loc><changefreq>daily</changefreq><priority>0.5</priority></url><url><loc>https://lanshi.xyz/portfolio/</loc><changefreq>daily</changefreq><priority>0.5</priority></url><url><loc>https://lanshi.xyz/tags/</loc><changefreq>daily</changefreq><priority>0.5</priority></url></urlset>

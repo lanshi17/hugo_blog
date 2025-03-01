@@ -1,0 +1,65 @@
+baseURL: "https://lanshi.xyz/"
+languageCode: "zh-cn"
+title: "lanshi个人博客"
+theme: "hugo-PaperMod"
+enableEmoji: true
+disableHugoGeneratorInject: true
+
+params:
+  buildDrafts: false # 不生成草稿文章
+  author: "lanshi47" # 设置博主作者信息
+  description: "lanshi的博客，记录IT学习资源、教程和个人作品展示。"
+  keywords: ["Programmer", "PaperMod", "博客", "IT教程", "学习记录"]
+  showReadingTime: true # 显示阅读时长
+  showToc: true         # 开启目录显示
+  tocOpen: false        # 目录默认收起
+  themeToggle: true
+  favicon: "images/favicon.ico"         # 网站 favicon 图标
+  logo: "images/logo.png"               # 自定义网站的 logo
+  headerDepth: 3     
+  enableReadingTime: true   # 显示阅读时长
+  disableEstimatedReadingTime: false  # 显示字数统计
+  showLastUpdated: true     # 开启文章的最后更新时间显示
+  disableSearch: false   # 启用站点搜索功能
+  enableGitInfo: true
+  enableRobotsTXT: true
+  canonifyURLs: true
+
+comments:
+  provider: giscus # 启用 Giscus
+  repo: "lanshi47/Blog_comments" # your GitHub repo, 格式为 “用户名/仓库名”
+  repoID: "R_kgDOOBWQzw" # 你的 repoID，保持与 Giscus 向导保持一致
+  category: "Announcements" # Discussions 的具体类别
+  categoryID: "DIC_kwDOOBWQz84Cnc1e" # 对应的 category ID
+
+share:
+  facebook: true
+  twitter: true
+  linkedin: true
+  weibo: true
+  telegram: true
+
+googleAnalytics: "G-B5B8VFF5M8"
+
+menu:
+  main:
+    - identifier: "resume"
+      name: "简历"
+      url: "/resume/"
+      weight: 1
+    - identifier: "portfolio"
+      name: "作品集"
+      url: "/portfolio/"
+      weight: 2
+    - identifier: "learning"
+      name: "学习笔记"
+      url: "/categories/学习笔记/"
+      weight: 3
+    - identifier: "post"
+      name: "文章"
+      url: "/posts/"
+      weight: "4"
+
+sitemap:
+  changefreq: "daily"
+  priority: 0.5

@@ -1,0 +1,38 @@
+# robots.txt 文件
+# 适用于博客网站 lanshi.xyz 的 robots.txt 配置
+# 请根据实际需求替换或调整路径
+
+# 允许所有搜索引擎爬取
+User-agent: *
+
+# 禁止抓取后台管理页面和敏感数据
+Disallow: /admin/
+Disallow: /wp-admin/
+Disallow: /login/
+Disallow: /register/
+Disallow: /user/
+
+# 禁止抓取动态查询结果和搜索页面
+Disallow: /search/
+Disallow: /?q=
+Disallow: /?s=
+
+# 禁止爬取包含用户隐私数据的目录
+Disallow: /private/
+Disallow: /tmp/
+
+# 禁止抓取特定的文件类型
+Disallow: /*.php$
+Disallow: /*.sql$
+Disallow: /*.json$
+Disallow: /*.zip$
+Disallow: /*.log$
+
+# 仅允许主内容 [文章目录] 的抓取
+Allow: /blog/
+
+# 防止抓取分页内容，避免重复内容问题
+Disallow: /page/
+
+# 指定站点地图，帮助搜索引擎更好地索引网站内容
+Sitemap: https://www.lanshi.xyz/sitemap.xml
