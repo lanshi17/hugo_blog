@@ -1,231 +1,176 @@
 # 基本站点配置
-baseURL: "https://lanshi.xyz/"                  # 网站的基础URL，通常是你的域名
-languageCode: "zh-CN"                            # 网站使用的语言代码（中文简体）
-title: "lanshi个人博客"                           # 网站标题
-theme: "hugo-PaperMod"                                # 使用的主题名称
-enableEmoji: true                                # 是否启用Emoji支持
-disableHugoGeneratorInject: true                 # 是否禁用Hugo生成器元标签
+baseURL: "https://lanshi.xyz/"        # 网站的基础URL
+languageCode: "zh-CN"                 # 网站语言代码
+title: "lanshi个人博客"                # 网站标题
+theme: "hugo-PaperMod"                # 使用的主题名称
+enableEmoji: true                     # 启用Emoji支持
+disableHugoGeneratorInject: true      # 禁用Hugo生成器元标签
 sectionPagesMenu: "main"
+
 # 基本参数
 params:
-  buildDrafts: false                             # 是否生成草稿文章。设为 true 时，`hugo` 命令将包括草稿页面
-  author: "lanshi47"                              # 博主的作者信息
-  description: "lanshi的博客，记录IT学习资源、教程和个人作品展示。" # 网站描述，用于SEO
-  keywords: ["Programmer", "PaperMod", "博客", "IT教程", "学习记录"]  # 网站关键词，用于SEO
-  showReadingTime: true                          # 是否显示文章的预计阅读时间
-  showToc: true                                  # 是否显示文章的目录（Table of Contents）
-  tocOpen: false                                 # 目录是否默认展开
-  themeToggle: true                              # 是否启用主题切换按钮（如暗黑/亮色模式切换）
-  favicon: "images/favicon.ico"                  # 网站的 favicon 图标路径
-  logo: "images/logo.png"                        # 自定义网站的 logo 路径
-  headerDepth: 3                                 # 头部标题的深度，用于生成目录
-  enableReadingTime: true                        # 是否启用阅读时间功能
-  disableEstimatedReadingTime: false             # 是否禁用预计阅读时间
-  showLastUpdated: true                          # 是否显示文章的最后更新时间
-  disableSearch: false                           # 是否禁用站内搜索功能
-  enableGitInfo: true                            # 是否启用从Git信息中提取作者和日期
-  enableRobotsTXT: true                          # 是否生成 robots.txt 文件
-  canonifyURLs: true                             # 是否将相对URL转换为绝对URL
-  disableSearch: false
-  # 搜索引擎选项，可选 "algolia", "lunr", "elasticlunr", "fusejs"
-  searchEngine: "fusejs"
-  # 搜索结果页面的标题
+  buildDrafts: false                  # 是否生成草稿文章
+  author: "lanshi47"                  # 作者名称
+  description: "记录IT学习资源、教程和个人作品展示。" # 网站描述，用于SEO
+  keywords: ["编程", "博客", "IT教程", "学习记录", "PaperMod"]  # 网站关键词，用于SEO
+  themeToggle: true                   # 启用主题切换按钮
+  favicon: "images/favicon.ico"       # 网站的favicon路径
+  logo: "images/logo.png"             # 网站Logo路径
+  showReadingTime: true               # 显示预计阅读时间
+  showToc: true                       # 显示文章目录
+  tocOpen: false                      # 目录是否默认展开
+  headerDepth: 3                      # 用于生成目录的标题层级
+  enableGitInfo: true                 # 启用Git信息提取
+  canonifyURLs: true                  # 转换相对URL为绝对URL
+  searchEngine: "fusejs"              # 搜索引擎配置
   searchTitle: "搜索结果"
-  # 搜索结果每页显示的数量
-  searchLimit: 20
-
-  # 评论配置
+  searchLimit: 20                     # 每页搜索结果数量
   comments:
     enabled: true
-    provider: giscus                             # 评论系统提供者，可以选择 "giscus", "disqus", "utterances" 等
-    repo: "lanshi47/Blog_comments"              # GitHub 仓库，格式为 “用户名/仓库名” (仅适用于 giscus)
-    repoID: "R_kgDOOBWQzw"                        # GitHub 仓库的 ID（仅适用于 giscus）
-    category: "Announcements"                    # Giscus 使用的类别名称
-    categoryID: "DIC_kwDOOBWQz84Cnc1e"            # Giscus 使用的类别 ID
-
-  # 分享按钮配置
+    provider: giscus
+    repo: "lanshi47/Blog_comments"
+    repoID: "R_kgDOOBWQzw"
+    category: "Announcements"
+    categoryID: "DIC_kwDOOBWQz84Cnc1e"
   share:
-    facebook: true                                # 是否显示 Facebook 分享按钮
-    twitter: true                                 # 是否显示 Twitter 分享按钮
-    linkedin: true                                # 是否显示 LinkedIn 分享按钮
-    weibo: true                                   # 是否显示微博分享按钮
-    telegram: true                                # 是否显示 Telegram 分享按钮
-    # 其他可选的分享平台可以根据需要添加
+    Wechat: true
+    QQ: true
+    tiktok: true
+    github: true
+    bilibili: true
+  googleAnalytics: "G-B5B8VFF5M8"
 
-  googleAnalytics: "G-B5B8VFF5M8"                # Google Analytics 的跟踪ID
+# 菜单配置
+menu:
+  main:
+    - identifier: "resume"
+      name: "简历"
+      url: "/resume/"
+      weight: 1
+    - identifier: "portfolio"
+      name: "作品集"
+      url: "/portfolio/"
+      weight: 2
+    - identifier: "studynotes"
+      name: "学习笔记"
+      url: "/studynotes/"
+      weight: 3
+    - identifier: "posts"
+      name: "文章"
+      url: "/posts/"
+      weight: 4
+    - identifier: "categories"
+      name: "分类"
+      url: "/categories/"
+      weight: 10
+    - identifier: "tags"
+      name: "标签"
+      url: "/tags/"
+      weight: 20
+    - identifier: "archives"
+      name: "归档"
+      url: "/archives/"
+      weight: 25
+    - identifier: "search"
+      name: "搜索"
+      url: "/search/"
+      weight: 28
 
-  # 菜单配置
-  menu:
-    main:
-      - identifier: "resume"                     # 菜单项的唯一标识符
-        name: "简历"                             # 菜单项显示的名称
-        url: "/resume/"                          # 菜单项链接的URL
-        weight: 1                                # 菜单项的排序权重，数值越小越靠前
-      - identifier: "portfolio"
-        name: "作品集"
-        url: "/portfolio/"
-        weight: 2
-      - identifier: "learning"
-        name: "学习笔记"
-        url: "/study_notes/"
-        weight: 3
-      - identifier: "post"
-        name: "文章"
-        url: "/posts/"
-        weight: 4
-      - identifier: "categories"
-        name: "分类"
-        url: /categories/
-        weight: 10
-      - identifier: "tags"
-        name: "标签"
-        url: /tags/
-        weight: 20
-      - identifier: "archives"
-        name: "归档"
-        url: "/archives/"
-        weight: 25
-      - identifier: "search"
-        name: "搜索"
-        url: "/search/"
-        weight: 28
+# SEO相关配置
+sitemap:
+  changefreq: "daily"                # 更改频率
+  priority: 0.5                      # 优先级
 
-  # Sitemap配置，用于SEO
-  sitemap:
-    changefreq: "daily"                            # Sitemap中URL的更改频率（可选值：always, hourly, daily, weekly, monthly, yearly, never）
-    priority: 0.5                                  # Sitemap中URL的优先级（范围：0.0 - 1.0）
+# 构建时间相关配置
+buildFuture: false                   # 是否构建未来内容
+buildExpired: false                  # 是否构建过期内容
 
-  # 构建时间相关配置
-  buildFuture: false                              # 是否构建发布时间在未来的内容
-  buildExpired: false                             # 是否构建过期内容
+# 资源压缩
+minify:
+  disableXML: true                   # 禁用XML压缩
+  minifyOutput: true                 # 启用CSS/JS压缩
 
-  # 资源压缩配置
-  minify:
-    disableXML: true                               # 是否禁用XML压缩
-    minifyOutput: true                             # 是否启用输出压缩（CSS/JS）
+# 环境变量
+env: production                      # 当前环境
 
-  # 环境变量
-  env: production                                  # 当前环境，可设为 "production", "development" 等
+# 日期格式
+DateFormat: "2006年1月2日"        # 日期显示格式 (示例: 2023年10月5日)        # 日期显示格式
 
-  # 日期格式
-  DateFormat: "January 2, 2006"                    # 日期显示格式，基于 Go 的时间格式
+# 首页信息配置
+homeInfoParams:
+  Title: "欢迎来到lanshi的个人博客"
+  Content: "Welcome to lanshi's blog"
 
-  # 主题切换配置
-  defaultTheme: auto                               # 默认主题，可设为 "dark", "light", "auto"
-  disableThemeToggle: false                        # 是否禁用主题切换功能
+# 社交图标配置
+socialIcons:
+  - name: bilibili
+    url: "https://space.bilibili.com/176072673?spm_id_from=333.1007.0.0"
+  - name: tiktok
+    url: "https://v.douyin.com/i5BEn6SC/"
+  - name: Wechat
+    url: "https://img.picui.cn/free/2025/03/01/67c2a41a25b39.jpg"
+  - name: QQ
+    url: "https://qm.qq.com/q/NAXbuT3rQA"
+  - name: github
+    url: "https://github.com/lanshi47"
 
-  # 阅读时间和分享按钮配置
-  # ShowReadingTime: true                            # 是否显示阅读时间（冗余配置，已在上方设置）
-  ShowShareButtons: true                           # 是否显示分享按钮
-  ShowPostNavLinks: true                           # 是否显示文章导航链接（上一页/下一页）
-  ShowBreadCrumbs: true                            # 是否显示面包屑导航
-  ShowCodeCopyButtons: false                       # 是否显示代码复制按钮
-  ShowWordCount: true                              # 是否显示字数统计
-  ShowRssButtonInSectionTermList: true             # 是否在分类/标签列表中显示 RSS 按钮
-  UseHugoToc: true                                 # 是否使用 Hugo 自带的目录生成
-  disableSpecial1stPost: false                      # 是否禁用特殊的第一个文章展示
-  disableScrollToTop: false                         # 是否禁用“回到顶部”按钮
-  hidemeta: false                                   # 是否隐藏元数据（如作者、日期）
-  hideSummary: false                                # 是否隐藏摘要
-  # showtoc: false                                    # 是否在页面中显示目录（冗余配置，已在上方设置）
-  # tocopen: false                                    # 目录是否默认展开（冗余配置，已在上方设置）
+# 分析配置
+analytics:
+  google:
+    SiteVerificationTag: "XYZabc"
+  bing:
+    SiteVerificationTag: "XYZabc"
+  yandex:
+    SiteVerificationTag: "XYZabc"
 
-  # 资源配置
-  assets:
-    favicon: "/images/favicon.ico"                   # 网站的 favicon 图标路径
-    favicon16x16: "/images/favicon-16x16.png"        # 16x16 favicon 图标路径
-    favicon32x32: "/images/favicon-32x32.png"        # 32x32 favicon 图标路径
-    apple_touch_icon: "/images/apple-touch-icon.png" # Apple Touch 图标路径
-    safari_pinned_tab: "/images/safari-pinned-tab.svg" # Safari 固定标签页图标路径
-
-  # 标签配置
-  label:
-    text: "Home"                                     # 标签的文本
-    icon: /images/icons/home.svg                      # 标签的图标路径
-    iconHeight: 35                                   # 图标的高度
-
-  # Profile 模式配置
-  profileMode:
-    enabled: false                                   # 是否启用 Profile 模式
-    title: "lanshi个人博客"                            # Profile 模式下显示的标题
-    subtitle: "记录IT学习与成长"                        # Profile 模式下显示的副标题
-    imageUrl: "/images/profile.jpg"                  # Profile 图片的URL
-    imageWidth: 120                                  # Profile 图片的宽度
-    imageHeight: 120                                 # Profile 图片的高度
-    imageTitle: "我的头像"                             # Profile 图片的标题
-    buttons:
-      - name: Posts                                   # 按钮名称
-        url: /posts/                                   # 按钮链接URL
-      - name: Tags
-        url: /tags/
-
-  # 首页信息配置
-  homeInfoParams:
-    Title: "欢迎来到lanshi的个人博客"                             # 首页欢迎标题
-    Content: "Welcome to lanshi's blog"                    # 首页欢迎内容
-
-  # 社交图标配置
-  socialIcons:
-    - name: bilibili
-      url: "https://space.bilibili.com/176072673?spm_id_from=333.1007.0.0"
-    - name: tiktok                                        # 社交平台名称，如 "github", "twitter"
-      url: "https://v.douyin.com/i5BEn6SC/"                          # 对应的社交平台链接
-    - name: Wechat
-      url: "https://img.picui.cn/free/2025/03/01/67c2a41a25b39.jpg"
-    - name: QQ
-      url: "https://qm.qq.com/q/NAXbuT3rQA"
-    - name: github
-      url: "https://github.com/lanshi47"
-
-  # 分析配置
-  analytics:
-    google:
-      SiteVerificationTag: "XYZabc"                 # Google 搜索站点验证标签
-    bing:
-      SiteVerificationTag: "XYZabc"                 # Bing 搜索站点验证标签
-    yandex:
-      SiteVerificationTag: "XYZabc"                 # Yandex 搜索站点验证标签
-
-  # 封面图配置
-  cover:
-    hidden: true                                    # 是否隐藏封面图
-    hiddenInList: true                              # 是否在列表页隐藏封面图
-    hiddenInSingle: true                            # 是否在单页隐藏封面图
-
-  # 编辑文章链接配置
-  editPost:
-    URL: "https://github.com/lanshi47/Blog_comments/content" # 编辑文章的URL，通常指向GitHub编辑页面
-    Text: "Suggest Changes"                          # 显示的文本
-    appendFilePath: true                             # 是否在URL后追加文件路径
-
-  # 搜索配置
-  fuseOpts:
-    isCaseSensitive: false                           # 搜索是否区分大小写
-    shouldSort: true                                 # 是否对搜索结果进行排序
-    location: 0                                      # 搜索范围位置偏移
-    distance: 1000                                   # 允许的最大编辑距离
-    threshold: 0.4                                   # 搜索匹配的阈值
-    minMatchCharLength: 0                            # 最小匹配字符长度
-    limit: 10                                        # 搜索结果的最大数量
-    keys: ["title", "permalink", "summary", "content"] # 搜索时索引的字段
-
-  search:
-    enabled: true
-    # 生成的搜索索引文件名
-    searchIndex: "search.json"
-    # 搜索索引生成方式
-    engine: "fusejs"
-    # 可选，字段权重
-    weights:
-      title: 10
-      content: 5
-      tags: 3
-      categories: 3
-  navbar:
-    search: true
-# 代码高亮配置
-pygmentsUseClasses: true                            # 是否使用 Pygments 的 CSS 类进行代码高亮
+# 代码高亮
+pygmentsUseClasses: true
 markup:
   highlight:
-    noClasses: false                                 # 是否避免使用 CSS 类进行高亮，使用内联样式
-style: monokai                                       # 代码高亮的主题样式，可选值见 Hugo 文档
+    noClasses: false
+    style: monokai
+
+# 封面图配置
+cover:
+  hidden: true
+
+# 编辑文章配置
+editPost:
+  URL: "https://github.com/lanshi47/Blog_comments/content"
+  Text: "Suggest Changes"
+  appendFilePath: true
+
+# 搜索配置
+fuseOpts:
+  isCaseSensitive: false
+  shouldSort: true
+  location: 0
+  distance: 1000
+  threshold: 0.4
+  minMatchCharLength: 0
+  limit: 10
+  keys: ["title", "permalink", "summary", "content"]
+
+search:
+  enabled: true
+  searchIndex: "search.json"
+  engine: "fusejs"
+  weights:
+    title: 10
+    content: 5
+    tags: 3
+    categories: 3
+
+# 其他站点功能
+navbar:
+  search: true
+ShowShareButtons: true
+ShowPostNavLinks: true
+ShowBreadCrumbs: true
+ShowWordCount: true
+ShowRssButtonInSectionTermList: true
+UseHugoToc: true
+disableSpecial1stPost: false
+disableScrollToTop: false
+hidemeta: false
+hideSummary: false
