@@ -5,7 +5,7 @@ set -e
 cd ~/hugo_blog
 
 # 2) 生成静态文件，--minify 会压缩文件体积(可选)
-hugo  --config config.yaml --minify
+hugo  --config config.yaml --minify --ignoreCache
 
 # 3) 清空 Nginx 指向的目标目录(假设为 /var/www/lanshi.xyz)
 sudo rm -rf /var/www/lanshi.xyz/*

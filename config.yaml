@@ -5,7 +5,7 @@ title: "lanshi个人博客"                           # 网站标题
 theme: "hugo-PaperMod"                                # 使用的主题名称
 enableEmoji: true                                # 是否启用Emoji支持
 disableHugoGeneratorInject: true                 # 是否禁用Hugo生成器元标签
-sectionPagesMenu: main
+sectionPagesMenu: "main"
 # 基本参数
 params:
   buildDrafts: false                             # 是否生成草稿文章。设为 true 时，`hugo` 命令将包括草稿页面
@@ -26,9 +26,17 @@ params:
   enableGitInfo: true                            # 是否启用从Git信息中提取作者和日期
   enableRobotsTXT: true                          # 是否生成 robots.txt 文件
   canonifyURLs: true                             # 是否将相对URL转换为绝对URL
+  disableSearch: false
+  # 搜索引擎选项，可选 "algolia", "lunr", "elasticlunr", "fusejs"
+  searchEngine: "fusejs"
+  # 搜索结果页面的标题
+  searchTitle: "搜索结果"
+  # 搜索结果每页显示的数量
+  searchLimit: 20
 
   # 评论配置
   comments:
+    enabled: true
     provider: giscus                             # 评论系统提供者，可以选择 "giscus", "disqus", "utterances" 等
     repo: "lanshi47/Blog_comments"              # GitHub 仓库，格式为 “用户名/仓库名” (仅适用于 giscus)
     repoID: "R_kgDOOBWQzw"                        # GitHub 仓库的 ID（仅适用于 giscus）
@@ -59,7 +67,7 @@ params:
         weight: 2
       - identifier: "learning"
         name: "学习笔记"
-        url: "/categories/学习笔记/"
+        url: "/study_notes/"
         weight: 3
       - identifier: "post"
         name: "文章"
@@ -73,10 +81,14 @@ params:
         name: "标签"
         url: /tags/
         weight: 20
-      - identifier: "example"
-        name: "example.org"
-        url: https://example.org
-        weight: 30
+      - identifier: "archives"
+        name: "归档"
+        url: "/archives/"
+        weight: 25
+      - identifier: "search"
+        name: "搜索"
+        url: "/search/"
+        weight: 28
 
   # Sitemap配置，用于SEO
   sitemap:
@@ -103,7 +115,7 @@ params:
   disableThemeToggle: false                        # 是否禁用主题切换功能
 
   # 阅读时间和分享按钮配置
-  ShowReadingTime: true                            # 是否显示阅读时间（冗余配置，已在上方设置）
+  # ShowReadingTime: true                            # 是否显示阅读时间（冗余配置，已在上方设置）
   ShowShareButtons: true                           # 是否显示分享按钮
   ShowPostNavLinks: true                           # 是否显示文章导航链接（上一页/下一页）
   ShowBreadCrumbs: true                            # 是否显示面包屑导航
@@ -113,11 +125,10 @@ params:
   UseHugoToc: true                                 # 是否使用 Hugo 自带的目录生成
   disableSpecial1stPost: false                      # 是否禁用特殊的第一个文章展示
   disableScrollToTop: false                         # 是否禁用“回到顶部”按钮
-  comments: false                                   # 是否全局禁用评论功能（注意：子配置中已启用 giscus）
   hidemeta: false                                   # 是否隐藏元数据（如作者、日期）
   hideSummary: false                                # 是否隐藏摘要
-  showtoc: false                                    # 是否在页面中显示目录（冗余配置，已在上方设置）
-  tocopen: false                                    # 目录是否默认展开（冗余配置，已在上方设置）
+  # showtoc: false                                    # 是否在页面中显示目录（冗余配置，已在上方设置）
+  # tocopen: false                                    # 目录是否默认展开（冗余配置，已在上方设置）
 
   # 资源配置
   assets:
@@ -155,10 +166,14 @@ params:
 
   # 社交图标配置
   socialIcons:
-    - name: x                                        # 社交平台名称，如 "github", "twitter"
-      url: "https://x.com/"                          # 对应的社交平台链接
-    - name: stackoverflow
-      url: "https://stackoverflow.com"
+    - name: bilibili
+      url: "https://space.bilibili.com/176072673?spm_id_from=333.1007.0.0"
+    - name: tiktok                                        # 社交平台名称，如 "github", "twitter"
+      url: "https://v.douyin.com/i5BEn6SC/"                          # 对应的社交平台链接
+    - name: Wechat
+      url: "https://img.picui.cn/free/2025/03/01/67c2a41a25b39.jpg"
+    - name: QQ
+      url: "https://qm.qq.com/q/NAXbuT3rQA"
     - name: github
       url: "https://github.com/lanshi47"
 
@@ -194,6 +209,20 @@ params:
     limit: 10                                        # 搜索结果的最大数量
     keys: ["title", "permalink", "summary", "content"] # 搜索时索引的字段
 
+  search:
+    enabled: true
+    # 生成的搜索索引文件名
+    searchIndex: "search.json"
+    # 搜索索引生成方式
+    engine: "fusejs"
+    # 可选，字段权重
+    weights:
+      title: 10
+      content: 5
+      tags: 3
+      categories: 3
+  navbar:
+    search: true
 # 代码高亮配置
 pygmentsUseClasses: true                            # 是否使用 Pygments 的 CSS 类进行代码高亮
 markup:
