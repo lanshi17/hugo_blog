@@ -1,0 +1,15 @@
+.custom-site-stats {
+    font-size: 0.9em;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.custom-site-stats p {
+    margin: 5px 0;
+}
+
+.busuanzi-footer {
+    font-style: italic;
+}

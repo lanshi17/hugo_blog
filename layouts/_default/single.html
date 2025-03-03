@@ -1,5 +1,4 @@
 {{- define "main" }}
-
 <article class="post-single">
   <header class="post-header">
     {{ partial "breadcrumbs.html" . }}
@@ -27,6 +26,8 @@
       {{- partial "post_canonical.html" . -}}
     </div>
     {{- end }}
+
+
   </header>
   {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
@@ -49,6 +50,12 @@
       <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
       {{- end }}
     </ul>
+    <!-- busuanzi -->
+    {{ if .Site.Params.busuanzi.enable }}
+      <div class="meta-item">&nbsp·&nbsp
+          <span id="busuanzi_container_page_pv">本文阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+      </div>
+    {{ end }}
     <div class="comments">
       {{- if (.Param "comments") }}
       {{- partial "comments.html" . }}

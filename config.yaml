@@ -1,12 +1,47 @@
 # 基本站点配置
 baseURL: "https://lanshi.xyz/"        # 网站的基础URL
 languageCode: "zh-CN"                 # 网站语言代码
+hasCJKLanguage: true
 title: "lanshi个人博客"                # 网站标题
 theme: "hugo-PaperMod"                # 使用的主题名称
 enableEmoji: true                     # 启用Emoji支持
 disableHugoGeneratorInject: true      # 禁用Hugo生成器元标签
 sectionPagesMenu: "main"
-
+# 菜单配置
+menu:
+  main:
+    - identifier: "resume"
+      name: "简历"
+      url: "/resume/"
+      weight: 1
+    - identifier: "portfolio"
+      name: "作品集"
+      url: "/portfolio/"
+      weight: 2
+    - identifier: "studynotes"
+      name: "学习笔记"
+      url: "/studynotes/"
+      weight: 3
+    - identifier: "posts"
+      name: "文章"
+      url: "/posts/"
+      weight: 4
+    - identifier: "categories"
+      name: "分类"
+      url: "/categories/"
+      weight: 10
+    - identifier: "tags"
+      name: "标签"
+      url: "/tags/"
+      weight: 20
+    - identifier: "archives"
+      name: "归档"
+      url: "/archives"
+      weight: 25
+    - identifier: "search"
+      name: "搜索"
+      url: "/search/"
+      weight: 28
 # 基本参数
 params:
   buildDrafts: false                  # 是否生成草稿文章
@@ -39,138 +74,110 @@ params:
     github: true
     bilibili: true
   googleAnalytics: "G-B5B8VFF5M8"
+  busuanzi:
+    enable: true
+  page_view_conter: 
+    enable: true
 
-# 菜单配置
-menu:
-  main:
-    - identifier: "resume"
-      name: "简历"
-      url: "/resume/"
-      weight: 1
-    - identifier: "portfolio"
-      name: "作品集"
-      url: "/portfolio/"
-      weight: 2
-    - identifier: "studynotes"
-      name: "学习笔记"
-      url: "/studynotes/"
-      weight: 3
-    - identifier: "posts"
-      name: "文章"
-      url: "/posts/"
-      weight: 4
-    - identifier: "categories"
-      name: "分类"
-      url: "/categories/"
-      weight: 10
-    - identifier: "tags"
-      name: "标签"
-      url: "/tags/"
-      weight: 20
-    - identifier: "archives"
-      name: "归档"
-      url: "/archives/"
-      weight: 25
-    - identifier: "search"
-      name: "搜索"
-      url: "/search/"
-      weight: 28
 
-# SEO相关配置
-sitemap:
-  changefreq: "daily"                # 更改频率
-  priority: 0.5                      # 优先级
 
-# 构建时间相关配置
-buildFuture: false                   # 是否构建未来内容
-buildExpired: false                  # 是否构建过期内容
+  # SEO相关配置
+  sitemap:
+    changefreq: "daily"                # 更改频率
+    priority: 0.5                      # 优先级
 
-# 资源压缩
-minify:
-  disableXML: true                   # 禁用XML压缩
-  minifyOutput: true                 # 启用CSS/JS压缩
+  # 构建时间相关配置
+  buildFuture: false                   # 是否构建未来内容
+  buildExpired: false                  # 是否构建过期内容
 
-# 环境变量
-env: production                      # 当前环境
+  # 资源压缩
+  minify:
+    disableXML: true                   # 禁用XML压缩
+    minifyOutput: true                 # 启用CSS/JS压缩
 
-# 日期格式
-DateFormat: "2006年1月2日"        # 日期显示格式 (示例: 2023年10月5日)        # 日期显示格式
+  # 环境变量
+  env: production                      # 当前环境
 
-# 首页信息配置
-homeInfoParams:
-  Title: "欢迎来到lanshi的个人博客"
-  Content: "Welcome to lanshi's blog"
+  # 日期格式
+  DateFormat: "2006年1月2日"        # 日期显示格式 (示例: 2023年10月5日)        # 日期显示格式
 
-# 社交图标配置
-socialIcons:
-  - name: bilibili
-    url: "https://space.bilibili.com/176072673?spm_id_from=333.1007.0.0"
-  - name: tiktok
-    url: "https://v.douyin.com/i5BEn6SC/"
-  - name: Wechat
-    url: "https://img.picui.cn/free/2025/03/01/67c2a41a25b39.jpg"
-  - name: QQ
-    url: "https://qm.qq.com/q/NAXbuT3rQA"
-  - name: github
-    url: "https://github.com/lanshi47"
+  # 首页信息配置
+  homeInfoParams:
+    enabled: true
+    Title: "欢迎来到lanshi的个人博客"
+    Content: "Welcome to lanshi's blog"
 
-# 分析配置
-analytics:
-  google:
-    SiteVerificationTag: "XYZabc"
-  bing:
-    SiteVerificationTag: "XYZabc"
-  yandex:
-    SiteVerificationTag: "XYZabc"
+  # 社交图标配置
+  socialIcons:
+    - name: bilibili
+      url: "https://space.bilibili.com/176072673?spm_id_from=333.1007.0.0"
+    - name: tiktok
+      url: "https://v.douyin.com/i5BEn6SC/"
+    - name: Wechat
+      url: "https://img.picui.cn/free/2025/03/01/67c2a41a25b39.jpg"
+    - name: QQ
+      url: "https://qm.qq.com/q/NAXbuT3rQA"
+    - name: github
+      url: "https://github.com/lanshi47"
 
-# 代码高亮
-pygmentsUseClasses: true
-markup:
-  highlight:
-    noClasses: false
-    style: monokai
+  # 分析配置
+  analytics:
+    google:
+      SiteVerificationTag: "XYZabc"
+    bing:
+      SiteVerificationTag: "XYZabc"
+    yandex:
+      SiteVerificationTag: "XYZabc"
 
-# 封面图配置
-cover:
-  hidden: true
+  # 代码高亮
+  pygmentsUseClasses: true
+  markup:
+    highlight:
+      noClasses: false
+      style: monokai
 
-# 编辑文章配置
-editPost:
-  URL: "https://github.com/lanshi47/Blog_comments/content"
-  Text: "Suggest Changes"
-  appendFilePath: true
+  # 封面图配置
+  cover:
+    hidden: true
 
-# 搜索配置
-fuseOpts:
-  isCaseSensitive: false
-  shouldSort: true
-  location: 0
-  distance: 1000
-  threshold: 0.4
-  minMatchCharLength: 0
-  limit: 10
-  keys: ["title", "permalink", "summary", "content"]
+  # 编辑文章配置
+  editPost:
+    URL: "https://github.com/lanshi47/hugo_blog/content"
+    Text: "Suggest Changes"
+    appendFilePath: true
 
-search:
-  enabled: true
-  searchIndex: "search.json"
-  engine: "fusejs"
-  weights:
-    title: 10
-    content: 5
-    tags: 3
-    categories: 3
+  # 搜索配置
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    limit: 10
+    keys: ["title", "permalink", "summary", "content"]
 
-# 其他站点功能
-navbar:
-  search: true
-ShowShareButtons: true
-ShowPostNavLinks: true
-ShowBreadCrumbs: true
-ShowWordCount: true
-ShowRssButtonInSectionTermList: true
-UseHugoToc: true
-disableSpecial1stPost: false
-disableScrollToTop: false
-hidemeta: false
-hideSummary: false
+  search:
+    enabled: true
+    searchIndex: "search.json"
+    engine: "fusejs"
+    weights:
+      title: 10
+      content: 5
+      tags: 3
+      categories: 3
+
+  # 其他站点功能
+  navbar:
+    search: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  hidemeta: false
+  hideSummary: false
+  customCSS : ["css/custom.css"]  # 自定义 CSS 文件路径

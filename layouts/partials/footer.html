@@ -7,6 +7,42 @@
         <span>&copy; {{ now.Year }} <a href="{{ "" | absLangURL }}">{{ site.Title }}</a></span>
         {{- end }}
     {{- end }}
+    <div class="custom-site-stats">
+        <!-- 接下来是博客统计功能 -->
+        <p class="site-running-time">
+            <!-- 博客运行时间 -->
+            {{ $launchTime := time "2025-02-28" }} <!-- 替换为你的建站日期 -->
+            {{ $now := now }}
+            {{ $duration := sub $now.Unix $launchTime.Unix }}
+            {{ $days := div $duration 86400 }}
+            {{ $hours := mod (div $duration 3600) 24 }}
+            {{ $minutes := mod (div $duration 60) 60 }}
+            本站已稳定运行 {{ $days }} 天 {{ $hours }} 小时 {{ $minutes }} 分钟。
+        </p>
+    
+        <!-- 显示总文章数量 -->
+        <p class="site-total-articles">
+            已发布文章 {{ len (where .Site.RegularPages "Section" "post") }} 篇。
+        </p>
+    
+        <!-- 显示总字数 -->
+        <p class="site-total-words">
+            {{ $totalWords := 0 }}
+            {{ range .Site.RegularPages }}
+                {{ $totalWords = add $totalWords .WordCount }}
+            {{ end }}
+            累计总字数 {{ printf "%.2f" (div (float $totalWords) 10000) }} 万字。
+        </p>
+    
+        <!-- Busuanzi 统计信息 -->
+        {{ if .Site.Params.busuanzi.enable }}
+            <div class="busuanzi-footer">
+                本站总访问量 <span id="busuanzi_value_site_pv"></span> 次 ·
+                总访客数 <span id="busuanzi_value_site_uv"></span> 人。
+            </div>
+        {{ end }}
+    
+    </div>
 </footer>
 {{- end }}
 
