@@ -166,6 +166,12 @@ params:
       content: 5
       tags: 3
       categories: 3
+  outputs:
+    home:
+      - HTML
+      - RSS
+      - JSON # is necessary
+
 
   # 其他站点功能
   navbar:
@@ -180,4 +186,6 @@ params:
   disableScrollToTop: false
   hidemeta: false
   hideSummary: false
-  customCSS : ["css/custom.css"]  # 自定义 CSS 文件路径
+  ShowCodeCopyButtons: true
+  math : true
+  customCSS : ["css/"]

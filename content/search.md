@@ -1,6 +1,6 @@
 ---
-title: "搜索"
-date: 2024-04-27T12:00:00+08:00
-draft: false
-type: "search"
+title: "搜索" # in any language you want
+layout: "search" # is necessary
+summary: "search"
+placeholder: "搜索框中的提示语"
 ---

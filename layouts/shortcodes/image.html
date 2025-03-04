@@ -1,0 +1,49 @@
+<!-- layouts/shortcodes/image.html -->
+{{/*  设置默认值  */}}
+{{ $src := .Get "src" }}
+{{ $alt := .Get "alt" | htmlEscape }}
+{{ $width := .Get "width" }}
+{{ $height := .Get "height" }}
+{{ $class := .Get "class" }}
+{{ $link := .Get "link" | safeURL }}  <!-- URL Sanitization -->
+{{ $title := .Get "title" | htmlEscape }}
+{{ $loading := .Get "loading" | default "lazy" }}
+
+{{/*  使用 Scratch 存储变量  */}}
+{{ $scratch := newScratch }}
+{{ $scratch.Set "image" "" }}
+
+{{/*  尝试获取图片资源  */}}
+{{ with .Page.Resources.GetMatch $src }}
+    {{ $scratch.Set "image" . }}
+{{ else }}
+    {{ with resources.Get $src }}
+        {{ $scratch.Set "image" . }}
+    {{ end }}
+{{ end }}
+
+{{/*  如果找到图片，则进行渲染  */}}
+{{ with $scratch.Get "image" }}
+    {{/*  处理链接  */}}
+    {{ if $link }}
+        <a href="{{ $link }}" target="_blank" rel="noopener noreferrer">
+    {{ end }}
+
+    <img
+        src="{{ .RelPermalink }}"
+        alt="{{ $alt }}"
+        width="{{ $width }}"
+        height="{{ $height }}"
+        class="{{ $class }}"
+        title="{{ $title }}"
+        loading="{{ $loading }}"
+    >
+
+    {{/*  关闭链接  */}}
+    {{ if $link }}
+        </a>
+    {{ end }}
+{{ else }}
+    {{/*  图片未找到时的提示  */}}
+    <p style="color:red;">图片未找到: {{ $src }} (位于: {{ .Page.File.Dir }})</p>
+{{ end }}

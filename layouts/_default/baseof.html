@@ -8,7 +8,9 @@
 <head>
     {{- partial "head.html" . }}
     {{ partial "partials/google_analytics.html" . }}
-
+    {{ if .Param "math" }}
+    {{ partialCached "math.html" . }}
+    {{ end }}
 </head>
 
 <body class="

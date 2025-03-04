@@ -1,0 +1,182 @@
+.footer,
+.top-link {
+    font-size: 12px;
+    color: var(--secondary);
+}
+
+.footer {
+    max-width: calc(var(--main-width) + var(--gap) * 2);
+    margin: auto;
+    padding: calc((var(--footer-height) - var(--gap)) / 2) var(--gap);
+    text-align: center;
+    line-height: 24px;
+}
+
+.footer span {
+    margin-inline-start: 1px;
+    margin-inline-end: 1px;
+}
+
+.footer span:last-child {
+    white-space: nowrap;
+}
+
+.footer a {
+    color: inherit;
+    border-bottom: 1px solid var(--secondary);
+}
+
+.footer a:hover {
+    border-bottom: 1px solid var(--primary);
+}
+
+.top-link {
+    visibility: hidden;
+    position: fixed;
+    bottom: 60px;
+    right: 30px;
+    z-index: 99;
+    background: var(--tertiary);
+    width: 42px;
+    height: 42px;
+    padding: 12px;
+    border-radius: 64px;
+    transition: visibility 0.5s, opacity 0.8s linear;
+}
+
+.top-link,
+.top-link svg {
+    filter: drop-shadow(0px 0px 0px var(--theme));
+}
+
+.footer a:hover,
+.top-link:hover {
+    color: var(--primary);
+}
+
+.top-link:focus,
+#theme-toggle:focus {
+    outline: 0;
+}
+
+/* 站点统计信息通用样式 */
+.site-total-articles,
+.site-total-words,
+.busuanzi-footer {
+  font-size: 0.9rem; /* 稍小的字体，不会过于突出 */
+  color: #666; /* 中等灰度，更柔和 */
+  margin-bottom: 0.5rem; /* 段落间距 */
+}
+
+/* 文章数量样式 */
+.site-total-articles {
+  /* 可以添加一些特定样式，例如强调色 */
+  color: #3498db; /* 选用一个主题色 */
+  font-weight: 500; /* 稍微加粗，突出数量 */
+}
+/* 字数统计样式 */
+.site-total-words {
+  /* 可以添加一些特定样式，例如强调色 */
+  color: #e74c3c; /* 选用一个主题色 */
+  font-weight: 500; /* 稍微加粗，突出数量 */
+}
+
+/* Busuanzi 统计信息样式 */
+.busuanzi-footer {
+  text-align: center; /* 居中显示 */
+  margin-top: 1rem; /* 与上方内容保持距离 */
+  padding-top: 0.5rem;
+  border-top: 1px solid #eee; /* 分割线 */
+}
+
+.busuanzi-footer span {
+  font-weight: bold; /* 加粗统计数值 */
+  color: #2ecc71; /* 选用一个强调色 */
+}
+
+/* 响应式优化（可选） */
+@media (max-width: 768px) {
+  .site-total-articles,
+  .site-total-words,
+  .busuanzi-footer {
+    font-size: 0.85rem; /* 在小屏幕上缩小字体 */
+  }
+}
+/* Busuanzi 页面阅读量统计样式 */
+#busuanzi_container_page_pv {
+    font-size: 0.9rem; /* 与已有的 meta-item 保持一致 */
+    color: #777;       /* 颜色与 meta-item 保持一致 */
+}
+
+#busuanzi_value_page_pv {
+    font-weight: bold; /* 突出显示阅读量数值 */
+    color: #e67e22;   /* 使用一个鲜明的颜色，吸引眼球 */
+    margin: 0 0.2rem; /* 数值两侧增加小间距 */
+}
+
+/* 响应式优化（可选）*/
+@media (max-width: 768px) {
+    #busuanzi_container_page_pv {
+        font-size: 0.8rem; /* 在小屏幕上缩小字体 */
+    }
+}
+
+/* 调整间距，确保与 meta-item 对齐 */
+.meta-item {
+    display: inline-block;
+    margin-right: 0.5em; /* meta-item 之间的间距 */
+}
+
+/* 可选：如果需要统一样式 */
+.meta-item > span {
+    vertical-align: middle; /* 确保 span 里的内容垂直居中 */
+}
+/* 页面阅读量统计容器 */
+.page-view-counter {
+    display: inline-block; /* 确保与其它 meta-item 并排显示 */
+    /* 可以添加一些外边距，如果需要 */
+    margin-left: 0.5em;
+    /* display: flex;
+    align-items: center; */
+}
+
+/* 页面阅读量统计文字 */
+#busuanzi_container_page_pv {
+    font-size: 0.9rem; /* 与已有的 meta-item 保持一致 */
+    color: #777;       /* 颜色与 meta-item 保持一致 */
+    /* 可以添加一些内边距，如果需要 */
+    padding: 0.2rem;
+}
+
+/* 页面阅读量数值 */
+#busuanzi_value_page_pv {
+    font-weight: bold; /* 突出显示阅读量数值 */
+    color: #e67e22;   /* 使用一个鲜明的颜色吸引眼球。你可以根据你的网站颜色进行调整 */
+    margin: 0 0.2rem; /* 数值两侧增加小间距 */
+}
+
+/* 响应式优化（可选）*/
+@media (max-width: 768px) {
+    #busuanzi_container_page_pv {
+        font-size: 0.8rem; /* 在小屏幕上缩小字体 */
+    }
+}
+.page-view-counter {
+    display: flex;         /* 使元素横向排列 */
+    align-items: center;   /* 垂直居中对齐项目 */
+    gap: 1em;              /* 项目之间的间距 */
+    font-size: 0.9em;     /* 更小的字体大小 */
+    color: var(--secondary); /* 使用主题的辅助颜色 */
+    margin-top: 1em;
+  }
+  
+  .page-view-counter span {
+    display: inline-flex;  /* 让 span 元素也使用 flexbox，方便图标对齐 */
+    align-items: center;  /* 垂直居中对齐图标和文本 */
+    gap: 0.3em;           /* 图标和文本之间的间距 */
+  }
+  
+  .page-view-counter i.fa {
+    margin-right: 0.2em;
+    font-size: 0.9em;
+  }
