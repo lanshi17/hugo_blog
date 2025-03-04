@@ -1,6 +1,8 @@
 ---
 title: "搜索" # in any language you want
-layout: "search" # is necessary
+layout: "search" # necessary for search
+# url: "/archive"
+# description: "Description for Search"
 summary: "search"
-placeholder: "搜索框中的提示语"
+placeholder: "此框内输入搜索的内容~"
 ---

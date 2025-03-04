@@ -79,6 +79,25 @@ params:
   page_view_conter: 
     enable: true
 
+  profileMode:
+    enabled: false                                 # 启用 Profile 模式
+    title: "lanshi的个人博客"                           # Profile 模式下显示的标题 (可选，默认站点标题)
+    subtitle: "记录IT学习资源、教程和个人作品，分享我的技术之旅"                 # Profile 模式下显示的副标题 (请根据您的博客定位修改)
+    imageUrl: "/images/profile.png"                  # Profile 图片的URL (请替换为您头像图片的路径)
+    imageTitle: "lanshi 头像"                             # Profile 图片的标题 (可选)
+    imageWidth: 120                                  # Profile 图片的宽度 (可选)
+    imageHeight: 120                                 # Profile 图片的高度 (可选)
+    buttons:
+      - name: 作品集                                   # 按钮名称
+        url: "/portfolio/"                                   # 按钮链接URL
+      - name: 学习笔记
+        url: "/study_notes/"
+      - name: 文章
+        url: "/posts/"
+      - name: 简历
+        url: "/resume/"
+      - name: Github                                  # 示例按钮，您可以改成其他您需要的链接
+        url: "https://github.com/lanshi47"
 
 
   # SEO相关配置
@@ -142,7 +161,7 @@ params:
 
   # 编辑文章配置
   editPost:
-    URL: "https://github.com/lanshi47/hugo_blog/content"
+    URL: "https://github.com/lanshi47/hugo_blog/tree/master/content"
     Text: "Suggest Changes"
     appendFilePath: true
 
@@ -155,7 +174,7 @@ params:
     threshold: 0.4
     minMatchCharLength: 0
     limit: 10
-    keys: ["title", "permalink", "summary", "content"]
+    keys: ["title", "permalink", "summary", "content","tags","description","author"]
 
   search:
     enabled: true
@@ -166,11 +185,11 @@ params:
       content: 5
       tags: 3
       categories: 3
-  outputs:
-    home:
-      - HTML
-      - RSS
-      - JSON # is necessary
+    includeMatches: true
+    outputs:
+      - html
+      - rss
+      - json
 
 
   # 其他站点功能
