@@ -6,7 +6,7 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 08 Mar 2025 14:15:45 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ctex的字体设置</title>
@@ -16,11 +16,96 @@
       <description>latex的字体设置</description>
     </item>
     <item>
+      <title>FishStone Cloud V1.0 云存储系统</title>
+      <link>https://lanshi.xyz/portfolio/fishstone-cloud-v1.0/</link>
+      <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
+      <guid>https://lanshi.xyz/portfolio/fishstone-cloud-v1.0/</guid>
+      <description>基于 Flask 框架开发的文件管理系统</description>
+    </item>
+    <item>
       <title>数据库学习笔记</title>
       <link>https://lanshi.xyz/studynotes/database/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://lanshi.xyz/studynotes/database/</guid>
       <description>这是我的第一篇学习日志。</description>
+    </item>
+    <item>
+      <title>自动连接校园网-南通理工学院</title>
+      <link>https://lanshi.xyz/portfolio/auto_connect_school_network/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/portfolio/auto_connect_school_network/</guid>
+      <description>&lt;h2 id=&#34;校园网络自动登录脚本&#34;&gt;校园网络自动登录脚本&lt;/h2&gt;
+&lt;h4 id=&#34;项目简介&#34;&gt;项目简介&lt;/h4&gt;
+&lt;p&gt;这是一个使用Python和Selenium开发的自动化脚本,用于简化校园网络的登录过程。该脚本能够自动填写用户名和密码,选择网络服务提供商,并完成登录操作,大大提高了登录效率。&lt;/p&gt;
+&lt;h4 id=&#34;主要功能&#34;&gt;主要功能&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;自动打开登录页面&lt;/li&gt;
+&lt;li&gt;智能填写用户名和密码&lt;/li&gt;
+&lt;li&gt;自动选择网络服务提供商&lt;/li&gt;
+&lt;li&gt;执行登录操作&lt;/li&gt;
+&lt;li&gt;验证登录状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;技术栈&#34;&gt;技术栈&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Python 3.x&lt;/li&gt;
+&lt;li&gt;Selenium WebDriver&lt;/li&gt;
+&lt;li&gt;ChromeDriver&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;安装指南&#34;&gt;安装指南&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;确保您的系统已安装Python 3.x&lt;/li&gt;
+&lt;li&gt;安装所需的Python包:
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;pip install selenium webdriver_manager
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;下载与您的Chrome浏览器版本匹配的ChromeDriver&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;使用说明&#34;&gt;使用说明&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;克隆或下载本项目到本地&lt;/li&gt;
+&lt;li&gt;在&lt;code&gt;config.ini&lt;/code&gt;文件中填写您的登录信息和网络设置&lt;/li&gt;
+&lt;li&gt;运行脚本:
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;python campus_network_login.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;开机自启动设置&#34;&gt;开机自启动设置&lt;/h4&gt;
+&lt;p&gt;为了使脚本在每次开机时自动运行，您可以创建一个BAT脚本并将其添加到Windows的启动文件夹中。以下是具体步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;创建BAT脚本&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在任意文本编辑器中输入以下内容,如果采用虚拟环境,请自行调整shell指令：
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bat&#34; data-lang=&#34;bat&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; @&lt;span style=&#34;color:#66d9ef&#34;&gt;echo&lt;/span&gt; off
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;REM 设置控制台代码页为UTF-8，解决中文显示问题&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; chcp 65001 &amp;gt;nul
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;REM 切换到脚本目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;cd&lt;/span&gt; /d E:\Users\Administrator\PycharmProjects\xxx
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;REM 检查并创建配置文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;exist&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;config.ini&amp;#34;&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     &lt;span style=&#34;color:#66d9ef&#34;&gt;echo&lt;/span&gt; ini配置不存在
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;REM 设置权限&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; icacls &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;config.ini&amp;#34;&lt;/span&gt; /grant Everyone:R /Q
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;REM 运行Python脚本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;set&lt;/span&gt; PYTHONWARNINGS=ignore:SSL
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; D:\ProgramData\anaconda3\envs\xxx\python.exe -W ignore connect_school_network.py &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;&amp;gt;nul
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;errorlevel&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     &lt;span style=&#34;color:#66d9ef&#34;&gt;echo&lt;/span&gt; 运行失败，错误代码：%errorlevel%
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     &lt;span style=&#34;color:#66d9ef&#34;&gt;echo&lt;/span&gt; 详细信息请查看日志文件
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     timeout /t 10
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     &lt;span style=&#34;color:#66d9ef&#34;&gt;exit&lt;/span&gt; /b %errorlevel%
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;echo&lt;/span&gt; 运行成功
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; timeout /t 5
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;将文件保存为&lt;code&gt;start_login.bat&lt;/code&gt;（确保文件类型选择为“所有文件”）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;将BAT脚本添加到启动文件夹&lt;/strong&gt;:&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

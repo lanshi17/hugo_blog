@@ -1,0 +1,47 @@
+/* 归档页样式 */
+.archives-container {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 0.8rem 1.5rem;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #3498db;
+}
+
+.stat-label {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.post-item:hover a {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .archives-container {
+    padding: 0 0.5rem;
+  }
+  .stat-item {
+    padding: 0.6rem 1rem;
+  }
+}
+/* 在custom.css添加 */
+.progress-bar {
+    height: 3px;
+    background: #3498db;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+  }

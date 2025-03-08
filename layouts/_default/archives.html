@@ -1,0 +1,57 @@
+{{ define "main" }}
+<article class="archives-container" style="max-width: 800px; margin: 2rem auto; padding: 0 1rem;">
+  
+  <!-- 统计卡片 -->
+  <div class="stats-card" style="background: #f8f9fa; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+      <div class="stat-item">
+        <div class="stat-number">{{ len (where site.RegularPages "Type" "posts") }}</div>
+        <div class="stat-label">总文章</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ len site.Taxonomies.categories }}</div>
+        <div class="stat-label">分类</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ len site.Taxonomies.tags }}</div>
+        <div class="stat-label">标签</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 时间线归档 -->
+  <div class="timeline">
+    {{ range (where site.RegularPages "Type" "posts").GroupByDate "2006" }}
+<div class="year-section">
+  <h2>{{ .Key }} 年</h2>
+  <div class="post-list">
+    {{ range .Pages }}
+    <div class="post-item">
+      <!-- 优先级：显式date → 文件名日期 → 最后修改时间 -->
+      <time datetime="{{ .Date.Format "2006-01-02" }}">
+        {{ if .Date.IsZero }}
+          {{ .Lastmod.Format "01-02" }} 
+          <span style="color:#95a5a6;font-size:0.8em">(自动日期)</span>
+        {{ else }}
+          {{ .Date.Format "01-02" }}
+        {{ end }}
+      </time>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
+  </div>
+
+</article>
+{{ end }}
+<script>
+// 检测缺失日期的文章
+document.addEventListener('DOMContentLoaded', function() {
+  const dates = document.querySelectorAll('time[datetime="0001-01-01"]');
+  if (dates.length > 0) {
+    console.warn('发现 %c%d 篇文章未设置日期', 'color:red', dates.length);
+  }
+});
+</script>

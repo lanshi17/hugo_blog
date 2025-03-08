@@ -6,12 +6,48 @@
     <description>Recent content in Categories on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
+    <lastBuildDate>Sat, 08 Mar 2025 14:15:45 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flask</title>
+      <link>https://lanshi.xyz/categories/flask/</link>
+      <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
+      <guid>https://lanshi.xyz/categories/flask/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>云盘系统</title>
+      <link>https://lanshi.xyz/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
+      <guid>https://lanshi.xyz/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>作品集</title>
+      <link>https://lanshi.xyz/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</link>
+      <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
+      <guid>https://lanshi.xyz/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Latex</title>
       <link>https://lanshi.xyz/categories/latex/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://lanshi.xyz/categories/latex/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://lanshi.xyz/categories/python/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/categories/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>爬虫</title>
+      <link>https://lanshi.xyz/categories/%E7%88%AC%E8%99%AB/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/categories/%E7%88%AC%E8%99%AB/</guid>
       <description></description>
     </item>
     <item>

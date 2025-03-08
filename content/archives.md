@@ -1,7 +1,6 @@
 ---
-title: "归档"
-layout: "archives"
-type: archives  # 关键参数，声明这是归档页面
-
-
+title: "文章归档"
+url: /archives/
+layout: archives
+summary: "按时间线回顾所有文章"
 ---

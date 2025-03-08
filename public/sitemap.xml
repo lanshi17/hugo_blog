@@ -4,13 +4,43 @@
   <url>
     <loc>https://lanshi.xyz/posts/latex01/</loc>
   </url><url>
-    <loc>https://lanshi.xyz/</loc>
-    <lastmod>2025-02-28T00:00:00+00:00</lastmod>
+    <loc>https://lanshi.xyz/categories/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
   </url><url>
-    <loc>https://lanshi.xyz/tags/resume/</loc>
-    <lastmod>2025-02-28T00:00:00+00:00</lastmod>
+    <loc>https://lanshi.xyz/portfolio/fishstone-cloud-v1.0/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/categories/flask/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/flask/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/portfolio/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/python/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/tags/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E9%A1%B9%E7%9B%AE/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</loc>
+    <lastmod>2025-03-08T14:15:45+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/resume/</loc>
     <lastmod>2025-02-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/resume/</loc>
@@ -19,7 +49,7 @@
     <loc>https://lanshi.xyz/posts/</loc>
     <lastmod>2020-09-15T11:30:03+00:00</lastmod>
   </url><url>
-    <loc>https://lanshi.xyz/categories/</loc>
+    <loc>https://lanshi.xyz/search/</loc>
   </url><url>
     <loc>https://lanshi.xyz/categories/latex/</loc>
   </url><url>
@@ -27,11 +57,15 @@
   </url><url>
     <loc>https://lanshi.xyz/tags/notebook/</loc>
   </url><url>
-    <loc>https://lanshi.xyz/portfolio/</loc>
+    <loc>https://lanshi.xyz/tags/portfolio/</loc>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/project/</loc>
+  </url><url>
+    <loc>https://lanshi.xyz/categories/python/</loc>
   </url><url>
     <loc>https://lanshi.xyz/studynotes/</loc>
   </url><url>
-    <loc>https://lanshi.xyz/archives/</loc>
+    <loc>https://lanshi.xyz/categories/%E7%88%AC%E8%99%AB/</loc>
   </url><url>
     <loc>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
   </url><url>
@@ -39,10 +73,14 @@
   </url><url>
     <loc>https://lanshi.xyz/studynotes/database/</loc>
   </url><url>
-    <loc>https://lanshi.xyz/search/</loc>
+    <loc>https://lanshi.xyz/archives/</loc>
   </url><url>
     <loc>https://lanshi.xyz/categories/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</loc>
   </url><url>
     <loc>https://lanshi.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</loc>
+  </url><url>
+    <loc>https://lanshi.xyz/portfolio/auto_connect_school_network/</loc>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E4%BD%9C%E5%93%81%E9%9B%86/</loc>
   </url>
 </urlset>

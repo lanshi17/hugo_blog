@@ -4,42 +4,89 @@
   --base-font: 'LXGW WenKai Screen', 'HarmonyOS Sans SC', system-ui;
   --code-font: 'Fira Code', 'JetBrains Mono', monospace;
   
-  /* 颜色配置 */
+  /* 明色模式颜色 */
   --primary: #24292e;
   --secondary: #586069;
   --accent: #0366d6;
   --border: #e1e4e8;
   --content-bg: #fff;
   --code-bg: #f6f8fa;
+  --surface-bg: #f8f9fa;
   --shadow: 0 2px 8px rgba(0,0,0,0.1);
+  --selection-bg: rgba(3,102,214,0.2);
 }
 
-/* ====================== 暗色模式 ====================== */
+/* ====================== 暗色模式优化 ====================== */
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary: #c9d1d9;
-    --secondary: #8b949e;
-    --accent: #58a6ff;
+    --primary: #e6edf3;
+    --secondary: #848d97;
+    --accent: #2f81f7;
     --border: #30363d;
-    --content-bg: #0d1117;
-    --code-bg: #161b22;
-    --shadow: 0 2px 8px rgba(0,0,0,0.3);
+    --content-bg: #161b22;
+    --code-bg: #0d1117;
+    --surface-bg: #21262d;
+    --shadow: 0 4px 12px rgba(1, 4, 9, 0.5);
+    --selection-bg: rgba(45, 139, 255, 0.3);
   }
 }
 
-/* ====================== 通用增强 ====================== */
+/* ====================== 全局基础样式 ====================== */
+::selection {
+  background: var(--selection-bg);
+}
+
+body {
+  background: var(--content-bg);
+  color: var(--primary);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ====================== 导航栏 ====================== */
+.header {
+  background: var(--content-bg);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: saturate(180%) blur(10px);
+  padding: 1rem 0;
+  transition: all 0.3s ease;
+  
+  @media (prefers-color-scheme: dark) {
+    background: rgba(22,27,34,0.85);
+    border-bottom-color: rgba(255,255,255,0.05);
+  }
+  
+  .nav-links a {
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--accent) !important;
+    }
+  }
+}
+
+/* ====================== 文章内容 ====================== */
 .post-content {
   line-height: 1.7;
   font-family: var(--base-font);
   
   a {
     color: var(--accent);
-    border-bottom: 1px dotted transparent;
-    transition: all 0.2s ease;
+    text-decoration: none;
+    position: relative;
     
-    &:hover {
-      opacity: 0.85;
-      border-bottom-color: currentColor;
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    
+    &:hover::after {
+      width: 100%;
     }
   }
 
@@ -51,6 +98,16 @@
     border-radius: 8px;
     box-shadow: var(--shadow);
     overflow-x: auto;
+    position: relative;
+    
+    @media (prefers-color-scheme: dark) {
+      border-left: 3px solid var(--accent);
+      background: linear-gradient(
+        to right,
+        var(--code-bg) 0%,
+        var(--content-bg) 100%
+      );
+    }
     
     &::before {
       content: "";
@@ -58,6 +115,11 @@
       height: 1px;
       background: var(--border);
       margin-bottom: 1rem;
+      
+      @media (prefers-color-scheme: dark) {
+        background: linear-gradient(to right, var(--accent), var(--border));
+        height: 2px;
+      }
     }
   }
 
@@ -66,6 +128,7 @@
     border-collapse: collapse;
     margin: 2rem 0;
     box-shadow: var(--shadow);
+    background: var(--surface-bg);
     
     th, td {
       padding: 1rem;
@@ -74,65 +137,76 @@
     }
     
     th {
-      background: var(--code-bg);
-      font-weight: 600;
+      background: rgba(48,54,61,0.6);
+      border-bottom: 2px solid var(--accent);
+    }
+    
+    tr:nth-child(even) {
+      background: rgba(48,54,61,0.1);
     }
   }
 }
 
-/* ====================== 组件样式 ====================== */
-.header {
-  background: var(--content-bg);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: saturate(180%) blur(10px);
-  padding: 1rem 0;
-}
-
-.post-entry {
+/* ====================== 卡片组件 ====================== */
+.post-entry, .project-card {
   padding: 1.5rem;
   margin: 1.5rem 0;
-  background: var(--content-bg);
+  background: var(--surface-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
-  transition: transform 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow);
   
   &:hover {
-    transform: translateY(-3px);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
   }
 }
 
-.project-card {
-  display: grid;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  background: var(--content-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-  
-  @media (min-width: 768px) {
-    grid-template-columns: 240px 1fr;
-  }
-}
-
-
-
-/* ====================== 运行时间 ====================== */
+/* ====================== 运行时间组件 ====================== */
 #site-runtime {
   display: inline-flex;
   gap: 0.5rem;
   padding: 0.8rem 1.2rem;
-  background: var(--code-bg);
+  background: var(--surface-bg);
   border-radius: 6px;
   font-family: var(--code-font);
   font-variant-numeric: tabular-nums;
+  border: 1px solid var(--border);
   
   > span {
     &:nth-child(1) { color: var(--primary) }
     &:nth-child(2) { color: var(--secondary) }
     &:nth-child(3) { color: var(--secondary) }
-    &:nth-child(4) { color: var(--accent) }
+    &:nth-child(4) { 
+      color: var(--accent);
+      @media (prefers-color-scheme: dark) {
+        text-shadow: 0 0 8px rgba(47,129,247,0.3);
+      }
+    }
+  }
+}
+
+/* ====================== 分割线 ====================== */
+hr {
+  height: 1px;
+  margin: 2.5rem 0;
+  background: var(--border);
+  border: 0;
+  
+  &::before {
+    content: "···";
+    display: block;
+    text-align: center;
+    color: var(--secondary);
+    letter-spacing: 1em;
+    padding-left: 1em;
+    
+    @media (prefers-color-scheme: dark) {
+      color: var(--accent);
+      text-shadow: 0 0 8px var(--accent);
+      opacity: 0.6;
+    }
   }
 }
 
@@ -143,6 +217,11 @@
       margin-left: -1.5rem;
       margin-right: -1.5rem;
       border-radius: 0;
+      
+      @media (prefers-color-scheme: dark) {
+        background: var(--code-bg);
+        border-left: none;
+      }
     }
     
     table {
@@ -158,22 +237,5 @@
   
   .project-card {
     grid-template-columns: 1fr;
-  }
-}
-
-/* ====================== 分割线增强 ====================== */
-hr {
-  height: 1px;
-  margin: 2.5rem 0;
-  background: var(--border);
-  border: 0;
-  
-  &::before {
-    content: "···";
-    display: block;
-    text-align: center;
-    color: var(--secondary);
-    letter-spacing: 1em;
-    padding-left: 1em;
   }
 }

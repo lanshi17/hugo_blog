@@ -6,8 +6,36 @@
     <description>Recent content in Tags on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 28 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 08 Mar 2025 14:15:45 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flask</title>
+      <link>https://lanshi.xyz/tags/flask/</link>
+      <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/flask/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://lanshi.xyz/tags/python/</link>
+      <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>项目</title>
+      <link>https://lanshi.xyz/tags/%E9%A1%B9%E7%9B%AE/</link>
+      <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E9%A1%B9%E7%9B%AE/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>云盘系统</title>
+      <link>https://lanshi.xyz/tags/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Resume</title>
       <link>https://lanshi.xyz/tags/resume/</link>
@@ -30,6 +58,20 @@
       <description></description>
     </item>
     <item>
+      <title>Portfolio</title>
+      <link>https://lanshi.xyz/tags/portfolio/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/tags/portfolio/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Project</title>
+      <link>https://lanshi.xyz/tags/project/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/tags/project/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>数据库</title>
       <link>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -41,6 +83,13 @@
       <link>https://lanshi.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://lanshi.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>作品集</title>
+      <link>https://lanshi.xyz/tags/%E4%BD%9C%E5%93%81%E9%9B%86/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/tags/%E4%BD%9C%E5%93%81%E9%9B%86/</guid>
       <description></description>
     </item>
   </channel>
