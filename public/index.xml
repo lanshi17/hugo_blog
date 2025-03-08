@@ -1,1 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>lanshi个人博客</title><link>https://lanshi.xyz/</link><description>Recent content on lanshi个人博客</description><generator>Hugo -- 0.145.0</generator><language>zh-CN</language><lastBuildDate>Tue, 04 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml"/><item><title>数据库学习笔记</title><link>https://lanshi.xyz/studynotes/database/</link><pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate><guid>https://lanshi.xyz/studynotes/database/</guid><description>这是我的第一篇学习日志。</description></item><item><title>Hello World</title><link>https://lanshi.xyz/studynotes/test/</link><pubDate>Thu, 05 Oct 2023 00:00:00 +0000</pubDate><guid>https://lanshi.xyz/studynotes/test/</guid><description>这是我的第一篇博客。</description></item><item><title>My 1st post</title><link>https://lanshi.xyz/posts/test/</link><pubDate>Tue, 15 Sep 2020 11:30:03 +0000</pubDate><guid>https://lanshi.xyz/posts/test/</guid><description>Desc Text.</description></item><item><title>项目一</title><link>https://lanshi.xyz/portfolio/project1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lanshi.xyz/portfolio/project1/</guid><description>这里是项目 1 的介绍</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>lanshi个人博客</title>
+    <link>https://lanshi.xyz/</link>
+    <description>Recent content on lanshi个人博客</description>
+    <generator>Hugo -- 0.145.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ctex的字体设置</title>
+      <link>https://lanshi.xyz/posts/latex01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/posts/latex01/</guid>
+      <description>latex的字体设置</description>
+    </item>
+    <item>
+      <title>数据库学习笔记</title>
+      <link>https://lanshi.xyz/studynotes/database/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/studynotes/database/</guid>
+      <description>这是我的第一篇学习日志。</description>
+    </item>
+  </channel>
+</rss>

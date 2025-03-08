@@ -1,0 +1,48 @@
+<!-- 修改后的 extend_footer.html -->
+<div class="site-stats">
+    <div class="stat-item">
+        <span class="stat-label">访问量</span>
+        <span class="stat-number" id="busuanzi_value_site_pv">0</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-label">访客数</span>
+        <span class="stat-number" id="busuanzi_value_site_uv">0</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-label">文章数</span>
+        <span class="stat-number">{{ len (where .Site.RegularPages "Section" "posts") }}</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-label">运行时间</span>
+        <span class="stat-number" id="site-runtime">
+            <span id="days">0</span>天
+            <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+        </span>
+    </div>
+</div>
+
+<script>
+(function(){
+    // 初始化时间 (修改为您网站的正式上线时间)
+    const startDate = new Date('2025-02-25T00:00:00+08:00');
+    
+    function updateRuntime() {
+        const now = new Date();
+        const diff = now - startDate;
+        
+        const days = Math.floor(diff / 864e5);
+        const hours = Math.floor((diff % 864e5) / 36e5).toString().padStart(2, '0');
+        const minutes = Math.floor((diff % 36e5) / 6e4).toString().padStart(2, '0');
+        const seconds = Math.floor((diff % 6e4) / 1e3).toString().padStart(2, '0');
+        
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = hours;
+        document.getElementById('minutes').textContent = minutes;
+        document.getElementById('seconds').textContent = seconds;
+    }
+    
+    // 立即执行一次并设置定时器
+    updateRuntime();
+    setInterval(updateRuntime, 1000);
+})();
+</script>

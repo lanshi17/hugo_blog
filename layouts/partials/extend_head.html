@@ -1,0 +1,18 @@
+<!-- 在 layouts/partials/head.html 中添加 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!-- busuanzi -->
+{{- if .Site.Params.busuanzi.enable -}}
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+{{- end -}}
+<!-- <div class="page-view-counter">
+    {{ if .Params.showReadingTime | default true }}
+    <span class="reading-time">
+            <i class="fa fa-clock-o"></i> 预计阅读 {{ .ReadingTime }} 分钟
+    </span>
+    {{ end }}
+    busuanzi
+    {{ if .Site.Params.busuanzi.enable }}
+    <span id="busuanzi_container_page_pv">本文阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+    {{ end }} -->
+<!-- </div> --> 

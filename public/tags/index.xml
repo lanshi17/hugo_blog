@@ -1,1 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Tags on lanshi个人博客</title><link>https://lanshi.xyz/tags/</link><description>Recent content in Tags on lanshi个人博客</description><generator>Hugo -- 0.145.0</generator><language>zh-CN</language><lastBuildDate>Tue, 04 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://lanshi.xyz/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>初学</title><link>https://lanshi.xyz/tags/%E5%88%9D%E5%AD%A6/</link><pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate><guid>https://lanshi.xyz/tags/%E5%88%9D%E5%AD%A6/</guid><description/></item><item><title>数据库</title><link>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link><pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate><guid>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid><description/></item><item><title>Hugo</title><link>https://lanshi.xyz/tags/hugo/</link><pubDate>Thu, 05 Oct 2023 00:00:00 +0000</pubDate><guid>https://lanshi.xyz/tags/hugo/</guid><description/></item><item><title>First</title><link>https://lanshi.xyz/tags/first/</link><pubDate>Tue, 15 Sep 2020 11:30:03 +0000</pubDate><guid>https://lanshi.xyz/tags/first/</guid><description/></item><item><title>Portfolio</title><link>https://lanshi.xyz/tags/portfolio/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lanshi.xyz/tags/portfolio/</guid><description/></item><item><title>Project</title><link>https://lanshi.xyz/tags/project/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lanshi.xyz/tags/project/</guid><description/></item><item><title>Resume</title><link>https://lanshi.xyz/tags/resume/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lanshi.xyz/tags/resume/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tags on lanshi个人博客</title>
+    <link>https://lanshi.xyz/tags/</link>
+    <description>Recent content in Tags on lanshi个人博客</description>
+    <generator>Hugo -- 0.145.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 28 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://lanshi.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Resume</title>
+      <link>https://lanshi.xyz/tags/resume/</link>
+      <pubDate>Fri, 28 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/tags/resume/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Latex</title>
+      <link>https://lanshi.xyz/tags/latex/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/tags/latex/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Notebook</title>
+      <link>https://lanshi.xyz/tags/notebook/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/tags/notebook/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>数据库</title>
+      <link>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>学习打卡</title>
+      <link>https://lanshi.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
