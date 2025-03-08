@@ -1,0 +1,25 @@
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .site-stats {
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: baseline; /* 移动端也保持对齐 */
+      gap: 1rem;
+    }
+    .stat-item {
+      padding-right: 1rem;
+      
+      &::after {
+        display: none;
+      }
+    }
+    
+    .stat-number {
+      font-size: 1rem;
+    }
+    
+    .stat-label {
+      font-size: 0.78rem;
+    }
+  }

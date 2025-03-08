@@ -1,80 +1,87 @@
 #!/usr/bin/env bash
-#!/usr/bin/env bash
-set -e
+set -eo pipefail
 
-# 1) 进入您的 Hugo 博客本地目录(假设为 ~/hugo_blog)
-cd ~/hugo_blog
+# ----------------------
+# 配置变量区（按需修改）
+# ----------------------
+HUGO_DIR="/home/$USER/hugo_blog"
+TARGET_DIR="/var/www/lanshi.xyz"
+NGINX_USER="hugo"
+WEB_GROUP="webadmin"
+HUGO_CONFIG="config.yaml"
 
-# 2) 生成静态文件，--minify 会压缩文件体积(可选)
-hugo  --config config.yaml   --cleanDestinationDir --gc --minify 
+# ----------------------
+# 功能函数区
+# ----------------------
+log() {
+    local timestamp=$(date +"%Y-%m-%d %T")
+    echo -e "[${timestamp}] $1"
+}
 
-# 3) 清空 Nginx 指向的目标目录(假设为 /var/www/lanshi.xyz)
-sudo rm -rf /var/www/lanshi.xyz/*
+check_dependencies() {
+    local deps=("hugo" "sudo" "rsync")
+    for cmd in "${deps[@]}"; do
+        if ! command -v $cmd &> /dev/null; then
+            log "\033[31m错误：未找到 $cmd 命令\033[0m"
+            exit 1
+        fi
+    done
+}
 
-# 4) 拷贝 Hugo 编译后的 public 文件夹至目标目录
-sudo cp -r public/* /var/www/lanshi.xyz/
+# ----------------------
+# 主执行流程
+# ----------------------
+log "\033[34m==== 开始部署流程 ====\033[0m"
 
-# 5) 重新加载或重启 Nginx，以应用可能的配置更改(可视需求选择 reload/restart)
-sudo systemctl restart nginx
+# 1. 检查前置依赖
+check_dependencies
 
-echo "Blog updated and Nginx reloaded successfully!"
-#
-# set -e
+# 2. 验证 Hugo 项目目录
+if [[ ! -f "$HUGO_DIR/$HUGO_CONFIG" ]]; then
+    log "\033[31m错误：在 $HUGO_DIR 中未找到配置文件 $HUGO_CONFIG\033[0m"
+    exit 1
+fi
 
-# BLOG_DIR="$HOME/hugo_blog"
-# TARGET_DIR="/var/www/lanshi.xyz"
-# LOG_FILE="$BLOG_DIR/deploy_blog.log"
-# TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+# 3. 进入项目目录
+log "进入 Hugo 目录: $HUGO_DIR"
+cd "$HUGO_DIR" || exit 1
 
-# # 记录日志的函数
-# log() {
-#   echo "$TIMESTAMP: $@" >> "$LOG_FILE"
-# }
+# 4. 清理旧生成文件
+log "清理旧生成文件..."
+rm -rf public resources .hugo_build.lock
 
-# error_log() {
-#   echo "$TIMESTAMP: ERROR: $@" >> "$LOG_FILE"
-#   echo "ERROR: $@" >&2
-# }
+# 5. 构建静态网站
+log "开始生成静态文件 (详细日志见 /tmp/hugo_build.log)"
+hugo \
+    --config "$HUGO_CONFIG" \
+    --cleanDestinationDir \
+    --gc \
+    --minify \
+    --logLevel debug \
+    --destination "$HUGO_DIR/public" \
+    > /tmp/hugo_build.log 2>&1
 
-# # 清空日志文件 (可选，每次部署都从新的日志开始)
-# > "$LOG_FILE"
+if [ $? -ne 0 ]; then
+    log "\033[31mHugo 构建失败，请检查 /tmp/hugo_build.log\033[0m"
+    exit 1
+fi
 
-# # 1) 进入 Hugo 博客本地目录
-# cd "$BLOG_DIR" || {
-#   error_log "Could not change directory to $BLOG_DIR"
-#   exit 1
-# }
-# log "Changed directory to: $(pwd)"
+# 6. 同步文件到目标目录
+log "同步文件到 $TARGET_DIR"
+sudo rsync -avh --delete --chown=${NGINX_USER}:${WEB_GROUP} \
+    "$HUGO_DIR/public/" \
+    "$TARGET_DIR/"
 
-# # 2) 生成静态文件 (清除缓存并压缩) and capture Hugo's output to commandline & log
-# log "Generating Hugo site..."
-# hugo --config config.yaml --minify --ignoreCache --cleanDestinationDir 2>&1 | tee -a "$LOG_FILE"
-# HUGO_RESULT=$?
-# if [ "$HUGO_RESULT" -ne 0 ]; then
-#   error_log "Hugo site generation failed! (Exit code: $HUGO_RESULT)"
-#   exit 1
-# fi
-# log "Hugo site generation completed successfully."
+# 7. 设置权限（继承父目录权限）
+log "设置目录权限..."
+sudo find "$TARGET_DIR" -type d -exec chmod 2775 {} \;
+sudo find "$TARGET_DIR" -type f -exec chmod 664 {} \;
 
-# # 3) 使用 rsync 同步文件到目标目录 (更高效且安全)
-# log "Syncing files to target directory using rsync..."
-# rsync -avz public/ "$TARGET_DIR/" --delete >> "$LOG_FILE" 2>&1
-# RSYNC_RESULT=$?
-# if [ "$RSYNC_RESULT" -ne 0 ]; then
-#   error_log "File synchronization with rsync failed! (Exit code: $RSYNC_RESULT)"
-#   exit 1
-# fi
-# log "Files synced to target directory successfully."
+# 8. 重载 Nginx（而非重启）
+log "重载 Nginx 配置..."
+sudo systemctl reload nginx
 
-# # 4) 重新加载 Nginx
-# log "Reloading Nginx..."
-# sudo systemctl reload nginx >> "$LOG_FILE" 2>&1
-# NGINX_RELOAD_RESULT=$?
-# if [ "$NGINX_RELOAD_RESULT" -ne 0 ]; then
-#   error_log "Nginx reload failed! (Exit code: $NGINX_RELOAD_RESULT)"
-#   exit 1
-# fi
-# log "Nginx reloaded successfully."
-
-# echo "Blog updated and Nginx reloaded successfully!"
-#
+# ----------------------
+# 完成提示
+# ----------------------
+log "\033[32m==== 部署成功！ ====\033[0m"

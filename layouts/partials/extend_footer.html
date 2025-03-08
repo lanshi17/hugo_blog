@@ -1,12 +1,27 @@
 <!-- 修改后的 extend_footer.html -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- 分割线 -->
+<hr class="stats-divider">
 <div class="site-stats">
     <div class="stat-item">
         <span class="stat-label">访问量</span>
-        <span class="stat-number" id="busuanzi_value_site_pv">0</span>
+        <span class="stat-number">
+            <span id="busuanzi_value_site_pv">0</span>
+        </span>
     </div>
+    {{ if .IsPage}}
+    <div class="stats-item">
+        <span class="stat-label">阅读量</span>
+        <span class="stat-number">
+            <span id="busuanzi_value_page_pv">0</span>
+        </span>
+    </div>
+    {{ end }}
     <div class="stat-item">
         <span class="stat-label">访客数</span>
-        <span class="stat-number" id="busuanzi_value_site_uv">0</span>
+        <span class="stat-number">
+            <span id="busuanzi_value_site_uv">0</span>
+        </span>
     </div>
     <div class="stat-item">
         <span class="stat-label">文章数</span>
@@ -22,27 +37,27 @@
 </div>
 
 <script>
-(function(){
-    // 初始化时间 (修改为您网站的正式上线时间)
-    const startDate = new Date('2025-02-25T00:00:00+08:00');
-    
-    function updateRuntime() {
-        const now = new Date();
-        const diff = now - startDate;
-        
-        const days = Math.floor(diff / 864e5);
-        const hours = Math.floor((diff % 864e5) / 36e5).toString().padStart(2, '0');
-        const minutes = Math.floor((diff % 36e5) / 6e4).toString().padStart(2, '0');
-        const seconds = Math.floor((diff % 6e4) / 1e3).toString().padStart(2, '0');
-        
-        document.getElementById('days').textContent = days;
-        document.getElementById('hours').textContent = hours;
-        document.getElementById('minutes').textContent = minutes;
-        document.getElementById('seconds').textContent = seconds;
-    }
-    
-    // 立即执行一次并设置定时器
-    updateRuntime();
-    setInterval(updateRuntime, 1000);
-})();
+    (function () {
+        // 初始化时间 (修改为您网站的正式上线时间)
+        const startDate = new Date('2025-02-25T00:00:00+08:00');
+
+        function updateRuntime() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            const days = Math.floor(diff / 864e5);
+            const hours = Math.floor((diff % 864e5) / 36e5).toString().padStart(2, '0');
+            const minutes = Math.floor((diff % 36e5) / 6e4).toString().padStart(2, '0');
+            const seconds = Math.floor((diff % 6e4) / 1e3).toString().padStart(2, '0');
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+
+        // 立即执行一次并设置定时器
+        updateRuntime();
+        setInterval(updateRuntime, 1000);
+    })();
 </script>
