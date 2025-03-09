@@ -10,8 +10,7 @@ sectionPagesMenu: "main" # 将 section 页面添加到 "main" 菜单
 googleAnalytics: "G-B5B8VFF5M8" # Google Analytics 代码，用于网站流量统计
 busuanzi: # 不蒜子统计 (国内常用)
   enable: true
-page_view_counter: # 页面浏览计数器 (更正了拼写错误)
-  enable: true
+
 buildDrafts: false # 是否生成草稿文章，正式发布设为 false
 
 # --- 资源压缩 ---
@@ -38,14 +37,6 @@ menu:
       name: "文章"
       url: "/posts/"
       weight: 4
-    - identifier: "categories"
-      name: "分类"
-      url: "/categories/"
-      weight: 10
-    - identifier: "tags"
-      name: "标签"
-      url: "/tags/"
-      weight: 20
     - identifier: "archives"
       name: "归档"
       url: "/archives"
@@ -73,7 +64,6 @@ params:
     disableFingerprinting: true # 禁用资源指纹，方便本地开发
     favicon: "/favicon.ico" # 网站 Favicon 路径，放在 `static/` 目录下
     disableHLJS: false # 禁用代码高亮 (设为 false 启用，默认启用 Hugo 自带的 Chroma 高亮)
-
   # --- 导航栏配置 ---
   navbar:
     enable: true # 启用导航栏

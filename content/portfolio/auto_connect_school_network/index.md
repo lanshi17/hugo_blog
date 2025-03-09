@@ -1,8 +1,9 @@
 ---
 title: "自动连接校园网-南通理工学院"
 tags: ["Project", "Portfolio","作品集"]
+date: 2025-03-08T00:00:00+08:00
 categories: ["Python","爬虫"]
-author: ["me"]
+author: me
 weight: ## 输入1可以顶置文章，用来给文章展示排序，不填就默认按时间排序
 slug: ""
 draft: false ## 是否为草稿

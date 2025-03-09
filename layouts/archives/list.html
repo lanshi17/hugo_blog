@@ -1,0 +1,149 @@
+{{ define "main" }}
+<article class="archives-container" style="max-width: 800px; margin: 2rem auto; padding: 0 1rem;">
+
+  <!-- ==================== 统计卡片 ==================== -->
+  <div class="stats-card" style="background: #f8f9fa; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+      {{ $allPosts := where site.RegularPages "Section" "in" (slice "posts" "studynotes" "portfolio") }}
+      <div class="stat-item">
+        <div class="stat-number">{{ len $allPosts }}</div>
+        <div class="stat-label">总文章</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ len site.Taxonomies.categories }}</div>
+        <div class="stat-label">分类</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ len site.Taxonomies.tags }}</div>
+        <div class="stat-label">标签</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 分类/标签云 ==================== -->
+  <div class="taxonomy-clouds" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+    <!-- 分类云 -->
+    <div class="category-cloud" style="background: #f8f9fa; border-radius: 8px; padding: 1.5rem;">
+      <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; margin-bottom: 1rem;">分类导航</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        {{ range site.Taxonomies.categories }}
+        <a href="{{ .Page.RelPermalink }}" style="
+          background: #e8f4ff;
+          padding: 0.3rem 0.8rem;
+          border-radius: 20px;
+          text-decoration: none;
+          color: #2c3e50;
+          transition: all 0.3s;
+          font-size: 0.9rem;
+          border: 1px solid #cfe2ff;
+        ">
+          {{ .Page.Title }} ({{ .Count }})
+        </a>
+        {{ end }}
+      </div>
+    </div>
+
+    <!-- 标签云 -->
+    <div class="tag-cloud" style="background: #f8f9fa; border-radius: 8px; padding: 1.5rem;">
+      <h3 style="color: #2c3e50; border-bottom: 2px solid #34db7f; padding-bottom: 0.5rem; margin-bottom: 1rem;">热门标签</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        {{ $tags := site.Taxonomies.tags.ByCount }}
+        {{ range $tags }}
+        {{ $tagURL := printf "/tags/%s/" ( .Term | urlize ) }}
+        <a href="{{ $tagURL }}" style="
+          background: #e2fbe8;
+          padding: 0.3rem 0.8rem;
+          border-radius: 20px;
+          text-decoration: none;
+          color: #2c3e50;
+          transition: all 0.3s;
+          font-size: 0.9rem;
+          border: 1px solid #b8e6c5;
+          margin: 0.2rem;
+        ">
+          {{ .Term }} ({{ .Count }})
+        </a>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 时间线归档 ==================== -->
+  {{ $pages := where site.RegularPages "Section" "in" (slice "posts" "studynotes" "portfolio") }}
+  {{ $paginator := .Paginate ($pages.GroupByDate "2006") 100 }}
+  
+  <div class="timeline">
+    {{ range $paginator.PageGroups }}
+    <div class="year-section" style="margin-bottom: 2rem;">
+      <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; font-size: 1.5rem;">
+        <i class="fas fa-calendar-alt" style="margin-right: 0.5rem;"></i>
+        {{ .Key }} 年
+      </h2>
+      <div class="post-list" style="margin-left: 1rem;">
+        {{ range .Pages }}
+        <div class="post-item" style="padding: 0.8rem 0; border-bottom: 1px solid #eee; position: relative;">
+          <div style="display: flex; align-items: baseline;">
+            <time datetime="{{ .Date.Format "2006-01-02" }}" style="color: #7f8c8d; min-width: 100px; display: inline-block;">
+              {{ .Date.Format "01-02" }}
+            </time>
+            <a href="{{ .RelPermalink }}" style="color: #2c3e50; text-decoration: none; transition: color 0.3s; flex-grow: 1;">
+              {{ .Title }}
+              {{ if .Draft }}<span style="color: #e74c3c; font-size: 0.8em;">(草稿)</span>{{ end }}
+            </a>
+            <span style="color: #95a5a6; font-size: 0.9rem; margin-left: 1rem;">
+              {{ .ReadingTime }}分钟阅读
+            </span>
+          </div>
+          
+          <!-- 分类标签组合显示 -->
+          <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            {{ with .Params.categories }}
+            {{ range . }}
+            {{ $categoryURL := printf "/categories/%s/" (. | urlize) }}
+            <a href="{{ $categoryURL }}" style="
+              background: #e8f4ff;
+              padding: 0.2rem 0.6rem;
+              border-radius: 12px;
+              font-size: 0.8rem;
+              color: #2c3e50;
+              text-decoration: none;
+              border: 1px solid #cfe2ff;
+            ">
+              <i class="fas fa-folder-open" style="margin-right: 0.3rem;"></i>{{ . }}
+            </a>
+            {{ end }}
+            {{ end }}
+
+            {{ with .Params.tags }}
+            {{ range . }}
+            {{ $tagURL := printf "/tags/%s/" (. | urlize) }}
+            <a href="{{ $tagURL }}" style="
+              background: #e2fbe8;
+              padding: 0.2rem 0.6rem;
+              border-radius: 12px;
+              font-size: 0.8rem;
+              color: #2c3e50;
+              text-decoration: none;
+              border: 1px solid #b8e6c5;
+            ">
+              <i class="fas fa-tag" style="margin-right: 0.3rem;"></i>{{ . }}
+            </a>
+            {{ end }}
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+    {{ else }}
+    <div class="no-articles" style="text-align: center; padding: 2rem; color: #7f8c8d;">
+      <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+      <p>暂时还没有归档内容哦~</p>
+    </div>
+    {{ end }}
+  </div>
+
+  <!-- 分页 -->
+  {{ template "_internal/pagination.html" . }}
+</article>
+{{ end }}

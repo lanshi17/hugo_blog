@@ -1,62 +1,61 @@
 /* ====================== 统计数据精简版 ====================== */
 .site-stats {
-    display: flex;
-    justify-content: center;
-    align-items: baseline; /* 添加此属性，使部件垂直对齐 */
-    width: 100%;
-    gap: 1.5rem;
-    margin: 1.5rem 0;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  /* 添加此属性，使部件垂直对齐 */
+  width: 100%;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+
+
+.stat-item {
+  position: relative;
+  padding-right: 1.5rem;
+
+  /* 添加优雅分隔线 */
+  &:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 1.2em;
+    background: var(--border);
+    opacity: 0.6;
   }
-  
-  
-  
-  .stat-item {
-    position: relative;
-    padding-right: 1.5rem;
-    
-    /* 添加优雅分隔线 */
-    &:not(:last-child)::after {
-      content: "";
-      position: absolute;
-      right: -0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 1px;
-      height: 1.2em;
-      background: var(--border);
-      opacity: 0.6;
-    }
-  }
-  
+}
+
+.stat-number {
+  font-size: 1.05rem;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.5px;
+
+  /* 添加微过渡效果 */
+  transition: color 0.2s ease;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  color: var(--secondary);
+  margin-top: 0.2rem;
+  opacity: 0.9;
+  letter-spacing: 0.3px;
+}
+
+/* Hover 微交互 */
+.stat-item:hover {
   .stat-number {
-    font-size: 1.05rem;
-    color: var(--primary);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.5px;
-    
-    /* 添加微过渡效果 */
-    transition: color 0.2s ease;
+    color: var(--accent);
   }
-  
+
   .stat-label {
-    font-size: 0.82rem;
-    color: var(--secondary);
-    margin-top: 0.2rem;
-    opacity: 0.9;
-    letter-spacing: 0.3px;
+    opacity: 1;
   }
-  
-  /* Hover 微交互 */
-  .stat-item:hover {
-    .stat-number {
-      color: var(--accent);
-    }
-    
-    .stat-label {
-      opacity: 1;
-    }
-  }
-  
-  
+}
