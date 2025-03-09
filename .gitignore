@@ -2,7 +2,8 @@
 public/
 resources/
 hugo_stats.json
-
+#themes
+themes/
 # Logs and backups
 *.log
 *.bak
