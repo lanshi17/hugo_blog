@@ -1,61 +1,141 @@
-/* ====================== 统计数据精简版 ====================== */
+/* 统计面板增强样式 */
 .site-stats {
   display: flex;
   justify-content: center;
-  align-items: baseline;
-  /* 添加此属性，使部件垂直对齐 */
-  width: 100%;
-  gap: 1.5rem;
-  margin: 1.5rem 0;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border);
+  align-items: center;
+  gap: 2.5rem;
+  margin: 2rem 0;
+  padding: 1.2rem;
+  background: rgba(var(--primary-rgb), 0.08);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
 }
 
-
+/* 动态背景装饰线 */
+.site-stats::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--primary) 30%, 
+    var(--secondary) 70%, 
+    transparent 100%
+  );
+  opacity: 0.4;
+}
 
 .stat-item {
   position: relative;
-  padding-right: 1.5rem;
+  padding: 0 1.8rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
 
-  /* 添加优雅分隔线 */
-  &:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    right: -0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1px;
-    height: 1.2em;
-    background: var(--border);
-    opacity: 0.6;
-  }
+/* 渐变分隔线 */
+.stat-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 2.2em;
+  background: linear-gradient(
+    180deg,
+    transparent 10%,
+    var(--primary) 50%,
+    transparent 90%
+  );
+  opacity: 0.6;
 }
 
 .stat-number {
-  font-size: 1.05rem;
-  color: var(--primary);
-  font-variant-numeric: tabular-nums;
+  font-size: 1.4rem;
+  color: var(--accent);
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
   letter-spacing: -0.5px;
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
 
-  /* 添加微过渡效果 */
-  transition: color 0.2s ease;
+.stat-number::after {
+  content: '+';
+  position: absolute;
+  right: -0.8em;
+  top: 0;
+  font-size: 0.8em;
+  opacity: 0.6;
 }
 
 .stat-label {
-  font-size: 0.82rem;
-  color: var(--secondary);
-  margin-top: 0.2rem;
-  opacity: 0.9;
-  letter-spacing: 0.3px;
+  font-size: 0.88rem;
+  color: var(--text-color);
+  margin-top: 0.4rem;
+  opacity: 0.85;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
 }
 
-/* Hover 微交互 */
+/* Hover 特效 */
 .stat-item:hover {
+  transform: translateY(-3px);
+  
   .stat-number {
-    color: var(--accent);
+    color: var(--primary);
+    text-shadow: 0 2px 4px rgba(var(--primary-rgb), 0.2);
   }
-
+  
   .stat-label {
     opacity: 1;
+    color: var(--accent);
+  }
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .site-stats {
+    background: rgba(var(--primary-rgb), 0.05);
+  }
+  
+  .stat-label {
+    color: var(--text-color);
+  }
+  
+  .stat-item:hover .stat-number {
+    text-shadow: 0 2px 4px rgba(var(--primary-rgb), 0.3);
+  }
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .site-stats {
+    gap: 1.2rem;
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .stat-item {
+    padding: 0 1rem;
+    min-width: 30%;
+  }
+  
+  .stat-item::after {
+    height: 1.8em;
+  }
+  
+  .stat-number {
+    font-size: 1.2rem;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
   }
 }

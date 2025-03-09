@@ -27,11 +27,20 @@
         <span class="stat-label">文章数</span>
         <span class="stat-number">{{ len (where .Site.RegularPages "Section" "posts") }}</span>
     </div>
-
+    <div class="stat-item">
+        <span class="stat-label">总字数</span>
+        <span class="stat-number">
+            {{ $totalWords := 0 }}
+            {{ range where .Site.RegularPages "Section" "in" (slice "posts" "studynotes" "portfolio" "resume") }}
+                {{ $totalWords = add $totalWords .WordCount }}
+            {{ end }}
+            {{ printf "%d"  ( $totalWords) }}words
+        </span>
+    </div>
     <div class="stat-item">
         <span class="stat-label">运行时间</span>
         <span class="stat-number" id="site-runtime">
-            <span id="days">0</span>天
+            <span id="days">0</span>days
             <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
         </span>
     </div>
@@ -62,13 +71,13 @@
             {{ range where .Site.RegularPages "Section" "in" (slice "posts" "studynotes" "portfolio" "resume") }}
                 {{ $totalWords = add $totalWords .WordCount }}
             {{ end }}
-            {{ printf "%d"  ( $totalWords) }}字
+            {{ printf "%d"  ( $totalWords) }}words
         </span>
     </div>
     <div class="stat-item">
         <span class="stat-label">运行时间</span>
         <span class="stat-number" id="site-runtime">
-            <span id="days">0</span>天
+            <span id="days">0</span>days
             <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
         </span>
     </div>

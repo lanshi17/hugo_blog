@@ -37,6 +37,10 @@ menu:
       name: "文章"
       url: "/posts/"
       weight: 4
+    - identifier: "statistics"
+      name: "统计"
+      url: "/statistics/"
+      weight: 5
     - identifier: "archives"
       name: "归档"
       url: "/archives"
@@ -48,10 +52,11 @@ menu:
 
 # --- 网站参数配置 ---
 params:
-  author: "lanshi47" # 作者名称，显示在文章底部等位置
+  author: "烂石" # 作者名称，显示在文章底部等位置
   description: "记录IT学习资源、教程和个人作品展示。" # 网站描述，用于SEO和网站介绍
   keywords: ["编程", "博客", "IT教程", "学习记录", "PaperMod", "作品集"] # 网站关键词，用于SEO
-  themeToggle: true # 启用主题切换按钮 (白天/黑夜模式)
+  defaultTheme: auto
+  disableThemeToggle: false
   logo: "/images/logo.png" # 网站Logo路径，放在 `static/images/` 目录下
   showReadingTime: true # 显示预计阅读时间
   showToc: true # 显示文章目录 (TOC)
@@ -62,6 +67,7 @@ params:
   disableScrollToTop: false # 禁用回到顶部按钮 (设为 false 启用)
   codeEditable : true # 允许代码框编辑
   livePreview : true  # 实时SQL结果预览
+  enableTaxonomies: true
   assets:
     disableFingerprinting: true # 禁用资源指纹，方便本地开发
     favicon: "/favicon.ico" # 网站 Favicon 路径，放在 `static/` 目录下
@@ -93,9 +99,8 @@ params:
   ShowBreadCrumbs: true # 显示面包屑导航
   ShowWordCount: true # 显示文章字数统计
   ShowCodeCopyButtons: true # 显示代码块复制按钮
-  hideCopyright: true # 隐藏默认版权信息 (如果您要自定义版权信息可以设为 false)
+  hideCopyright: false # 隐藏默认版权信息 (如果您要自定义版权信息可以设为 false)
   enableWordCountChart: true  # 启用字数趋势图
-  wordCountUnit: "万字"       # 可自定义单位
   math: "katex" # 启用 MathJax 数学公式支持
   comments: # 评论系统配置 (Giscus)
     enabled: true

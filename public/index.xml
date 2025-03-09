@@ -35,6 +35,7 @@
       <pubDate>Sat, 08 Mar 2025 00:00:00 +0800</pubDate>
       <guid>https://lanshi.xyz/portfolio/auto_connect_school_network/</guid>
       <description>&lt;h2 id=&#34;校园网络自动登录脚本&#34;&gt;校园网络自动登录脚本&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/lanshi47/connect_ntit_network&#34;&gt;Github项目链接&lt;/a&gt;&lt;/p&gt;
 &lt;h4 id=&#34;项目简介&#34;&gt;项目简介&lt;/h4&gt;
 &lt;p&gt;这是一个使用Python和Selenium开发的自动化脚本,用于简化校园网络的登录过程。该脚本能够自动填写用户名和密码,选择网络服务提供商,并完成登录操作,大大提高了登录效率。&lt;/p&gt;
 &lt;h4 id=&#34;主要功能&#34;&gt;主要功能&lt;/h4&gt;

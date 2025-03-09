@@ -1,47 +1,207 @@
-/* 归档页样式 */
+/* 归档页面增强样式 */
 .archives-container {
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  max-width: var(--main-width);
+  margin: 2rem auto;
+  padding: 2rem;
+  position: relative;
+  background: var(--light-bg);
+  border-radius: var(--radius);
 }
 
+/* 时间线装饰线 */
+.archives-container::before {
+  content: '';
+  position: absolute;
+  left: 120px;
+  top: 50px;
+  bottom: 50px;
+  width: 2px;
+  background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      var(--primary) 30%,
+      var(--primary) 70%,
+      transparent 100%
+  );
+  opacity: 0.15;
+}
+
+/* 统计卡片增强 */
 .stat-item {
-  text-align: center;
-  padding: 0.8rem 1.5rem;
-  background: white;
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  background: rgba(var(--primary-rgb), 0.1);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  margin: 1rem 0;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+      to bottom,
+      var(--primary),
+      var(--secondary)
+  );
+  opacity: 0.6;
 }
 
 .stat-number {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
+  color: var(--accent);
+  font-family: 'Courier New', monospace;
   font-weight: 600;
-  color: #3498db;
+  letter-spacing: -1px;
 }
 
 .stat-label {
-  color: #7f8c8d;
-  font-size: 0.9rem;
-  margin-top: 0.3rem;
+  color: var(--text-color);
+  font-size: 0.92rem;
+  opacity: 0.9;
+  margin-top: 0.4rem;
 }
 
-.post-item:hover a {
-  color: #2980b9;
-  text-decoration: underline;
+/* 文章列表样式 */
+.post-list {
+  margin: 2rem 0;
+  padding-left: 140px;
 }
 
+.post-item {
+  margin: 1.2rem 0;
+  padding: 1rem;
+  background: var(--entry);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.08);
+}
+
+.post-item:hover {
+  transform: translateX(10px);
+  box-shadow: 2px 4px 12px rgba(var(--primary-rgb), 0.15);
+}
+
+.post-date {
+  position: absolute;
+  left: -140px;
+  width: 120px;
+  text-align: right;
+  color: var(--primary);
+  font-size: 0.92rem;
+}
+
+.post-title {
+  color: var(--text-color);
+  font-weight: 500;
+  display: block;
+  background: linear-gradient(var(--accent), var(--accent)) no-repeat left 100%;
+  background-size: 0% 2px;
+  transition: background-size 0.3s ease;
+}
+
+.post-title:hover {
+  background-size: 100% 2px;
+  color: var(--accent);
+}
+
+/* 年份分隔符 */
+.year-divider {
+  margin: 3rem 0 2rem;
+  padding: 1rem 0;
+  border-bottom: 2px solid var(--border-color);
+  position: relative;
+}
+
+.year-divider::before {
+  content: attr(data-year);
+  position: absolute;
+  left: -140px;
+  color: var(--secondary);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* 进度条增强 */
+.progress-bar {
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 2px 4px rgba(var(--primary-rgb), 0.2);
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .archives-container {
+    background: var(--dark-bg);
+  }
+
+  .stat-item {
+    background: rgba(var(--primary-rgb), 0.05);
+  }
+
+  .stat-item::before {
+    opacity: 0.4;
+  }
+
+  .post-item {
+    background: var(--dark-bg);
+    border-color: var(--border-color);
+  }
+
+  .year-divider::before {
+    color: var(--primary);
+  }
+}
+
+/* 移动端优化 */
 @media (max-width: 768px) {
   .archives-container {
-    padding: 0 0.5rem;
+    padding: 1rem;
   }
+
+  .archives-container::before {
+    display: none;
+  }
+
+  .post-list {
+    padding-left: 0;
+  }
+
+  .post-date {
+    position: static;
+    text-align: left;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .year-divider::before {
+    position: static;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
   .stat-item {
-    padding: 0.6rem 1rem;
+    margin: 0.8rem 0;
+  }
+
+  .post-item {
+    padding: 0.8rem;
+  }
+
+  .stat-number {
+    font-size: 1.4rem;
   }
 }
-/* 在custom.css添加 */
-.progress-bar {
-    height: 3px;
-    background: #3498db;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-  }

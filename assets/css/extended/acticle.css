@@ -1,0 +1,211 @@
+/* ================= 文章内容页专属样式 ================= */
+/* 主容器 */
+.article-container {
+    max-width: 760px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--light-bg);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(136, 201, 213, 0.1);
+}
+
+/* 标题增强 */
+.post-title {
+    font-size: 2.4rem;
+    margin: 1.5rem 0;
+    position: relative;
+    padding-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.post-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+/* 元数据样式 */
+.post-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin: 1.2rem 0;
+    color: var(--accent-color);
+    font-size: 0.95rem;
+}
+
+.post-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(136, 201, 213, 0.1);
+    border-radius: 6px;
+}
+
+.post-meta-item svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+/* 正文内容样式 */
+.post-content {
+    line-height: 1.8;
+    color: var(--text-color);
+    font-size: 1.05rem;
+}
+
+.post-content h2 {
+    margin: 2rem 0 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--accent-color);
+}
+
+.post-content h3 {
+    margin: 1.5rem 0 1rem;
+    color: var(--primary-color);
+}
+
+/* 图片样式 */
+.post-content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(136, 201, 213, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.post-content img:hover {
+    transform: translateY(-3px);
+}
+
+/* 引用块样式 */
+.post-content blockquote {
+    margin: 1.5rem 0;
+    padding: 1.5rem 2rem;
+    background: rgba(136, 201, 213, 0.08);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 4px;
+    color: var(--text-color);
+}
+
+/* 表格样式 */
+.post-content table {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 1px 3px rgba(136, 201, 213, 0.1);
+}
+
+.post-content th {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.8rem;
+}
+
+.post-content td {
+    padding: 0.6rem;
+    border: 1px solid var(--border-color);
+}
+
+/* 分页导航 */
+.post-pagination {
+    display: flex;
+    justify-content: space-between;
+    margin: 3rem 0;
+    padding: 1.5rem;
+    background: rgba(136, 201, 213, 0.05);
+    border-radius: 8px;
+}
+
+.pagination-item {
+    flex: 1;
+    padding: 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.pagination-item:hover {
+    background: rgba(136, 201, 213, 0.1);
+}
+
+.pagination-item-next {
+    text-align: right;
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+    .article-container {
+        background: var(--dark-bg);
+        box-shadow: 0 4px 20px rgba(16, 36, 58, 0.3);
+    }
+
+    .post-content table {
+        background: #1e2b38;
+    }
+
+    .post-content th {
+        background: var(--accent-color);
+    }
+
+    .post-content td {
+        border-color: var(--border-color);
+    }
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .article-container {
+        margin: 1rem;
+        padding: 1.2rem;
+        border-radius: 12px;
+    }
+
+    .post-title {
+        font-size: 1.8rem;
+    }
+
+    .post-meta {
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+}
+
+/* 交互特效 */
+.post-content a {
+    color: var(--accent-color);
+    text-decoration: none;
+    background-image: linear-gradient(var(--primary-color), var(--primary-color));
+    background-size: 0% 2px;
+    background-repeat: no-repeat;
+    background-position: left 90%;
+    transition: background-size 0.3s ease;
+}
+
+.post-content a:hover {
+    background-size: 100% 2px;
+}
+
+/* 代码块增强 */
+.post-content pre {
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.post-content pre::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}

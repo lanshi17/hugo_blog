@@ -1,11 +1,92 @@
 /* 表格增强样式 */
 .table-container table {
-    min-width: 60%;
-    margin: 1.5rem auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.1);
+  background: var(--entry);
+  border-radius: var(--radius);
+}
+
+/* 表格头部 */
+.table-container thead {
+  background: var(--primary);
+}
+
+.table-container th {
+  color: white;
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid var(--secondary);
+  font-weight: 600;
+}
+
+/* 表格内容 */
+.table-container td {
+  color: var(--text-color);
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: top;
+}
+
+/* 悬停效果 */
+.table-container tbody tr:hover {
+  background: rgba(var(--primary-rgb), 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 1px 4px rgba(var(--primary-rgb), 0.1);
+}
+
+/* 标题样式 */
+.table-caption {
+  display: block;
+  margin: 0.5rem 0;
+  color: var(--accent);
+  font-size: 0.9em;
+  text-align: center;
+}
+
+/* 奇偶行交替 */
+.table-container tr:nth-child(even) {
+  background: var(--light-bg);
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .table-container table {
+      background: var(--dark-bg);
+      box-shadow: 0 2px 8px rgba(16, 36, 58, 0.3);
   }
-  
+
+  .table-container thead {
+      background: var(--primary);
+  }
+
+  .table-container td {
+      color: var(--text-color);
+  }
+
+  .table-container tr:hover {
+      background: rgba(var(--primary-rgb), 0.1);
+  }
+
   .table-caption {
-    color: #666;
-    font-size: 0.9em;
+      color: var(--accent);
   }
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .table-container table {
+      font-size: 0.85rem;
+  }
+
+  .table-container th,
+  .table-container td {
+      padding: 0.5rem 0.8rem;
+  }
+
+  .table-caption {
+      font-size: 0.8rem;
+  }
+}

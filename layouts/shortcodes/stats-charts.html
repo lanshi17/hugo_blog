@@ -1,0 +1,136 @@
+{{/* 统计图表短代码 */}}
+<div class="stats-container">
+  <!-- 分类统计饼图 -->
+  <div class="chart-box">
+    <canvas id="categoryChart" width="400" height="400"></canvas>
+    <h3>文章分类统计</h3>
+  </div>
+
+  <!-- 标签词云 -->
+  <div class="chart-box">
+    <div id="wordCloud" style="width:400px;height:400px;"></div>
+    <h3>标签词云</h3>
+  </div>
+</div>
+
+<!-- 引入 ECharts 和 ECharts WordCloud 库 -->
+<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud/dist/echarts-wordcloud.min.js"></script>
+
+<script>
+// 获取分类和标签数据
+const categories = {{ .Site.Taxonomies.categories | jsonify | default "{}" | safeJS }};
+const tags = {{ .Site.Taxonomies.tags | jsonify | default "{}" | safeJS }};
+
+// 数据验证和初始化
+let categoriesData = categories;
+if (typeof categoriesData !== 'object') {
+  categoriesData = {};
+}
+
+let tagsData = tags;
+if (typeof tagsData !== 'object') {
+  tagsData = {};
+}
+
+// 分类数据（保持不变）
+let categoryLabels = [];
+let categoryData = [];
+for (let [name, termArray] of Object.entries(categoriesData)) {
+  categoryLabels.push(name);
+  categoryData.push(termArray.length);
+}
+
+// 标签数据（用于 ECharts WordCloud）
+let tagWords = [];
+for (let [name, termArray] of Object.entries(tagsData)) {
+  tagWords.push({name: name, value: termArray.length});
+}
+
+// 绘制分类饼图
+setTimeout(() => {
+  const ctx = document.getElementById('categoryChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: categoryLabels,
+      datasets: [{
+        label: '文章分类分布',
+        data: categoryData,
+        backgroundColor: ['#205072', '#329D9C', '#56C596', '#7BE495', '#CFF4D2'],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {color: '#333'}
+        }
+      }
+    }
+  });
+}, 500);
+
+// 绘制标签词云
+setTimeout(() => {
+  const myChart = echarts.init(document.getElementById('wordCloud'));
+  const option = {
+    tooltip: {},
+    series: [{
+      type: 'wordCloud',
+      sizeRange: [12, 60],
+      rotationRange: [0, 0],
+      gridSize: 8,
+      textStyle: {
+        normal: {
+          color: function () {
+            return 'rgb(' + [
+              Math.round(Math.random() * 255),
+              Math.round(Math.random() * 255),
+              Math.round(Math.random() * 255)
+            ].join(',') + ')';
+          }
+        },
+        emphasis: {
+          shadowBlur: 10,
+          shadowColor: '#333'
+        }
+      },
+      data: tagWords
+    }]
+  };
+  myChart.setOption(option);
+}, 500);
+</script>
+
+<style>
+.stats-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.chart-box {
+  background: #CFF4D2;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+#categoryChart {
+  background: #F8F9FA;
+}
+
+#wordCloud {
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.chart-box h3 {
+  color: #329D9C;
+}
+</style>

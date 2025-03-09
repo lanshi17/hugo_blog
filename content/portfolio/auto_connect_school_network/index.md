@@ -3,7 +3,7 @@ title: "自动连接校园网-南通理工学院"
 tags: ["Project", "Portfolio","作品集"]
 date: 2025-03-08T00:00:00+08:00
 categories: ["Python","爬虫"]
-author: me
+author: "lanshi"
 weight: ## 输入1可以顶置文章，用来给文章展示排序，不填就默认按时间排序
 slug: ""
 draft: false ## 是否为草稿
@@ -21,7 +21,7 @@ cover:
 ---
 
 ## 校园网络自动登录脚本
-
+[Github项目链接](https://github.com/lanshi47/connect_ntit_network)
 #### 项目简介
 
 这是一个使用Python和Selenium开发的自动化脚本,用于简化校园网络的登录过程。该脚本能够自动填写用户名和密码,选择网络服务提供商,并完成登录操作,大大提高了登录效率。
