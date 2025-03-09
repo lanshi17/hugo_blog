@@ -1,12 +1,10 @@
-<link rel="preload" href="/index.json" as="fetch" crossorigin="anonymous">
+<!-- 生产环境建议使用子资源完整性校验 -->
+<link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+  integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbAOJv0JvIhB3w+1q6k5Kl5C5iBfT7M4sIIn1Y9Ebc"
+  crossorigin="anonymous">
 
-<script>
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    document.querySelector(this.getAttribute('href')).scrollIntoView({
-      behavior: 'smooth'
-    });
-  });
-});
-</script>
+{{ if .Site.Params.enableWordCountChart }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{ end }}
+{{ partial "math.html" . }}

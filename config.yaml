@@ -60,6 +60,8 @@ params:
   enableGitInfo: true # 启用Git信息，显示文章最后更新时间等，需要博客项目在 Git 仓库中
   canonifyURLs: true # 规范化URL，有助于SEO
   disableScrollToTop: false # 禁用回到顶部按钮 (设为 false 启用)
+  codeEditable : true # 允许代码框编辑
+  livePreview : true  # 实时SQL结果预览
   assets:
     disableFingerprinting: true # 禁用资源指纹，方便本地开发
     favicon: "/favicon.ico" # 网站 Favicon 路径，放在 `static/` 目录下
@@ -92,7 +94,9 @@ params:
   ShowWordCount: true # 显示文章字数统计
   ShowCodeCopyButtons: true # 显示代码块复制按钮
   hideCopyright: true # 隐藏默认版权信息 (如果您要自定义版权信息可以设为 false)
-  math: true # 启用 MathJax 数学公式支持
+  enableWordCountChart: true  # 启用字数趋势图
+  wordCountUnit: "万字"       # 可自定义单位
+  math: "katex" # 启用 MathJax 数学公式支持
   comments: # 评论系统配置 (Giscus)
     enabled: true
     provider: "giscus"
@@ -185,6 +189,10 @@ params:
     section: ["HTML"]
     taxonomy: ["HTML"]
     term: ["HTML"]
+  listStyle:
+    cardLayout: true   # 启用卡片布局
+    hoverEffect: true  # 启用悬停动画
+    compactTags: true  # 紧凑式标签显示
   
 
 # --- 构建配置 ---

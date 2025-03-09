@@ -1,8 +1,10 @@
 ---
 # 基础元数据
-title: "{{ replace .Name "-" " " | title }}"  # 自动生成标题（根据文件名）
-date: {{ .Date.Format "2006-01-02T15:04:05-07:00" }}  # 自动生成创建时间
-lastmod: {{ now.Format "2006-01-02T15:04:05-07:00" }}  # 最后修改时间（Git提交时自动更新）
+# 核心元数据
+author: lanshi  # 修正为标量值
+date: '{{ .Date.Format "2006-01-02T15:04:05-07:00" }}'  # 添加引号包裹
+lastmod: '{{ now.Format "2006-01-02T15:04:05-07:00" }}'  # 添加引号包裹
+title: '{{ replace .Name "-" " " | title }}'  # 添加引号包裹"
 draft: false  # 非草稿模式（与全局配置一致）
 
 # 内容分类
