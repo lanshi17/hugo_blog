@@ -1,20 +1,15 @@
 ---
-title: "Hello World"
+title: "我的PDF文章"
+date: 2025-03-14
 draft: true
-categories: ["生活记录"]
-tags: ["初学", "Hugo"]
-summary: "这是我的第一篇博客。"
 ---
 
-欢迎来到我的第一篇博客文章！🎉  
-在这篇文章中，我将分享我的学习旅程和使用 Hugo 搭建博客的经验。
+## 我的PDF文章
 
-## 我的第一个小节标题
-使用 Markdown 的方式编写内容，并添加图片、代码块等：
+以下是嵌入的PDF文件：
 
-### 示例图片
-![示例图片](https://yourdomain.com/images/example.png)
+{{< pdf-viewer src="/pdfs/example.pdf" width="100%" height="600px" >}}
 
-### 示例代码
-```python
-print("Hello, world!")
+### 关于这个PDF
+
+你可以在这里添加一些关于这个PDF的描述。

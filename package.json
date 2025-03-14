@@ -5,6 +5,7 @@
     "lunr": "^2.3.9"
   },
   "devDependencies": {
+    "pdfjs-dist": "^4.10.38",
     "wordcloud": "^1.2.3",
     "wordcloud2": "^1.0.0"
   }
