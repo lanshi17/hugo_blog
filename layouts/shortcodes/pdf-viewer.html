@@ -1,10 +1,32 @@
-<!-- layouts/shortcodes/pdf-viewer.html -->
-{{ $src := .Get "src" }}
+{{ $file := .Get "file" | default "" }}
+{{ $src := .Get "src" | default "" }}
 {{ $width := .Get "width" | default "100%" }}
-{{ $height := .Get "height" | default "calc(100vh - 100px)" }}
+{{ $customHeight := .Get "height" }}
+
+{{/* 获取 PDF 数据 */}}
+{{ $pdfData := index .Site.Data.pdfinfo $file }}
+
+{{/* 计算高度 */}}
+{{ $height := "100vh" }}
+{{ if and (ne $customHeight "") $customHeight }}
+  {{ $height = $customHeight }}
+{{ else if $pdfData }}
+  {{ $pages := $pdfData.pdfinfo.pages | default 1 }}
+  {{ $ph := $pdfData.pdfinfo.height | default 792.0 }}
+  
+  {{/* 单位转换系数（1 pt = 1.3333 px） */}}
+  {{ $point2px := 1.3333 }}
+  
+  {{/* 浮点数运算 */}}
+  {{ $totalHeight := mul (mul $ph $point2px) $pages }}
+  {{ $height = printf "%.0fpx" $totalHeight }}
+{{ end }}
+
 
 <div class="pdf-container" style="width: {{ $width }}; height: {{ $height }};">
-  <iframe id="pdf-frame" src="{{ $src }}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&view=FitH&zoom=page-fit" width="100%" height="100%" frameborder="0">
+  <iframe id="pdf-frame"
+    src="{{ $src }}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&view=FitH&zoom=page-fit"
+    width="100%" height="100%" frameborder="0">
     <p>无法显示 PDF 文件。</p>
   </iframe>
 </div>
@@ -13,6 +35,7 @@
   document.addEventListener("DOMContentLoaded", function() {
     var iframe = document.getElementById('pdf-frame');
     iframe.onload = function() {
+      // 禁用 PDF 内部右键菜单(仅对部分彩览器生效)
       iframe.contentDocument.addEventListener('contextmenu', function(e) {
         e.preventDefault();
       }, false);
@@ -21,6 +44,7 @@
 </script>
 
 <style>
+  /* 与原示例类似的 CSS，可视情况略作调整 */
   body, html {
     margin: 0;
     padding: 0;
@@ -29,7 +53,9 @@
   .pdf-container {
     margin: 0;
     padding: 0;
-    height: 100vh; /* Full viewport height */
+    height: 100%; /* 容器占满父元素 */
+    width: 100%;
+    overflow: auto; /* 若总高度超过可视区，则可滚动 */
   }
   .pdf-container iframe {
     width: 100%;
@@ -38,10 +64,10 @@
     overflow: hidden;
   }
   .pdf-container iframe::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for WebKit browsers */
+    display: none; /* 隐藏滚动条 (WebKit) */
   }
   .pdf-container iframe {
     -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    scrollbar-width: none;     /* Firefox */
   }
 </style>

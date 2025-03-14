@@ -8,5 +8,9 @@
     "pdfjs-dist": "^4.10.38",
     "wordcloud": "^1.2.3",
     "wordcloud2": "^1.0.0"
+  },
+  "scripts": {
+    "prebuild": "./gen-pdfinfo.sh",
+    "build": "hugo --minify"
   }
 }

@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>lanshi个人博客</title>
-    <link>https://lanshi.xyz/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 09 Mar 2025 16:00:00 +0800</lastBuildDate>
-    <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ctex的字体设置</title>
-      <link>https://lanshi.xyz/posts/latex01/</link>
+      <link>http://localhost:1313/posts/latex01/</link>
       <pubDate>Fri, 07 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/latex01/</guid>
+      <guid>http://localhost:1313/posts/latex01/</guid>
       <description>latex的字体设置</description>
     </item>
     <item>
       <title>SQL数据库系统课后练习</title>
-      <link>https://lanshi.xyz/studynotes/databaseex1/</link>
+      <link>http://localhost:1313/studynotes/databaseex1/</link>
       <pubDate>Sun, 09 Mar 2025 16:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/databaseex1/</guid>
+      <guid>http://localhost:1313/studynotes/databaseex1/</guid>
       <description>数据库系统核心知识点练习题集，包含SQL查询、关系代数、范式分解和E-R图设计等实践内容</description>
     </item>
     <item>
       <title>FishStone Cloud V1.0 云存储系统</title>
-      <link>https://lanshi.xyz/portfolio/fishstone-cloud-v1.0/</link>
+      <link>http://localhost:1313/portfolio/fishstone-cloud-v1.0/</link>
       <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
-      <guid>https://lanshi.xyz/portfolio/fishstone-cloud-v1.0/</guid>
+      <guid>http://localhost:1313/portfolio/fishstone-cloud-v1.0/</guid>
       <description>基于 Flask 框架开发的文件管理系统</description>
     </item>
     <item>
       <title>自动连接校园网-南通理工学院</title>
-      <link>https://lanshi.xyz/portfolio/auto_connect_school_network/</link>
+      <link>http://localhost:1313/portfolio/auto_connect_school_network/</link>
       <pubDate>Sat, 08 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/portfolio/auto_connect_school_network/</guid>
+      <guid>http://localhost:1313/portfolio/auto_connect_school_network/</guid>
       <description>&lt;h2 id=&#34;校园网络自动登录脚本&#34;&gt;校园网络自动登录脚本&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://github.com/lanshi47/connect_ntit_network&#34;&gt;Github项目链接&lt;/a&gt;&lt;/p&gt;
 &lt;h4 id=&#34;项目简介&#34;&gt;项目简介&lt;/h4&gt;
@@ -110,10 +110,122 @@
     </item>
     <item>
       <title>数据库学习笔记</title>
-      <link>https://lanshi.xyz/studynotes/database/</link>
+      <link>http://localhost:1313/studynotes/database/</link>
       <pubDate>Wed, 05 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/database/</guid>
+      <guid>http://localhost:1313/studynotes/database/</guid>
       <description>这是我的第一篇学习日志。</description>
+    </item>
+    <item>
+      <title>示例文章</title>
+      <link>http://localhost:1313/studynotes/test/</link>
+      <pubDate>Mon, 20 May 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/studynotes/test/</guid>
+      <description>&lt;h3 id=&#34;嵌入-pdf-文档&#34;&gt;嵌入 PDF 文档&lt;/h3&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;div class=&#34;pdf-container&#34; style=&#34;width: 100%; height: 100vh;&#34;&gt;
+  &lt;iframe id=&#34;pdf-frame&#34;
+    src=&#34;http://localhost:1313/pdfs/example.pdf#toolbar=0&amp;navpanes=0&amp;scrollbar=0&amp;statusbar=0&amp;view=FitH&amp;zoom=page-fit&#34;
+    width=&#34;100%&#34; height=&#34;100%&#34; frameborder=&#34;0&#34;&gt;
+    &lt;p&gt;无法显示 PDF 文件。&lt;/p&gt;
+  &lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  document.addEventListener(&#34;DOMContentLoaded&#34;, function() {
+    var iframe = document.getElementById(&#39;pdf-frame&#39;);
+    iframe.onload = function() {
+      
+      iframe.contentDocument.addEventListener(&#39;contextmenu&#39;, function(e) {
+        e.preventDefault();
+      }, false);
+    };
+  });
+&lt;/script&gt;
+
+&lt;style&gt;
+   
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  .pdf-container {
+    margin: 0;
+    padding: 0;
+    height: 100%;  
+    width: 100%;
+    overflow: auto;  
+  }
+  .pdf-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    overflow: hidden;
+  }
+  .pdf-container iframe::-webkit-scrollbar {
+    display: none;  
+  }
+  .pdf-container iframe {
+    -ms-overflow-style: none;   
+    scrollbar-width: none;      
+  }
+&lt;/style&gt;
+&lt;h3 id=&#34;参数详解表&#34;&gt;&lt;strong&gt;参数详解表&lt;/strong&gt;&lt;/h3&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;参数&lt;/th&gt;
+          &lt;th&gt;必须&lt;/th&gt;
+          &lt;th&gt;示例值&lt;/th&gt;
+          &lt;th&gt;说明&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;file&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;是&lt;/td&gt;
+          &lt;td&gt;&amp;ldquo;example&amp;rdquo;&lt;/td&gt;
+          &lt;td&gt;对应 &lt;code&gt;data/pdfinfo/&lt;/code&gt; 目录下的 YAML 文件名 (不带扩展名)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;src&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;是&lt;/td&gt;
+          &lt;td&gt;&amp;ldquo;/pdfs/demo.pdf&amp;rdquo;&lt;/td&gt;
+          &lt;td&gt;PDF 在 &lt;code&gt;static/&lt;/code&gt; 目录下的路径 (必须以 &lt;code&gt;/&lt;/code&gt; 开头)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;width&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;否&lt;/td&gt;
+          &lt;td&gt;&amp;ldquo;80%&amp;rdquo;/&amp;ldquo;600px&amp;rdquo;&lt;/td&gt;
+          &lt;td&gt;容器宽度 (推荐百分比布局) 默认 100%&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;height&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;否&lt;/td&gt;
+          &lt;td&gt;&amp;ldquo;auto&amp;rdquo;/&amp;ldquo;1200px&amp;rdquo;&lt;/td&gt;
+          &lt;td&gt;自动计算高度时用 auto，手动指定时需带单位 (如 px)&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</description>
+    </item>
+    <item>
+      <title>My 1st post</title>
+      <link>http://localhost:1313/posts/test/</link>
+      <pubDate>Tue, 15 Sep 2020 11:30:03 +0000</pubDate>
+      <guid>http://localhost:1313/posts/test/</guid>
+      <description>Desc Text.</description>
     </item>
   </channel>
 </rss>

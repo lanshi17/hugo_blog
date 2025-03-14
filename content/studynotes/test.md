@@ -8,8 +8,14 @@ draft: true
 
 以下是嵌入的PDF文件：
 
-{{< pdf-viewer src="/pdfs/example.pdf" width="100%" height="600px" >}}
+{{< pdf-viewer file="example" src="/pdfs/example.pdf" width="100%">}}
 
 ### 关于这个PDF
+### **参数详解表**
 
-你可以在这里添加一些关于这个PDF的描述。
+| 参数        | 必须 | 示例值              | 说明                                                                 |
+|-------------|------|---------------------|----------------------------------------------------------------------|
+| `file`      | 是   | "example"           | 对应 `data/pdfinfo/` 目录下的 YAML 文件名 (不带扩展名)               |
+| `src`       | 是   | "/pdfs/demo.pdf"    | PDF 在 `static/` 目录下的路径 (必须以 `/` 开头)                      |
+| `width`     | 否   | "80%"/"600px"       | 容器宽度 (推荐百分比布局) 默认 100%                                  |
+| `height`    | 否   | "auto"/"1200px"     | 自动计算高度时用 auto，手动指定时需带单位 (如 px)                    |
