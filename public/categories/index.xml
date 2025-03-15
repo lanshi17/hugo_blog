@@ -2,73 +2,73 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Categories on lanshi个人博客</title>
-    <link>http://localhost:1313/categories/</link>
+    <link>https://lanshi.xyz/categories/</link>
     <description>Recent content in Categories on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 09 Mar 2025 16:00:00 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://lanshi.xyz/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>数据库系统</title>
-      <link>http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/</link>
+      <link>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/</link>
       <pubDate>Sun, 09 Mar 2025 16:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/</guid>
+      <guid>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/</guid>
       <description></description>
     </item>
     <item>
       <title>Flask</title>
-      <link>http://localhost:1313/categories/flask/</link>
+      <link>https://lanshi.xyz/categories/flask/</link>
       <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
-      <guid>http://localhost:1313/categories/flask/</guid>
+      <guid>https://lanshi.xyz/categories/flask/</guid>
       <description></description>
     </item>
     <item>
       <title>云盘系统</title>
-      <link>http://localhost:1313/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</link>
+      <link>https://lanshi.xyz/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</link>
       <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
-      <guid>http://localhost:1313/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</guid>
+      <guid>https://lanshi.xyz/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</guid>
       <description></description>
     </item>
     <item>
       <title>作品集</title>
-      <link>http://localhost:1313/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</link>
+      <link>https://lanshi.xyz/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</link>
       <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
-      <guid>http://localhost:1313/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</guid>
+      <guid>https://lanshi.xyz/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</guid>
       <description></description>
     </item>
     <item>
       <title>Python</title>
-      <link>http://localhost:1313/categories/python/</link>
+      <link>https://lanshi.xyz/categories/python/</link>
       <pubDate>Sat, 08 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/categories/python/</guid>
+      <guid>https://lanshi.xyz/categories/python/</guid>
       <description></description>
     </item>
     <item>
       <title>爬虫</title>
-      <link>http://localhost:1313/categories/%E7%88%AC%E8%99%AB/</link>
+      <link>https://lanshi.xyz/categories/%E7%88%AC%E8%99%AB/</link>
       <pubDate>Sat, 08 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/categories/%E7%88%AC%E8%99%AB/</guid>
+      <guid>https://lanshi.xyz/categories/%E7%88%AC%E8%99%AB/</guid>
       <description></description>
     </item>
     <item>
       <title>Latex</title>
-      <link>http://localhost:1313/categories/latex/</link>
+      <link>https://lanshi.xyz/categories/latex/</link>
       <pubDate>Fri, 07 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/categories/latex/</guid>
+      <guid>https://lanshi.xyz/categories/latex/</guid>
       <description></description>
     </item>
     <item>
       <title>数据库系统概论</title>
-      <link>http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%AE%BA/</link>
+      <link>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%AE%BA/</link>
       <pubDate>Wed, 05 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%AE%BA/</guid>
+      <guid>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%AE%BA/</guid>
       <description></description>
     </item>
     <item>
       <title>学习打卡</title>
-      <link>http://localhost:1313/categories/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</link>
+      <link>https://lanshi.xyz/categories/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</link>
       <pubDate>Wed, 05 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/categories/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</guid>
+      <guid>https://lanshi.xyz/categories/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</guid>
       <description></description>
     </item>
   </channel>

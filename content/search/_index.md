@@ -7,22 +7,6 @@ comments: false # 禁用评论
 disableShare: true # 隐藏分享按钮
 showToc: false # 隐藏目录
 hiddenFromSearch: true # 防止搜索页出现在搜索结果中
-params:
-    customStyle: |
-        /* 添加自定义样式 */
-        .search-box {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1.5rem;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-        }
-        .search-notes {
-            color: #666;
-            font-size: 0.9rem;
-            margin-top: 1rem;
-        }
 ---
 **搜索小贴士：**
 - 使用空格分隔多个关键词（如：`Hugo 部署`）

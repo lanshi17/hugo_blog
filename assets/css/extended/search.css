@@ -1,0 +1,66 @@
+/* 搜索主容器 */
+.search-interface {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: linear-gradient(145deg, #cff4d2 0%, #ffffff 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(50, 157, 156, 0.15);
+  }
+  
+  /* 输入框 */
+  #searchQuery {
+    width: 100%;
+    padding: 12px 24px;
+    border: 2px solid #56c596;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  #searchQuery:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(86, 197, 150, 0.3);
+    border-color: #329d9c;
+  }
+  
+  /* 结果统计 */
+  .search-meta {
+    margin: 1rem 0;
+    color: #476582;
+    font-size: 0.9em;
+  }
+  
+  /* 结果卡片 */
+  .result-card {
+    padding: 1.5rem;
+    margin: 1rem 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(32, 80, 114, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .result-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .result-card h3 {
+    color: #205072;
+    margin-bottom: 0.5rem;
+  }
+  
+  .result-card .excerpt {
+    color: #607d8b;
+    line-height: 1.6;
+    margin: 0.8rem 0;
+  }
+  
+  /* 高亮样式 */
+  mark.search-highlight {
+    background: linear-gradient(120deg, rgba(123, 228, 149, 0.3) 0%, transparent 100%);
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: 500;
+  }

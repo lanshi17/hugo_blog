@@ -1,35 +1,28 @@
-{{- define "main" }}
+{{ define "main" }}
+<div class="search-interface">
+  <!-- 输入框带搜索建议 -->
+  <input type="search" 
+         id="searchQuery" 
+         autocomplete="off"
+         list="searchSuggestions"
+         placeholder="输入关键词..."
+         aria-label="全站搜索">
+  
+  <!-- 动态建议列表 -->
+  <datalist id="searchSuggestions">
+    <!-- 动态建议通过JS填充 -->
+  </datalist>
 
-<header class="page-header">
-    <h1>{{- (printf "%s&nbsp;" .Title ) | htmlUnescape -}}
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-    </h1>
-    {{- if .Description }}
-    <div class="post-description">
-        {{ .Description }}
-    </div>
-    {{- end }}
-    {{- if not (.Param "hideMeta") }}
-    <div class="post-meta">
-        {{- partial "translation_list.html" . -}}
-    </div>
-    {{- end }}
-</header>
+  <!-- 实时统计 -->
+  <div id="searchMeta" class="search-meta">
+    <span id="resultCount">0</span>条结果（<span id="searchTime">0</span>ms）
+  </div>
 
-<div id="searchbox">
-    <input id="searchInput" autofocus placeholder="{{ .Params.placeholder | default (printf "%s ↵" .Title) }}"
-        aria-label="search" type="search" autocomplete="off" maxlength="64">
-    <ul id="searchResults" aria-label="search results"></ul>
+  <!-- 结果容器 -->
+  <div id="searchResults" class="result-grid"></div>
 </div>
-<!-- 在input标签下方添加 -->
-<datalist id="search-suggestions">
-    <option value="Linux教程">
-    <option value="Python编程">
-    <option value="Hugo部署">
-    <option value="云服务器配置">
-</datalist>
-{{- end }}{{/* end main */}}
+
+<!-- 核心脚本注入点 -->
+<!-- 修改为正确的partial路径 -->
+{{ partial "search/core" . }}
+{{ end }}

@@ -1,0 +1,47 @@
+<script>
+    // 防抖函数
+    const debounce = (func, delay=300) => {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+      };
+    };
+    
+    // 动态加载Fuse.js
+    const loadFuse = async () => {
+      if (!window.Fuse) {
+        await import('https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.basic.min.js');
+      }
+      return window.Fuse;
+    };
+    
+    // 主逻辑
+    document.addEventListener('DOMContentLoaded', async () => {
+      const fuseLib = await loadFuse();
+      
+      try {
+        const response = await fetch('/index.json');
+        const data = await response.json();
+        
+        const fuse = new fuseLib.default(data, {
+          keys: ['title', 'content', 'tags'],
+          threshold: 0.3,
+          includeMatches: true
+        });
+    
+        const searchHandler = (query) => {
+          if (query.length < 2) return [];
+          return fuse.search(query);
+        };
+    
+        document.getElementById('searchQuery')
+          .addEventListener('input', debounce(e => {
+            const results = searchHandler(e.target.value);
+            // 渲染结果逻辑...
+          }));
+      } catch (err) {
+        console.error('Search init failed:', err);
+      }
+    });
+    </script>
