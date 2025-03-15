@@ -1,8 +1,6 @@
 ---
 title: "ctex的字体设置"
-weight: 1
 date: 2025-03-07T00:00:00+08:00
-aliases: ["/first"]
 tags: ["latex","notebook"]
 categories : ["latex"]
 pubulisdata: 2025-03-07T20:11:00+08:00

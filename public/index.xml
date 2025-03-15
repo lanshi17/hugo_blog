@@ -6,14 +6,14 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 09 Mar 2025 16:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 15 Mar 2025 19:30:00 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>ctex的字体设置</title>
-      <link>https://lanshi.xyz/posts/latex01/</link>
-      <pubDate>Fri, 07 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/latex01/</guid>
-      <description>latex的字体设置</description>
+      <title>SQL数据库系统课后练习(二)</title>
+      <link>https://lanshi.xyz/studynotes/databaseex2/</link>
+      <pubDate>Sat, 15 Mar 2025 19:30:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/studynotes/databaseex2/</guid>
+      <description>数据库系统核心知识点练习题集，包含SQL查询、关系代数、范式分解和E-R图设计等实践内容</description>
     </item>
     <item>
       <title>SQL数据库系统课后练习</title>
@@ -107,6 +107,13 @@
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;将BAT脚本添加到启动文件夹&lt;/strong&gt;:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>ctex的字体设置</title>
+      <link>https://lanshi.xyz/posts/latex01/</link>
+      <pubDate>Fri, 07 Mar 2025 00:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/posts/latex01/</guid>
+      <description>latex的字体设置</description>
     </item>
     <item>
       <title>数据库学习笔记</title>
