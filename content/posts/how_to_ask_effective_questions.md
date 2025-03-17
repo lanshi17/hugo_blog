@@ -5,6 +5,7 @@ date: "2025-03-17T16:48:00+08:00" # 添加引号包裹
 lastmod: 2025-03-16T16:50:00+08:00  # 添加引号包裹
 title: 如何有效提问?  # 添加引号包裹"
 
+
 # 内容控制
 draft: false
 showToc: true
@@ -14,7 +15,7 @@ showFullContent: true
 # 内容分类
 tags: ["软知识", "提问技巧"]
 categories: ["人文","高效"]
-
+summary: "怎么样提问高效获取信息"
 # SEO优化
 description: "怎么样提问高效获取信息"
 keywords: ["软知识", "提问技巧"]
@@ -24,7 +25,12 @@ math: true
 comment: true
 hiddenFromSearch: false
 hiddenFromHomePage: false
-
+# 视觉配置
+cover:
+  image: "img/提问思维导图.png"
+  alt: "如何有效提问"
+  caption: "高效提问方法"
+  relative: true
 
 # 版权声明
 copyright: true

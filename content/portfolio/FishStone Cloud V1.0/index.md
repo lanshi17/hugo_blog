@@ -1,6 +1,6 @@
 ---
 title: "FishStone Cloud V1.0 云存储系统"
-description: "基于 Flask 框架开发的文件管理系统"
+summary: "基于 Flask 框架开发的文件管理系统"
 anthor: me
 date: 2025-03-08T14:15:45+08:00
 draft: false
@@ -12,6 +12,11 @@ TocOpen: false ## 自动展开目录
 hidemeta: false ## 是否隐藏文章的元信息，如发布日期、作者等
 disableShare: false ## 底部不显示分享栏
 showbreadcrumbs: true ##顶部显示当前路径
+# 视觉配置
+cover:
+  image: "网站主页已登录.png"
+  caption: "主页页面"
+  relative: true
 ---
 ## FishStone-Cloud
 [Github项目链接](https://github.com/lanshi47/FishStone-Cloud)
