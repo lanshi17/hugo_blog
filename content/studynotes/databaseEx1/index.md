@@ -3,7 +3,7 @@
 author: lanshi  # 修正为标量值
 date: 2025-03-09T16:00:00+08:00 # 添加引号包裹
 lastmod:   # 添加引号包裹
-title: SQL数据库系统课后练习  # 添加引号包裹"
+title: SQL数据库系统课后练习(一)  # 添加引号包裹"
 
 # 内容控制
 draft: false

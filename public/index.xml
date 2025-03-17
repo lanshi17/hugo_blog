@@ -6,8 +6,15 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 15 Mar 2025 19:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 16 Mar 2025 16:50:00 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何有效提问?</title>
+      <link>https://lanshi.xyz/posts/how_to_ask_effective_questions/</link>
+      <pubDate>Mon, 17 Mar 2025 16:48:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/posts/how_to_ask_effective_questions/</guid>
+      <description>怎么样提问高效获取信息</description>
+    </item>
     <item>
       <title>SQL数据库系统课后练习(二)</title>
       <link>https://lanshi.xyz/studynotes/databaseex2/</link>
@@ -16,7 +23,7 @@
       <description>数据库系统核心知识点练习题集，包含SQL查询、关系代数、范式分解和E-R图设计等实践内容</description>
     </item>
     <item>
-      <title>SQL数据库系统课后练习</title>
+      <title>SQL数据库系统课后练习(一)</title>
       <link>https://lanshi.xyz/studynotes/databaseex1/</link>
       <pubDate>Sun, 09 Mar 2025 16:00:00 +0800</pubDate>
       <guid>https://lanshi.xyz/studynotes/databaseex1/</guid>
