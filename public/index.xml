@@ -6,8 +6,15 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 16 Mar 2025 16:50:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 19 Mar 2025 12:00:00 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>数据库系统原理课程学习笔记(三)</title>
+      <link>https://lanshi.xyz/studynotes/databaseex3/</link>
+      <pubDate>Wed, 19 Mar 2025 12:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/studynotes/databaseex3/</guid>
+      <description>数据库系统原理课程学习笔记(三)，主要整理数据库概念、关系数据库、SQL语言、数据库设计、数据库恢复技术、数据库安全性及完整性等核心知识点，适用于期末复习和知识点查漏补缺。</description>
+    </item>
     <item>
       <title>如何有效提问?</title>
       <link>https://lanshi.xyz/posts/how_to_ask_effective_questions/</link>

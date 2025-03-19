@@ -14,8 +14,8 @@
   {{ $pages := $pdfData.pdfinfo.pages | default 1 }}
   {{ $ph := $pdfData.pdfinfo.height | default 792.0 }}
   
-  {{/* 单位转换系数（1 pt = 1.3333 px） */}}
-  {{ $point2px := 1.3333 }}
+  {{/* 单位转换系数（1 pt = 1.3 px） */}}
+  {{ $point2px := 1.3 }}
   
   {{/* 浮点数运算 */}}
   {{ $totalHeight := mul (mul $ph $point2px) $pages }}
@@ -30,17 +30,6 @@
   </iframe>
 </div>
 
-<!-- <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var iframe = document.getElementById('pdf-frame');
-    iframe.onload = function() {
-      // 禁用 PDF 内部右键菜单(仅对部分彩览器生效)
-      iframe.contentDocument.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-      }, false);
-    };
-  });
-</script> -->
 
 <style>
   /* 与原示例类似的 CSS，可视情况略作调整 */
