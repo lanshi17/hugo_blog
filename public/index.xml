@@ -6,8 +6,22 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 19 Mar 2025 12:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Mar 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>数据库系统原理课程学习笔记(四)</title>
+      <link>https://lanshi.xyz/studynotes/databaseex4/</link>
+      <pubDate>Wed, 26 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://lanshi.xyz/studynotes/databaseex4/</guid>
+      <description>数据库系统原理课程复习笔记，包括核心概念、理论、操作技巧及练习题解析。</description>
+    </item>
+    <item>
+      <title>西瓜书学习笔记(一)--绪论</title>
+      <link>https://lanshi.xyz/studynotes/watermelonbook01/</link>
+      <pubDate>Thu, 20 Mar 2025 18:30:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/studynotes/watermelonbook01/</guid>
+      <description>机器学习的基本概念包括样本、示例、训练集、测试集等，对于机器学习的发展历程和现状进行分析，并引用了“没有免费午餐”定理来讨论归纳偏好问题。</description>
+    </item>
     <item>
       <title>数据库系统原理课程学习笔记(三)</title>
       <link>https://lanshi.xyz/studynotes/databaseex3/</link>

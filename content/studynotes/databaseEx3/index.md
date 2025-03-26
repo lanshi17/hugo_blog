@@ -37,4 +37,4 @@ cover:
 # 版权声明
 copyright: true
 ---
-{{< pdf-viewer file="课后练习题(三)" src="/pdfs/课后练习题(三).pdf" width="100%">}}
+{{< pdf-viewer file="课后练习题(三)" src="/pdfs/课后练习题(三).pdf" width="100%" zoom="page-width">}}
