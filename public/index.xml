@@ -6,8 +6,15 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 26 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 02 Apr 2025 10:00:00 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>火力发电效率数据探索分析</title>
+      <link>https://lanshi.xyz/studynotes/aiot1.1.1/</link>
+      <pubDate>Wed, 02 Apr 2025 10:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/studynotes/aiot1.1.1/</guid>
+      <description>火力发电效率数据的探索性分析，包括相关性热力图、特征分布可视化和数据预处理</description>
+    </item>
     <item>
       <title>数据库系统原理课程学习笔记(四)</title>
       <link>https://lanshi.xyz/studynotes/databaseex4/</link>

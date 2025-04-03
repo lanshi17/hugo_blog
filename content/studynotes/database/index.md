@@ -2,7 +2,7 @@
 title: "数据库学习笔记"
 draft: false
 date: 2025-03-05T00:00:00+08:00
-categories: ["学习打卡","数据库系统概论"]
+categories: ["学习打卡","数据库系统"]
 tags: ["学习打卡", "数据库"]
 summary: "这是我的第一篇学习日志。"
 author: "lanshi"
