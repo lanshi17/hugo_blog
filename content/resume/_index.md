@@ -3,6 +3,7 @@ title: "简历"
 description: "个人简历"
 tags: ["resume"]
 date: 2025-02-28
+lastmod: 2025-06-15
 ---
 # 杨正帅的简历
 
