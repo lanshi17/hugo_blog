@@ -6,8 +6,64 @@
     <description>Recent content in Tags on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 08 Apr 2025 14:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 15 Jun 2025 19:00:00 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker</title>
+      <link>https://lanshi.xyz/tags/docker/</link>
+      <pubDate>Sun, 15 Jun 2025 19:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/docker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LobeChat</title>
+      <link>https://lanshi.xyz/tags/lobechat/</link>
+      <pubDate>Sun, 15 Jun 2025 19:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/lobechat/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Nginx</title>
+      <link>https://lanshi.xyz/tags/nginx/</link>
+      <pubDate>Sun, 15 Jun 2025 19:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/nginx/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Postgres</title>
+      <link>https://lanshi.xyz/tags/postgres/</link>
+      <pubDate>Sun, 15 Jun 2025 19:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/postgres/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>部署</title>
+      <link>https://lanshi.xyz/tags/%E9%83%A8%E7%BD%B2/</link>
+      <pubDate>Sun, 15 Jun 2025 19:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E9%83%A8%E7%BD%B2/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>机器学习</title>
+      <link>https://lanshi.xyz/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Sun, 15 Jun 2025 18:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>模型评估</title>
+      <link>https://lanshi.xyz/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</link>
+      <pubDate>Sun, 15 Jun 2025 18:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>模型选择</title>
+      <link>https://lanshi.xyz/tags/%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/</link>
+      <pubDate>Sun, 15 Jun 2025 18:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Latex</title>
       <link>https://lanshi.xyz/tags/latex/</link>
@@ -79,31 +135,10 @@
       <description></description>
     </item>
     <item>
-      <title>机器学习</title>
-      <link>https://lanshi.xyz/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
-      <pubDate>Thu, 20 Mar 2025 18:30:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>SQL</title>
       <link>https://lanshi.xyz/tags/sql/</link>
       <pubDate>Wed, 19 Mar 2025 12:00:00 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/sql/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>模型评估</title>
-      <link>https://lanshi.xyz/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</link>
-      <pubDate>Wed, 19 Mar 2025 12:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>模型选择</title>
-      <link>https://lanshi.xyz/tags/%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/</link>
-      <pubDate>Wed, 19 Mar 2025 12:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/tags/%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/</guid>
       <description></description>
     </item>
     <item>
