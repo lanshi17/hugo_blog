@@ -370,6 +370,13 @@
       <description>机器学习的基本概念包括样本、示例、训练集、测试集等，对于机器学习的发展历程和现状进行分析，并引用了“没有免费午餐”定理来讨论归纳偏好问题。</description>
     </item>
     <item>
+      <title>模型评估与选择</title>
+      <link>https://lanshi.xyz/studynotes/watermelonbook02/</link>
+      <pubDate>Wed, 19 Mar 2025 12:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/studynotes/watermelonbook02/</guid>
+      <description>本文深入探讨了模型评估与选择的核心概念，包括经验误差与拟合、评估方法、性能度量等，帮助读者更好地理解和应用这些知识。</description>
+    </item>
+    <item>
       <title>数据库系统原理课程学习笔记(三)</title>
       <link>https://lanshi.xyz/studynotes/databaseex3/</link>
       <pubDate>Wed, 19 Mar 2025 12:00:00 +0800</pubDate>
