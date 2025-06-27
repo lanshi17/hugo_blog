@@ -6,8 +6,22 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 15 Jun 2025 19:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 27 Jun 2025 23:11:22 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>API用法示例</title>
+      <link>https://lanshi.xyz/studynotes/api_usage_example/</link>
+      <pubDate>Fri, 27 Jun 2025 23:11:22 +0800</pubDate>
+      <guid>https://lanshi.xyz/studynotes/api_usage_example/</guid>
+      <description>本文介绍了如何使用API进行文本总结、文本撰写、文本分类和文本翻译。</description>
+    </item>
+    <item>
+      <title>提示词工程</title>
+      <link>https://lanshi.xyz/posts/promptengineering/</link>
+      <pubDate>Fri, 27 Jun 2025 16:00:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/posts/promptengineering/</guid>
+      <description>本文详细介绍了提示词优化的原则和方法，帮助读者更好地利用AI模型。</description>
+    </item>
     <item>
       <title>LobeChat 部署 - 服务端</title>
       <link>https://lanshi.xyz/posts/lobechat_deploy/</link>
