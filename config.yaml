@@ -87,7 +87,7 @@ params:
     - name: "qq"
       url: "https://qm.qq.com/q/NAXbuT3rQA"
     - name: "github"
-      url: "https://github.com/lanshi47"
+      url: "https://github.com/lanshi17"
   ShowShareButtons: true
   ShareButtons: ["wechat", "qq", "bilibili", "github", "tiktok"]
   ShowPostNavLinks: true
@@ -133,7 +133,7 @@ params:
       - name: "简历"
         url: "/resume/"
       - name: "Github"
-        url: "https://github.com/lanshi47"
+        url: "https://github.com/lanshi17"
   sitemap:
     changefreq: "daily"
     priority: 0.5
@@ -150,7 +150,7 @@ params:
   cover:
     hidden: false
   editPost:
-    URL: "https://github.com/lanshi47/hugo_blog/tree/master/content"
+    URL: "https://github.com/lanshi17/hugo_blog/tree/master/content"
     Text: "Suggest Changes"
     appendFilePath: true
   search:
