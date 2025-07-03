@@ -1,8 +1,8 @@
 ---
 # 核心元数据
 author: lanshi
-date: "2025-06-30T15:18:24+08:00"
-lastmod:
+date: "2025-07-01T15:18:24+08:00"
+lastmod: "2025-07-02T00:00:00+08:00"
 title: LangChain介绍
 
 # 内容控制
