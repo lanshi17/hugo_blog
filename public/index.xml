@@ -6,8 +6,15 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 02 Jul 2025 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 04 Jul 2025 23:40:24 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI模型与输入输出</title>
+      <link>https://lanshi.xyz/studynotes/ai_models_and_input_output/</link>
+      <pubDate>Fri, 04 Jul 2025 23:40:24 +0800</pubDate>
+      <guid>https://lanshi.xyz/studynotes/ai_models_and_input_output/</guid>
+      <description>本文介绍了如何使用AI模型进行基本的输入输出操作，包括基本使用方法、模板化输入、小样本示例模版化、从输出中提取列表和JSON，以及LCEL（LangChain表达式语言）的使用。</description>
+    </item>
     <item>
       <title>LangChain介绍</title>
       <link>https://lanshi.xyz/posts/langchain_introduce/</link>
