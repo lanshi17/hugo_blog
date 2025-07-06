@@ -6,8 +6,15 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 04 Jul 2025 23:40:24 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 06 Jul 2025 18:18:00 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>视频脚本一键生成器</title>
+      <link>https://lanshi.xyz/portfolio/one-click_video_script_generator/</link>
+      <pubDate>Sun, 06 Jul 2025 18:18:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/portfolio/one-click_video_script_generator/</guid>
+      <description>本文介绍了如何使用大模型和维基百科API生成视频脚本，包括创建项目及安装依赖项、创建AI请求以及创建网站页面的详细步骤。</description>
+    </item>
     <item>
       <title>AI模型与输入输出</title>
       <link>https://lanshi.xyz/studynotes/ai_models_and_input_output/</link>
