@@ -39,7 +39,7 @@ copyright: true
 ---
 ## 演示视频
 
-{{< drive_video id="18G_7KOWMsr3rTmH2HdHoxEU0FgzqrT91" >}}
+{{< video id="18G_7KOWMsr3rTmH2HdHoxEU0FgzqrT91" >}}
 
 ## GitHub地址
 

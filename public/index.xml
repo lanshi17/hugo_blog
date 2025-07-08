@@ -6,12 +6,19 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 06 Jul 2025 18:18:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 08 Jul 2025 23:11:16 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>给AI模型添加记忆</title>
+      <link>https://lanshi.xyz/posts/ai-memory/</link>
+      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
+      <guid>https://lanshi.xyz/posts/ai-memory/</guid>
+      <description>本文介绍了如何给AI模型添加记忆，包括手动存储记忆、自动带记忆的对话链以及不同类型的记忆（如ConversationBufferMemory、ConversationBufferWindowMemory、ConversationSummaryMemory、ConversationSummaryBufferMemory和ConversationTokenBufferMemory）的详细对比和使用示例。</description>
+    </item>
     <item>
       <title>视频脚本一键生成器</title>
       <link>https://lanshi.xyz/portfolio/one-click_video_script_generator/</link>
-      <pubDate>Sun, 06 Jul 2025 18:18:00 +0800</pubDate>
+      <pubDate>Sun, 06 Jul 2025 23:18:00 +0800</pubDate>
       <guid>https://lanshi.xyz/portfolio/one-click_video_script_generator/</guid>
       <description>本文介绍了如何使用大模型和维基百科API生成视频脚本，包括创建项目及安装依赖项、创建AI请求以及创建网站页面的详细步骤。</description>
     </item>

@@ -6,40 +6,54 @@
     <description>Recent content in Tags on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 06 Jul 2025 18:18:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 08 Jul 2025 23:11:16 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AI</title>
       <link>https://lanshi.xyz/tags/ai/</link>
-      <pubDate>Sun, 06 Jul 2025 18:18:00 +0800</pubDate>
+      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/ai/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ChatOpenAI</title>
+      <link>https://lanshi.xyz/tags/chatopenai/</link>
+      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/chatopenai/</guid>
       <description></description>
     </item>
     <item>
       <title>LangChain</title>
       <link>https://lanshi.xyz/tags/langchain/</link>
-      <pubDate>Sun, 06 Jul 2025 18:18:00 +0800</pubDate>
+      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/langchain/</guid>
       <description></description>
     </item>
     <item>
       <title>Python</title>
       <link>https://lanshi.xyz/tags/python/</link>
-      <pubDate>Sun, 06 Jul 2025 18:18:00 +0800</pubDate>
+      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>记忆</title>
+      <link>https://lanshi.xyz/tags/%E8%AE%B0%E5%BF%86/</link>
+      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E8%AE%B0%E5%BF%86/</guid>
       <description></description>
     </item>
     <item>
       <title>Streamlit</title>
       <link>https://lanshi.xyz/tags/streamlit/</link>
-      <pubDate>Sun, 06 Jul 2025 18:18:00 +0800</pubDate>
+      <pubDate>Sun, 06 Jul 2025 23:18:00 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/streamlit/</guid>
       <description></description>
     </item>
     <item>
       <title>视频脚本</title>
       <link>https://lanshi.xyz/tags/%E8%A7%86%E9%A2%91%E8%84%9A%E6%9C%AC/</link>
-      <pubDate>Sun, 06 Jul 2025 18:18:00 +0800</pubDate>
+      <pubDate>Sun, 06 Jul 2025 23:18:00 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/%E8%A7%86%E9%A2%91%E8%84%9A%E6%9C%AC/</guid>
       <description></description>
     </item>

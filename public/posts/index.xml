@@ -6,8 +6,15 @@
     <description>Recent content in Posts on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 02 Jul 2025 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 08 Jul 2025 23:11:16 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>给AI模型添加记忆</title>
+      <link>https://lanshi.xyz/posts/ai-memory/</link>
+      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
+      <guid>https://lanshi.xyz/posts/ai-memory/</guid>
+      <description>本文介绍了如何给AI模型添加记忆，包括手动存储记忆、自动带记忆的对话链以及不同类型的记忆（如ConversationBufferMemory、ConversationBufferWindowMemory、ConversationSummaryMemory、ConversationSummaryBufferMemory和ConversationTokenBufferMemory）的详细对比和使用示例。</description>
+    </item>
     <item>
       <title>LangChain介绍</title>
       <link>https://lanshi.xyz/posts/langchain_introduce/</link>
