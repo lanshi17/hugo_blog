@@ -6,8 +6,15 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 08 Jul 2025 23:11:16 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 24 Jul 2025 20:55:00 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI读取文件及RAG应用</title>
+      <link>https://lanshi.xyz/studynotes/ai_reading_files_and_rag_applications/</link>
+      <pubDate>Thu, 24 Jul 2025 20:55:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/studynotes/ai_reading_files_and_rag_applications/</guid>
+      <description>本文介绍了如何让AI读取外部文件并应用RAG（Retrieval-Augmented Generation）技术，包括准备外部数据、用户提问后搜索、询问模型。详细展示了TXT、PDF和在线资源的加载示例，文本块应用，文本向量化，向量数据库的使用，以及自动化RAG对话链的构建。</description>
+    </item>
     <item>
       <title>给AI模型添加记忆</title>
       <link>https://lanshi.xyz/posts/ai-memory/</link>

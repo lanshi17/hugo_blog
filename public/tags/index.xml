@@ -6,34 +6,62 @@
     <description>Recent content in Tags on lanshi个人博客</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 08 Jul 2025 23:11:16 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 24 Jul 2025 20:55:00 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AI</title>
       <link>https://lanshi.xyz/tags/ai/</link>
-      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
+      <pubDate>Thu, 24 Jul 2025 20:55:00 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/ai/</guid>
       <description></description>
     </item>
     <item>
       <title>ChatOpenAI</title>
       <link>https://lanshi.xyz/tags/chatopenai/</link>
-      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
+      <pubDate>Thu, 24 Jul 2025 20:55:00 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/chatopenai/</guid>
       <description></description>
     </item>
     <item>
       <title>LangChain</title>
       <link>https://lanshi.xyz/tags/langchain/</link>
-      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
+      <pubDate>Thu, 24 Jul 2025 20:55:00 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/langchain/</guid>
       <description></description>
     </item>
     <item>
       <title>Python</title>
       <link>https://lanshi.xyz/tags/python/</link>
-      <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
+      <pubDate>Thu, 24 Jul 2025 20:55:00 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>RAG</title>
+      <link>https://lanshi.xyz/tags/rag/</link>
+      <pubDate>Thu, 24 Jul 2025 20:55:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/rag/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>文件读取</title>
+      <link>https://lanshi.xyz/tags/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/</link>
+      <pubDate>Thu, 24 Jul 2025 20:55:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>向量化</title>
+      <link>https://lanshi.xyz/tags/%E5%90%91%E9%87%8F%E5%8C%96/</link>
+      <pubDate>Thu, 24 Jul 2025 20:55:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E5%90%91%E9%87%8F%E5%8C%96/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>向量数据库</title>
+      <link>https://lanshi.xyz/tags/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+      <pubDate>Thu, 24 Jul 2025 20:55:00 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
       <description></description>
     </item>
     <item>
