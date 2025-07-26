@@ -3,36 +3,48 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://lanshi.xyz/tags/ai/</loc>
-    <lastmod>2025-07-24T20:55:00+08:00</lastmod>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/categories/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/chatopenai/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/langchain/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/python/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/studynotes/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/categories/%E7%BC%96%E7%A8%8B/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/studynotes/application_of_ai_model_tools/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/studynotes/ai_reading_files_and_rag_applications/</loc>
     <lastmod>2025-07-24T20:55:00+08:00</lastmod>
   </url><url>
-    <loc>https://lanshi.xyz/categories/</loc>
-    <lastmod>2025-07-24T20:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/tags/chatopenai/</loc>
-    <lastmod>2025-07-24T20:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/tags/langchain/</loc>
-    <lastmod>2025-07-24T20:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/</loc>
-    <lastmod>2025-07-24T20:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/tags/python/</loc>
-    <lastmod>2025-07-24T20:55:00+08:00</lastmod>
-  </url><url>
     <loc>https://lanshi.xyz/tags/rag/</loc>
-    <lastmod>2025-07-24T20:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/studynotes/</loc>
-    <lastmod>2025-07-24T20:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/tags/</loc>
-    <lastmod>2025-07-24T20:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/categories/%E7%BC%96%E7%A8%8B/</loc>
     <lastmod>2025-07-24T20:55:00+08:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/tags/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/</loc>
@@ -147,9 +159,6 @@
     <lastmod>2025-04-08T14:30:00+08:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/studynotes/aiot1.1.1/</loc>
-    <lastmod>2025-04-02T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</loc>
     <lastmod>2025-04-02T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</loc>

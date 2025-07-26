@@ -6,8 +6,15 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.148.1</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 24 Jul 2025 20:55:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 26 Jul 2025 18:06:26 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>给AI模型用工具的能力</title>
+      <link>https://lanshi.xyz/studynotes/application_of_ai_model_tools/</link>
+      <pubDate>Sat, 26 Jul 2025 18:06:26 +0800</pubDate>
+      <guid>https://lanshi.xyz/studynotes/application_of_ai_model_tools/</guid>
+      <description>本文介绍了如何给AI模型赋予使用工具的能力，包括自定义工具、使用现成的AI工具运行代码和分析数据表格，以及多个工具组成AI工具箱。详细展示了baseTool、hub、create_structured_chat_agent和AgentExecutor的代码示例，并提供了具体的输出结果。</description>
+    </item>
     <item>
       <title>AI读取文件及RAG应用</title>
       <link>https://lanshi.xyz/studynotes/ai_reading_files_and_rag_applications/</link>
