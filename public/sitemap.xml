@@ -2,28 +2,64 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://lanshi.xyz/tags/ai/</loc>
-    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
-  </url><url>
     <loc>https://lanshi.xyz/categories/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/matplotlib/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/pandas/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/python/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/scikit-learn/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/seaborn/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/studynotes/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E5%A4%9A%E9%87%8D%E5%85%B1%E7%BA%BF%E6%80%A7/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E5%BD%92%E4%B8%80%E5%8C%96/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/studynotes/aiot1.1.2/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/%E6%AD%A3%E6%80%81%E5%8C%96/</loc>
+    <lastmod>2025-09-13T12:47:02+08:00</lastmod>
+  </url><url>
+    <loc>https://lanshi.xyz/tags/ai/</loc>
     <lastmod>2025-07-26T18:06:26+08:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/tags/chatopenai/</loc>
     <lastmod>2025-07-26T18:06:26+08:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/tags/langchain/</loc>
-    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/</loc>
-    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/tags/python/</loc>
-    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/studynotes/</loc>
-    <lastmod>2025-07-26T18:06:26+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/tags/</loc>
     <lastmod>2025-07-26T18:06:26+08:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/categories/%E7%BC%96%E7%A8%8B/</loc>
@@ -128,9 +164,6 @@
     <loc>https://lanshi.xyz/categories/%E6%95%99%E7%A8%8B/</loc>
     <lastmod>2025-06-15T19:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://lanshi.xyz/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2025-06-15T18:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://lanshi.xyz/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2025-06-15T18:00:00+08:00</lastmod>
   </url><url>
@@ -159,9 +192,6 @@
     <lastmod>2025-04-08T14:30:00+08:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/studynotes/aiot1.1.1/</loc>
-    <lastmod>2025-04-02T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</loc>
     <lastmod>2025-04-02T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/</loc>

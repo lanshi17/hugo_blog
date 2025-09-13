@@ -6,8 +6,22 @@
     <description>Recent content in Categories on lanshi个人博客</description>
     <generator>Hugo -- 0.148.1</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 26 Jul 2025 18:06:26 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 13 Sep 2025 12:47:02 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>机器学习</title>
+      <link>https://lanshi.xyz/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>数据科学</title>
+      <link>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</guid>
+      <description></description>
+    </item>
     <item>
       <title>编程</title>
       <link>https://lanshi.xyz/categories/%E7%BC%96%E7%A8%8B/</link>
@@ -30,24 +44,10 @@
       <description></description>
     </item>
     <item>
-      <title>机器学习</title>
-      <link>https://lanshi.xyz/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
-      <pubDate>Sun, 15 Jun 2025 18:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>技术</title>
       <link>https://lanshi.xyz/categories/%E6%8A%80%E6%9C%AF/</link>
       <pubDate>Tue, 08 Apr 2025 14:30:00 +0800</pubDate>
       <guid>https://lanshi.xyz/categories/%E6%8A%80%E6%9C%AF/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>数据科学</title>
-      <link>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</link>
-      <pubDate>Wed, 02 Apr 2025 10:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</guid>
       <description></description>
     </item>
     <item>

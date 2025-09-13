@@ -6,8 +6,15 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.148.1</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 26 Jul 2025 18:06:26 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 13 Sep 2025 12:47:02 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>火力发电效率数据特征工程</title>
+      <link>https://lanshi.xyz/studynotes/aiot1.1.2/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/studynotes/aiot1.1.2/</guid>
+      <description>本文系统梳理了从数据加载到特征工程核心步骤的技术流程，包括数据归一化、正态化、异常值检测与多重共线性处理。结合技术原理说明、代码解析和可视化分析，适用于数据科学/机器学习初学者或中级用户阅读。</description>
+    </item>
     <item>
       <title>给AI模型用工具的能力</title>
       <link>https://lanshi.xyz/studynotes/application_of_ai_model_tools/</link>

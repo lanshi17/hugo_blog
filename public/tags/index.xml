@@ -6,8 +6,78 @@
     <description>Recent content in Tags on lanshi个人博客</description>
     <generator>Hugo -- 0.148.1</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 26 Jul 2025 18:06:26 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 13 Sep 2025 12:47:02 +0800</lastBuildDate>
     <atom:link href="https://lanshi.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Matplotlib</title>
+      <link>https://lanshi.xyz/tags/matplotlib/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/matplotlib/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pandas</title>
+      <link>https://lanshi.xyz/tags/pandas/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/pandas/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://lanshi.xyz/tags/python/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scikit-Learn</title>
+      <link>https://lanshi.xyz/tags/scikit-learn/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/scikit-learn/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Seaborn</title>
+      <link>https://lanshi.xyz/tags/seaborn/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/seaborn/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>多重共线性</title>
+      <link>https://lanshi.xyz/tags/%E5%A4%9A%E9%87%8D%E5%85%B1%E7%BA%BF%E6%80%A7/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E5%A4%9A%E9%87%8D%E5%85%B1%E7%BA%BF%E6%80%A7/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>归一化</title>
+      <link>https://lanshi.xyz/tags/%E5%BD%92%E4%B8%80%E5%8C%96/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E5%BD%92%E4%B8%80%E5%8C%96/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>数据预处理</title>
+      <link>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>异常值检测</title>
+      <link>https://lanshi.xyz/tags/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>正态化</title>
+      <link>https://lanshi.xyz/tags/%E6%AD%A3%E6%80%81%E5%8C%96/</link>
+      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.xyz/tags/%E6%AD%A3%E6%80%81%E5%8C%96/</guid>
+      <description></description>
+    </item>
     <item>
       <title>AI</title>
       <link>https://lanshi.xyz/tags/ai/</link>
@@ -27,13 +97,6 @@
       <link>https://lanshi.xyz/tags/langchain/</link>
       <pubDate>Sat, 26 Jul 2025 18:06:26 +0800</pubDate>
       <guid>https://lanshi.xyz/tags/langchain/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>https://lanshi.xyz/tags/python/</link>
-      <pubDate>Sat, 26 Jul 2025 18:06:26 +0800</pubDate>
-      <guid>https://lanshi.xyz/tags/python/</guid>
       <description></description>
     </item>
     <item>
