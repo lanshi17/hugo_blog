@@ -70,10 +70,11 @@
 
   <!-- ==================== 时间线归档 ==================== -->
   {{ $pages := where site.RegularPages "Section" "in" (slice "posts" "studynotes" "portfolio") }}
-  {{ $paginator := .Paginate ($pages.GroupByDate "2006") 100 }}
+  {{ $paginator := .Paginate $pages 20 }}
   
   <div class="timeline">
-    {{ range $paginator.PageGroups }}
+    {{ if $paginator.Pages }}
+    {{ range ($paginator.Pages.GroupByDate "2006") }}
     <div class="year-section" style="margin-bottom: 2rem;">
       <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; font-size: 1.5rem;">
         <i class="fas fa-calendar-alt" style="margin-right: 0.5rem;"></i>
@@ -135,6 +136,7 @@
         {{ end }}
       </div>
     </div>
+    {{ end }}
     {{ else }}
     <div class="no-articles" style="text-align: center; padding: 2rem; color: #7f8c8d;">
       <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem;"></i>
@@ -143,7 +145,87 @@
     {{ end }}
   </div>
 
-  <!-- 分页 -->
-  {{ template "_internal/pagination.html" . }}
+  <!-- ==================== 分页导航 ==================== -->
+  {{ if gt $paginator.TotalPages 1 }}
+  <div class="pagination" style="
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  ">
+    {{ if $paginator.HasPrev }}
+    <a href="{{ $paginator.Prev.URL }}" style="
+      padding: 0.5rem 1rem;
+      background: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.3s;
+    ">
+      ← 上一页
+    </a>
+    {{ end }}
+
+    <div class="page-numbers" style="display: flex; gap: 0.3rem; align-items: center;">
+      {{ $currentPage := $paginator.PageNumber }}
+      {{ $totalPages := $paginator.TotalPages }}
+      
+      {{ if gt $currentPage 3 }}
+      <a href="{{ $paginator.First.URL }}" style="padding: 0.5rem 0.8rem; border: 1px solid #ddd; border-radius: 4px; text-decoration: none; color: #2c3e50;">1</a>
+      {{ if gt $currentPage 4 }}
+      <span style="padding: 0.5rem;">...</span>
+      {{ end }}
+      {{ end }}
+
+      {{ range $paginator.Pagers }}
+      {{ if and (ge .PageNumber (sub $currentPage 2)) (le .PageNumber (add $currentPage 2)) }}
+      {{ if eq .PageNumber $currentPage }}
+      <span style="
+        padding: 0.5rem 0.8rem;
+        background: #3498db;
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+      ">{{ .PageNumber }}</span>
+      {{ else }}
+      <a href="{{ .URL }}" style="
+        padding: 0.5rem 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #2c3e50;
+        transition: all 0.3s;
+      ">{{ .PageNumber }}</a>
+      {{ end }}
+      {{ end }}
+      {{ end }}
+
+      {{ if lt $currentPage (sub $totalPages 2) }}
+      {{ if lt $currentPage (sub $totalPages 3) }}
+      <span style="padding: 0.5rem;">...</span>
+      {{ end }}
+      <a href="{{ $paginator.Last.URL }}" style="padding: 0.5rem 0.8rem; border: 1px solid #ddd; border-radius: 4px; text-decoration: none; color: #2c3e50;">{{ $totalPages }}</a>
+      {{ end }}
+    </div>
+
+    {{ if $paginator.HasNext }}
+    <a href="{{ $paginator.Next.URL }}" style="
+      padding: 0.5rem 1rem;
+      background: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.3s;
+    ">
+      下一页 →
+    </a>
+    {{ end }}
+  </div>
+
+  <div style="text-align: center; color: #7f8c8d; font-size: 0.9rem; margin-top: 1rem;">
+    第 {{ $paginator.PageNumber }} 页 / 共 {{ $paginator.TotalPages }} 页 | 共 {{ len $pages }} 篇文章
+  </div>
+  {{ end }}
 </article>
 {{ end }}

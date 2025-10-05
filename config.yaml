@@ -169,18 +169,22 @@ params:
       threshold: 0.3
       distance: 100
       ignoreLocation: true
-  outputFormats:
-    JSON:
-      mediaType: "application/json"
-      baseName: "index"
-      isPlainText: true
-      notAlternative: true
-  outputs:
-    home: ["HTML", "RSS", "JSON"]
   listStyle:
     cardLayout: true
     hoverEffect: true
     compactTags: true
+
+# --- 输出格式配置 ---
+outputFormats:
+  JSON:
+    mediaType: "application/json"
+    baseName: "index"
+    isPlainText: true
+    notAlternative: true
+
+# --- 输出配置 ---
+outputs:
+  home: ["HTML", "RSS", "JSON"]
 
 # --- 构建配置 ---
 buildFuture: false

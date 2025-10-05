@@ -1,47 +1,332 @@
+<!-- 加载 Fuse.js 库 -->
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+
 <script>
     // 防抖函数
-    const debounce = (func, delay=300) => {
-      let timeout;
-      return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), delay);
-      };
-    };
-    
-    // 动态加载Fuse.js
-    const loadFuse = async () => {
-      if (!window.Fuse) {
-        await import('https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.basic.min.js');
-      }
-      return window.Fuse;
-    };
-    
-    // 主逻辑
-    document.addEventListener('DOMContentLoaded', async () => {
-      const fuseLib = await loadFuse();
-      
-      try {
-        const response = await fetch('/index.json');
-        const data = await response.json();
-        
-        const fuse = new fuseLib.default(data, {
-          keys: ['title', 'content', 'tags'],
-          threshold: 0.3,
-          includeMatches: true
-        });
-    
-        const searchHandler = (query) => {
-          if (query.length < 2) return [];
-          return fuse.search(query);
+    const debounce = (func, delay = 300) => {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
         };
-    
-        document.getElementById('searchQuery')
-          .addEventListener('input', debounce(e => {
-            const results = searchHandler(e.target.value);
-            // 渲染结果逻辑...
-          }));
-      } catch (err) {
-        console.error('Search init failed:', err);
-      }
+    };
+
+    // 转义 HTML 特殊字符，防止 XSS
+    const escapeHtml = (text) => {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    };
+
+    // 全局变量
+    let fuse = null;
+    let searchData = [];
+    let isRendering = false; // 防止重复渲染
+
+    // 初始化搜索
+    document.addEventListener('DOMContentLoaded', async () => {
+        const searchInput = document.getElementById('searchQuery');
+        const searchResults = document.getElementById('searchResults');
+        const resultCount = document.getElementById('resultCount');
+        const searchTime = document.getElementById('searchTime');
+
+        try {
+            // 加载搜索数据
+            const startTime = performance.now();
+            const response = await fetch('/index.json');
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            searchData = await response.json();
+            const loadTime = Math.round(performance.now() - startTime);
+
+            // 初始化 Fuse.js
+            fuse = new Fuse(searchData, {
+                keys: ['title', 'content', 'summary'],
+                threshold: 0.3,
+                distance: 100,
+                minMatchCharLength: 2,
+                includeScore: true,
+                includeMatches: true,
+                ignoreLocation: true
+            });
+
+            console.log(`搜索索引加载完成 (${loadTime}ms), 共 ${searchData.length} 条记录`);
+
+            // 搜索处理函数
+            const performSearch = (query) => {
+                // 防止重复渲染
+                if (isRendering) {
+                    return;
+                }
+
+                if (!query || query.trim().length < 2) {
+                    // 清空结果，不使用innerHTML直接赋值，避免闪烁
+                    requestAnimationFrame(() => {
+                        searchResults.style.opacity = '0';
+                        setTimeout(() => {
+                            searchResults.innerHTML = '<div class="no-results">请输入至少2个字符开始搜索</div>';
+                            searchResults.style.opacity = '1';
+                        }, 150);
+                    });
+                    resultCount.textContent = '0';
+                    searchTime.textContent = '0';
+                    return;
+                }
+
+                isRendering = true;
+
+                // 先淡出
+                searchResults.style.opacity = '0';
+
+                // 等待淡出完成后再渲染新内容
+                setTimeout(() => {
+                    const searchStart = performance.now();
+                    const results = fuse.search(query.trim());
+                    const searchDuration = Math.round(performance.now() - searchStart);
+
+                    // 更新统计信息
+                    resultCount.textContent = results.length;
+                    searchTime.textContent = searchDuration;
+
+                    // 渲染结果
+                    if (results.length === 0) {
+                        searchResults.innerHTML = `
+                            <div class="no-results">
+                                <p>未找到匹配 "${escapeHtml(query)}" 的内容</p>
+                                <p>建议：</p>
+                                <ul>
+                                    <li>尝试使用不同的关键词</li>
+                                    <li>使用更通用的搜索词</li>
+                                    <li>检查拼写是否正确</li>
+                                </ul>
+                            </div>
+                        `;
+                    } else {
+                        const resultHTML = results.map(result => {
+                            const item = result.item;
+                            let summary = item.summary || item.content || '';
+                            
+                            // 截取摘要长度
+                            if (summary.length > 150) {
+                                summary = summary.substring(0, 150) + '...';
+                            }
+
+                            // 转义所有文本内容
+                            const safeTitle = escapeHtml(item.title);
+                            const safeSummary = escapeHtml(summary);
+                            const safePermalink = escapeHtml(item.permalink);
+
+                            return `
+                                <article class="search-result-item">
+                                    <h3 class="result-title">
+                                        <a href="${safePermalink}">${safeTitle}</a>
+                                    </h3>
+                                    <p class="result-summary">${safeSummary}</p>
+                                    <div class="result-meta">
+                                        <span class="result-score">匹配度: ${(1 - result.score).toFixed(2)}</span>
+                                    </div>
+                                </article>
+                            `;
+                        }).join('');
+
+                        searchResults.innerHTML = resultHTML;
+                    }
+
+                    // 淡入新内容
+                    requestAnimationFrame(() => {
+                        searchResults.style.opacity = '1';
+                        isRendering = false;
+                    });
+                }, 150); // 等待淡出动画完成
+            };
+
+            // 绑定搜索事件（带防抖）
+            searchInput.addEventListener('input', debounce((e) => {
+                performSearch(e.target.value);
+            }, 400)); // 增加防抖延迟，减少频繁渲染
+
+            // 如果 URL 中有搜索参数，自动执行搜索
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryParam = urlParams.get('q');
+            if (queryParam) {
+                searchInput.value = queryParam;
+                performSearch(queryParam);
+            }
+
+        } catch (err) {
+            console.error('Search init failed:', err);
+            searchResults.innerHTML = `
+                <div class="error-message">
+                    <p>❌ 搜索功能初始化失败</p>
+                    <p>错误信息: ${escapeHtml(err.message)}</p>
+                    <p>请刷新页面重试</p>
+                </div>
+            `;
+        }
     });
-    </script>
+</script>
+
+<style>
+    /* 搜索结果容器 - 添加平滑过渡 */
+    #searchResults {
+        opacity: 1;
+        transition: opacity 0.15s ease-in-out;
+        min-height: 100px; /* 防止容器高度突变 */
+        will-change: opacity; /* 优化动画性能 */
+    }
+
+    /* 搜索结果项 */
+    .search-result-item {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--entry);
+        transition: box-shadow 0.2s ease, transform 0.2s ease;
+        /* 防止内容重叠 */
+        position: relative;
+        overflow: hidden;
+        clear: both;
+    }
+
+    .search-result-item:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+
+    /* 标题样式 - 防止重叠 */
+    .result-title {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        line-height: 1.4;
+        /* 防止文本重叠 */
+        position: relative;
+        z-index: 1;
+        display: block;
+        clear: both;
+    }
+
+    .result-title a {
+        color: var(--primary);
+        text-decoration: none;
+        display: inline-block;
+        /* 防止链接闪烁 */
+        backface-visibility: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .result-title a:hover {
+        text-decoration: underline;
+    }
+
+    /* 摘要样式 */
+    .result-summary {
+        color: var(--secondary);
+        margin: 0.5rem 0;
+        line-height: 1.6;
+        display: block;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+
+    /* 元信息 */
+    .result-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.875rem;
+        color: var(--tertiary);
+        margin-top: 0.75rem;
+    }
+
+    .result-score {
+        padding: 0.25rem 0.5rem;
+        background: var(--code-bg);
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    /* 无结果提示 */
+    .no-results, .error-message {
+        padding: 2rem;
+        text-align: center;
+        color: var(--secondary);
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    .no-results ul {
+        text-align: left;
+        display: inline-block;
+        margin-top: 1rem;
+        list-style-position: inside;
+    }
+
+    /* 错误消息 */
+    .error-message {
+        background: #fee;
+        border: 1px solid #fcc;
+        border-radius: 8px;
+        color: #c00;
+    }
+
+    /* 搜索统计信息 */
+    .search-meta {
+        margin: 1rem 0;
+        padding: 0.5rem 1rem;
+        background: var(--code-bg);
+        border-radius: 4px;
+        font-size: 0.875rem;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+    }
+
+    /* 淡入动画 */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* 搜索输入框优化 */
+    #searchQuery {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        background: var(--entry);
+        color: var(--primary);
+        transition: border-color 0.2s ease;
+        margin-bottom: 1rem;
+    }
+
+    #searchQuery:focus {
+        outline: none;
+        border-color: var(--tertiary);
+    }
+
+    /* 响应式优化 */
+    @media (max-width: 768px) {
+        .search-result-item {
+            padding: 1rem;
+        }
+
+        .result-title {
+            font-size: 1.1rem;
+        }
+
+        .search-meta {
+            position: static;
+        }
+    }
+</style>
