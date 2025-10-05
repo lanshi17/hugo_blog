@@ -1,28 +1,80 @@
 {{ define "main" }}
-<div class="search-interface">
-  <!-- 输入框带搜索建议 -->
-  <input type="search" 
-         id="searchQuery" 
-         autocomplete="off"
-         list="searchSuggestions"
-         placeholder="输入关键词..."
-         aria-label="全站搜索">
-  
-  <!-- 动态建议列表 -->
-  <datalist id="searchSuggestions">
-    <!-- 动态建议通过JS填充 -->
-  </datalist>
-
-  <!-- 实时统计 -->
-  <div id="searchMeta" class="search-meta">
-    <span id="resultCount">0</span>条结果（<span id="searchTime">0</span>ms）
+<div class="search-page-wrapper">
+  <!-- 搜索头部 -->
+  <div class="search-header">
+    <div class="search-title-section">
+      <h1 class="search-page-title">🔍 站内搜索</h1>
+      <p class="search-page-subtitle">快速定位您需要的技术文章和学习资源</p>
+    </div>
   </div>
 
-  <!-- 结果容器 -->
-  <div id="searchResults" class="result-grid"></div>
+  <!-- 搜索主体 -->
+  <div class="search-main-content">
+    <!-- 搜索输入区 -->
+    <div class="search-input-wrapper">
+      <div class="search-box">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="search" 
+               id="searchQuery" 
+               class="search-input"
+               autocomplete="off"
+               placeholder="输入关键词进行搜索..."
+               aria-label="全站搜索">
+        <button class="clear-button" id="clearSearch" style="display: none;" aria-label="清除搜索">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- 搜索提示 -->
+      <div class="search-tips">
+        <span class="tip-item">💡 支持模糊搜索</span>
+        <span class="tip-item">⚡ 实时显示结果</span>
+        <span class="tip-item">🎯 智能匹配内容</span>
+      </div>
+    </div>
+
+    <!-- 搜索统计信息 -->
+    <div id="searchMeta" class="search-stats">
+      <div class="stats-item">
+        <span class="stats-label">搜索结果：</span>
+        <span class="stats-value" id="resultCount">0</span>
+        <span class="stats-unit">条</span>
+      </div>
+      <div class="stats-item">
+        <span class="stats-label">搜索耗时：</span>
+        <span class="stats-value" id="searchTime">0</span>
+        <span class="stats-unit">ms</span>
+      </div>
+    </div>
+
+    <!-- 搜索结果容器 -->
+    <div id="searchResults" class="search-results-container">
+      <!-- 初始提示 -->
+      <div class="search-initial-state">
+        <svg class="initial-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <h3>开始搜索</h3>
+        <p>输入关键词即可开始搜索文章、笔记和学习资源</p>
+        <div class="quick-search-tags">
+          <span class="quick-tag">Python</span>
+          <span class="quick-tag">数据库</span>
+          <span class="quick-tag">机器学习</span>
+          <span class="quick-tag">算法</span>
+          <span class="quick-tag">Linux</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- 核心脚本注入点 -->
-<!-- 修改为正确的partial路径 -->
 {{ partial "search/core" . }}
 {{ end }}
