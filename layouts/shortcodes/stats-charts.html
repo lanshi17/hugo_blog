@@ -1,15 +1,53 @@
-{{/* 统计图表短代码 */}}
-<div class="stats-container">
-  <!-- 分类统计饼图 -->
-  <div class="chart-box">
-    <canvas id="categoryChart" width="400" height="400"></canvas>
-    <h3>文章分类统计</h3>
+{{/* 数据大屏短代码（ECharts 统一、深色主题） */}}
+<div class="dashboard">
+  {{ $header := (.Get "header") | default "show" }}
+  {{ $metrics := (.Get "metrics") | default "show" }}
+  {{ if ne $header "none" }}
+  <div class="dashboard-header {{ if eq $header "top" }}sticky{{ end }}">
+    <!-- <div class="header-left">
+      <h2>站点数据大屏</h2>
+      <p class="subtitle">整体概览与趋势一屏掌握</p>
+    </div> -->
+    {{ if ne $metrics "none" }}
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="metric-value" id="metricPosts">0</div>
+        <div class="metric-label">文章总数</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metricCategories">0</div>
+        <div class="metric-label">分类数量</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metricTags">0</div>
+        <div class="metric-label">标签数量</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metricUpdated">--</div>
+        <div class="metric-label">最近更新</div>
+      </div>
+    </div>
+    {{ end }}
   </div>
+  {{ end }}
 
-  <!-- 标签词云 -->
-  <div class="chart-box">
-    <div id="wordCloud" style="width:400px;height:400px;"></div>
-    <h3>标签词云</h3>
+  <div class="dashboard-grid">
+    <div class="panel">
+      <div class="panel-header">分类分布</div>
+      <div id="categoryPie" class="chart"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">标签词云</div>
+      <div id="wordCloud" class="chart"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">发布趋势（月）</div>
+      <div id="postsTrend" class="chart"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">热门分类 Top10</div>
+      <div id="topCategories" class="chart"></div>
+    </div>
   </div>
 </div>
 
@@ -18,119 +56,305 @@
 <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud/dist/echarts-wordcloud.min.js"></script>
 
 <script>
-// 获取分类和标签数据
+// 基础数据（Hugo 注入）
+const siteTitle = {{ .Site.Title | jsonify }};
 const categories = {{ .Site.Taxonomies.categories | jsonify | default "{}" | safeJS }};
 const tags = {{ .Site.Taxonomies.tags | jsonify | default "{}" | safeJS }};
+const posts = [
+  {{- $first := true -}}
+  {{- range .Site.RegularPages -}}
+  {{- if $first -}}{{- $first = false -}}{{ else }},{{ end -}}
+  {
+    title: {{ .Title | jsonify }},
+    date: {{ .Date | time.Format "2006-01-02" | jsonify }},
+    yearMonth: {{ .Date | time.Format "2006-01" | jsonify }},
+    categories: {{ with .Params.categories }}{{ . | jsonify }}{{ else }}[]{{ end }},
+    tags: {{ with .Params.tags }}{{ . | jsonify }}{{ else }}[]{{ end }}
+  }
+  {{- end -}}
+];
 
-// 数据验证和初始化
-let categoriesData = categories;
-if (typeof categoriesData !== 'object') {
-  categoriesData = {};
+// 安全兜底
+const catObj = (typeof categories === 'object' && categories) || {};
+const tagObj = (typeof tags === 'object' && tags) || {};
+
+// 指标卡
+const totalPosts = posts.length;
+const totalCategories = Object.keys(catObj).length;
+const totalTags = Object.keys(tagObj).length;
+const lastUpdated = (function(){
+  if (!posts.length) return '--';
+  const ts = posts.map(p => new Date(p.date).getTime()).filter(Number.isFinite);
+  const max = Math.max.apply(null, ts);
+  const d = new Date(max);
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${dd}`;
+})();
+function setMetric(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+setMetric('metricPosts', totalPosts);
+setMetric('metricCategories', totalCategories);
+setMetric('metricTags', totalTags);
+setMetric('metricUpdated', lastUpdated);
+
+// 分类数据集
+const categoryPairs = Object.entries(catObj).map(([name, arr]) => ({ name, value: (arr || []).length }));
+// 饼图仅展示 Top5，其余合并为“其他”
+const sortedCats = categoryPairs.slice().sort((a,b) => b.value - a.value);
+let categoryPieData = [];
+if (sortedCats.length <= 5) {
+  categoryPieData = sortedCats;
+} else {
+  const top5 = sortedCats.slice(0, 5);
+  const othersValue = sortedCats.slice(5).reduce((sum, c) => sum + c.value, 0);
+  if (othersValue > 0) top5.push({ name: '其他', value: othersValue });
+  categoryPieData = top5;
 }
 
-let tagsData = tags;
-if (typeof tagsData !== 'object') {
-  tagsData = {};
+// 标签词云数据
+const tagWords = Object.entries(tagObj).map(([name, arr]) => ({ name, value: (arr || []).length }));
+
+// 月度发布趋势
+const monthMap = new Map();
+for (const p of posts) {
+  const key = p.yearMonth || (p.date ? p.date.slice(0,7) : '未知');
+  monthMap.set(key, (monthMap.get(key) || 0) + 1);
+}
+const monthsSorted = Array.from(monthMap.keys()).sort();
+const monthCounts = monthsSorted.map(m => monthMap.get(m));
+
+// 热门分类 Top10
+const topCats = categoryPairs
+  .slice()
+  .sort((a,b) => b.value - a.value)
+  .slice(0, 10);
+
+// PaperMod 主题色同步（CSS 变量兜底）
+function getThemeColors() {
+  const cs = getComputedStyle(document.documentElement);
+  const primary = cs.getPropertyValue('--primary').trim() || cs.getPropertyValue('--accent').trim() || '#00d4ff';
+  const accent = cs.getPropertyValue('--accent').trim() || cs.getPropertyValue('--primary').trim() || '#29f3c3';
+  const text = cs.getPropertyValue('--content').trim() || cs.getPropertyValue('--theme').trim() || '#c9d4e5';
+  return { primary, accent, text };
+}
+const themeColors = getThemeColors();
+const colorPrimary = themeColors.primary || '#00d4ff';
+const colorAccent = themeColors.accent || '#29f3c3';
+const colorText = themeColors.text || '#c9d4e5';
+
+function makeResponsive(chart) {
+  window.addEventListener('resize', () => chart.resize());
 }
 
-// 分类数据（保持不变）
-let categoryLabels = [];
-let categoryData = [];
-for (let [name, termArray] of Object.entries(categoriesData)) {
-  categoryLabels.push(name);
-  categoryData.push(termArray.length);
-}
+function initCharts() {
+  // 将主题色应用到面板与标题/指标
+  const root = document.querySelector('.dashboard');
+  if (root) {
+    root.style.setProperty('--accentColor', colorAccent);
+    root.style.setProperty('--text', colorText);
+  }
 
-// 标签数据（用于 ECharts WordCloud）
-let tagWords = [];
-for (let [name, termArray] of Object.entries(tagsData)) {
-  tagWords.push({name: name, value: termArray.length});
-}
-
-// 绘制分类饼图
-setTimeout(() => {
-  const ctx = document.getElementById('categoryChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: categoryLabels,
-      datasets: [{
-        label: '文章分类分布',
-        data: categoryData,
-        backgroundColor: ['#205072', '#329D9C', '#56C596', '#7BE495', '#CFF4D2'],
-        borderWidth: 1
-      }]
+  // 分类饼图
+  const pie = echarts.init(document.getElementById('categoryPie'));
+  pie.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'item' },
+    legend: {
+      bottom: 0,
+      textStyle: { color: colorText }
     },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {color: '#333'}
-        }
-      }
-    }
+    series: [{
+      name: '分类分布',
+      type: 'pie',
+      radius: ['35%','65%'],
+      avoidLabelOverlap: true,
+      label: { color: colorText },
+      labelLine: { lineStyle: { color: colorText } },
+      itemStyle: {
+        borderColor: '#0b1a2a',
+        borderWidth: 1
+      },
+      data: categoryPieData.length ? categoryPieData : [{name:'暂无数据', value:1}]
+    }]
   });
-}, 500);
+  makeResponsive(pie);
 
-// 绘制标签词云
-setTimeout(() => {
-  const myChart = echarts.init(document.getElementById('wordCloud'));
-  const option = {
+  // 标签词云
+  const wc = echarts.init(document.getElementById('wordCloud'));
+  wc.setOption({
+    backgroundColor: 'transparent',
     tooltip: {},
     series: [{
       type: 'wordCloud',
+      gridSize: 8,
       sizeRange: [12, 60],
       rotationRange: [0, 0],
-      gridSize: 8,
       textStyle: {
-        normal: {
-          color: function () {
-            return 'rgb(' + [
-              Math.round(Math.random() * 255),
-              Math.round(Math.random() * 255),
-              Math.round(Math.random() * 255)
-            ].join(',') + ')';
-          }
+        color: function () {
+          const r = Math.round(120 + Math.random() * 135);
+          const g = Math.round(120 + Math.random() * 135);
+          const b = Math.round(120 + Math.random() * 135);
+          return `rgb(${r},${g},${b})`;
         },
-        emphasis: {
-          shadowBlur: 10,
-          shadowColor: '#333'
-        }
+        emphasis: { shadowBlur: 10, shadowColor: '#000' }
       },
-      data: tagWords
+      data: tagWords.length ? tagWords : [{ name: '暂无标签', value: 1 }]
     }]
-  };
-  myChart.setOption(option);
-}, 500);
+  });
+  makeResponsive(wc);
+
+  // 发布趋势（月）
+  const trend = echarts.init(document.getElementById('postsTrend'));
+  trend.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'axis' },
+    grid: { left: 40, right: 20, top: 30, bottom: 40 },
+    xAxis: {
+      type: 'category',
+      data: monthsSorted,
+      axisLine: { lineStyle: { color: '#254b74' } },
+      axisLabel: { color: colorText }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: { lineStyle: { color: '#254b74' } },
+      splitLine: { lineStyle: { color: '#203a5b' } },
+      axisLabel: { color: colorText }
+    },
+    series: [{
+      name: '文章数',
+      type: 'bar',
+      data: monthCounts,
+      itemStyle: { color: colorPrimary },
+      emphasis: { itemStyle: { color: colorAccent } }
+    },{
+      name: '趋势',
+      type: 'line',
+      data: monthCounts,
+      smooth: true,
+      lineStyle: { color: colorAccent, width: 2 },
+      symbolSize: 6
+    }]
+  });
+  makeResponsive(trend);
+
+  // 热门分类 Top10
+  const topBar = echarts.init(document.getElementById('topCategories'));
+  topBar.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'axis' },
+    grid: { left: 80, right: 20, top: 20, bottom: 40 },
+    xAxis: {
+      type: 'value',
+      axisLine: { lineStyle: { color: '#254b74' } },
+      splitLine: { lineStyle: { color: '#203a5b' } },
+      axisLabel: { color: colorText }
+    },
+    yAxis: {
+      type: 'category',
+      data: (topCats.length ? topCats : [{name:'暂无数据', value:1}]).map(d => d.name),
+      axisLine: { lineStyle: { color: '#254b74' } },
+      axisLabel: { color: colorText }
+    },
+    series: [{
+      name: '文章数',
+      type: 'bar',
+      data: (topCats.length ? topCats : [{name:'暂无数据', value:1}]).map(d => d.value),
+      itemStyle: { color: colorPrimary },
+      emphasis: { itemStyle: { color: colorAccent } }
+    }]
+  });
+  makeResponsive(topBar);
+
+  // 年度热力图已移除以避免页面溢出
+}
+
+// 初始化
+window.addEventListener('DOMContentLoaded', initCharts);
 </script>
 
 <style>
-.stats-container {
+.dashboard {
+  /* 直接映射 PaperMod 变量，自动随主题切换 */
+  --bg: var(--theme, #ffffff);
+  --panel: var(--entry, #f8f9fa);
+  --border: var(--border, rgba(0,0,0,0.08));
+  --glow: rgba(0, 212, 255, 0.2);
+  --text: var(--content, #2c3e50);
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: var(--bg);
+  border-radius: 12px;
+}
+
+.dashboard-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
-  margin-top: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.dashboard-header.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: rgba(19, 34, 54, 0.95);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  backdrop-filter: saturate(120%) blur(4px);
 }
 
-.chart-box {
-  background: #CFF4D2;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+.header-left h2 {
+  margin: 0;
+  color: var(--accentColor, #29f3c3);
+}
+.subtitle { color: var(--content, #2c3e50); opacity: 0.75; margin: 0.25rem 0 0; }
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 0.75rem;
 }
 
-#categoryChart {
-  background: #F8F9FA;
+.metric-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 0 20px var(--glow);
+  min-width: 140px;
+}
+.metric-value { font-size: 1.6rem; color: var(--accentColor, #29f3c3); font-weight: 700; }
+.metric-label { font-size: 0.9rem; color: var(--text); opacity: 0.8; }
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
+  gap: 1rem;
 }
 
-#wordCloud {
-  padding: 1rem;
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 0 25px var(--glow);
+  padding: 0.5rem 0.75rem 0.75rem;
   overflow: hidden;
 }
+.chart { width: 100%; height: 340px; overflow: hidden; }
+.panel-header { color: var(--text); font-weight: 600; margin-bottom: 0.5rem; }
+.chart { width: 100%; height: 340px; }
 
-.chart-box h3 {
-  color: #329D9C;
+/* 自适应 */
+@media (max-width: 1024px) {
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .chart { height: 280px; }
 }
 </style>

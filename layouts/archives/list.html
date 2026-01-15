@@ -20,13 +20,27 @@
     </div>
   </div>
 
+  <!-- ==================== 跳转：数据大屏 ==================== -->
+  <!-- <div class="jump-row" style="display:flex; justify-content:center; margin: 0 0 1.5rem;">
+    <a href="{{ "statistics/" | relURL }}" style="
+      display:inline-flex; align-items:center; gap:0.5rem;
+      padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration:none;
+      background: var(--primary, #3498db); color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      transition: transform .15s ease, box-shadow .15s ease;
+    " aria-label="跳转至站点数据大屏">
+      <span class="icon" style="font-weight:700;">📊</span>
+      <span>查看数据大屏</span>
+    </a>
+  </div> -->
+
   <!-- ==================== 分类/标签云 ==================== -->
   <div class="taxonomy-clouds" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
     <!-- 分类云 -->
     <div class="category-cloud" style="background: #f8f9fa; border-radius: 8px; padding: 1.5rem;">
       <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; margin-bottom: 1rem;">分类导航</h3>
       <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-        {{ range site.Taxonomies.categories }}
+        {{ range first 15 site.Taxonomies.categories.ByCount }}
         <a href="{{ .Page.RelPermalink }}" style="
           background: #e8f4ff;
           padding: 0.3rem 0.8rem;
@@ -47,7 +61,7 @@
     <div class="tag-cloud" style="background: #f8f9fa; border-radius: 8px; padding: 1.5rem;">
       <h3 style="color: #2c3e50; border-bottom: 2px solid #34db7f; padding-bottom: 0.5rem; margin-bottom: 1rem;">热门标签</h3>
       <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-        {{ $tags := site.Taxonomies.tags.ByCount }}
+        {{ $tags := first 15 site.Taxonomies.tags.ByCount }}
         {{ range $tags }}
         {{ $tagURL := printf "/tags/%s/" ( .Term | urlize ) }}
         <a href="{{ $tagURL }}" style="
@@ -70,7 +84,7 @@
 
   <!-- ==================== 时间线归档 ==================== -->
   {{ $pages := where site.RegularPages "Section" "in" (slice "posts" "studynotes" "portfolio") }}
-  {{ $paginator := .Paginate $pages 20 }}
+  {{ $paginator := .Paginate $pages 5 }}
   
   <div class="timeline">
     {{ if $paginator.Pages }}
