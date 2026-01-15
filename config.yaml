@@ -1,5 +1,5 @@
 # --- 基本站点配置 ---
-baseURL: "https://lanshi.xyz/"
+baseURL: "https://lanshi.space/"
 languageCode: "zh-cn"
 defaultContentLanguage: "zh-cn"
 title: "lanshi个人博客"
@@ -83,7 +83,7 @@ params:
     - name: "tiktok"
       url: "https://v.douyin.com/i5BEn6SC/"
     - name: "wechat"
-      url: "https://img.picui.cn/free/2025/04/19/68030b5da4fa3.png"
+      url: "https://linxichat.oss-cn-shenzhen.aliyuncs.com/website/wechat.png"
     - name: "qq"
       url: "https://qm.qq.com/q/NAXbuT3rQA"
     - name: "github"

@@ -5,7 +5,7 @@ set -eo pipefail
 # 配置变量区（按需修改）
 # ----------------------
 HUGO_DIR="/home/$USER/hugo_blog"
-TARGET_DIR="/var/www/lanshi.xyz"
+TARGET_DIR="/var/www/lanshi.space"
 NGINX_USER="hugo"
 WEB_GROUP="webadmin"
 HUGO_CONFIG="config.yaml"

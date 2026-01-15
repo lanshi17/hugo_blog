@@ -2,94 +2,101 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>lanshi个人博客</title>
-    <link>https://lanshi.xyz/</link>
+    <link>https://lanshi.space/</link>
     <description>Recent content on lanshi个人博客</description>
-    <generator>Hugo -- 0.148.1</generator>
+    <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 13 Sep 2025 12:47:02 +0800</lastBuildDate>
-    <atom:link href="https://lanshi.xyz/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 13 Dec 2025 12:47:02 +0800</lastBuildDate>
+    <atom:link href="https://lanshi.space/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>火力发电锅炉燃烧效率优化：机器学习回归算法实战</title>
+      <link>https://lanshi.space/studynotes/aiot1.1.3/</link>
+      <pubDate>Sat, 13 Dec 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.space/studynotes/aiot1.1.3/</guid>
+      <description>本笔记详细记录了在“火力发电锅炉燃烧效率优化”项目中，利用多种机器学习回归算法对经过特征工程处理后的锅炉运行数据进行建模、训练、评估和预测的过程。目标是找到最适合预测锅炉燃烧效率的模型。</description>
+    </item>
     <item>
       <title>火力发电效率数据特征工程</title>
-      <link>https://lanshi.xyz/studynotes/aiot1.1.2/</link>
+      <link>https://lanshi.space/studynotes/aiot1.1.2/</link>
       <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/aiot1.1.2/</guid>
+      <guid>https://lanshi.space/studynotes/aiot1.1.2/</guid>
       <description>本文系统梳理了从数据加载到特征工程核心步骤的技术流程，包括数据归一化、正态化、异常值检测与多重共线性处理。结合技术原理说明、代码解析和可视化分析，适用于数据科学/机器学习初学者或中级用户阅读。</description>
     </item>
     <item>
       <title>给AI模型用工具的能力</title>
-      <link>https://lanshi.xyz/studynotes/application_of_ai_model_tools/</link>
+      <link>https://lanshi.space/studynotes/application_of_ai_model_tools/</link>
       <pubDate>Sat, 26 Jul 2025 18:06:26 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/application_of_ai_model_tools/</guid>
+      <guid>https://lanshi.space/studynotes/application_of_ai_model_tools/</guid>
       <description>本文介绍了如何给AI模型赋予使用工具的能力，包括自定义工具、使用现成的AI工具运行代码和分析数据表格，以及多个工具组成AI工具箱。详细展示了baseTool、hub、create_structured_chat_agent和AgentExecutor的代码示例，并提供了具体的输出结果。</description>
     </item>
     <item>
       <title>AI读取文件及RAG应用</title>
-      <link>https://lanshi.xyz/studynotes/ai_reading_files_and_rag_applications/</link>
+      <link>https://lanshi.space/studynotes/ai_reading_files_and_rag_applications/</link>
       <pubDate>Thu, 24 Jul 2025 20:55:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/ai_reading_files_and_rag_applications/</guid>
+      <guid>https://lanshi.space/studynotes/ai_reading_files_and_rag_applications/</guid>
       <description>本文介绍了如何让AI读取外部文件并应用RAG（Retrieval-Augmented Generation）技术，包括准备外部数据、用户提问后搜索、询问模型。详细展示了TXT、PDF和在线资源的加载示例，文本块应用，文本向量化，向量数据库的使用，以及自动化RAG对话链的构建。</description>
     </item>
     <item>
       <title>给AI模型添加记忆</title>
-      <link>https://lanshi.xyz/posts/ai-memory/</link>
+      <link>https://lanshi.space/posts/ai-memory/</link>
       <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/ai-memory/</guid>
+      <guid>https://lanshi.space/posts/ai-memory/</guid>
       <description>本文介绍了如何给AI模型添加记忆，包括手动存储记忆、自动带记忆的对话链以及不同类型的记忆（如ConversationBufferMemory、ConversationBufferWindowMemory、ConversationSummaryMemory、ConversationSummaryBufferMemory和ConversationTokenBufferMemory）的详细对比和使用示例。</description>
     </item>
     <item>
       <title>视频脚本一键生成器</title>
-      <link>https://lanshi.xyz/portfolio/one-click_video_script_generator/</link>
+      <link>https://lanshi.space/portfolio/one-click_video_script_generator/</link>
       <pubDate>Sun, 06 Jul 2025 23:18:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/portfolio/one-click_video_script_generator/</guid>
+      <guid>https://lanshi.space/portfolio/one-click_video_script_generator/</guid>
       <description>本文介绍了如何使用大模型和维基百科API生成视频脚本，包括创建项目及安装依赖项、创建AI请求以及创建网站页面的详细步骤。</description>
     </item>
     <item>
       <title>AI模型与输入输出</title>
-      <link>https://lanshi.xyz/studynotes/ai_models_and_input_output/</link>
+      <link>https://lanshi.space/studynotes/ai_models_and_input_output/</link>
       <pubDate>Fri, 04 Jul 2025 23:40:24 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/ai_models_and_input_output/</guid>
+      <guid>https://lanshi.space/studynotes/ai_models_and_input_output/</guid>
       <description>本文介绍了如何使用AI模型进行基本的输入输出操作，包括基本使用方法、模板化输入、小样本示例模版化、从输出中提取列表和JSON，以及LCEL（LangChain表达式语言）的使用。</description>
     </item>
     <item>
       <title>LangChain介绍</title>
-      <link>https://lanshi.xyz/posts/langchain_introduce/</link>
+      <link>https://lanshi.space/posts/langchain_introduce/</link>
       <pubDate>Tue, 01 Jul 2025 15:18:24 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/langchain_introduce/</guid>
+      <guid>https://lanshi.space/posts/langchain_introduce/</guid>
       <description>本文介绍了LangChain的必要性、功能以及如何安装和使用LangChain。</description>
     </item>
     <item>
       <title>API用法示例</title>
-      <link>https://lanshi.xyz/studynotes/api_usage_example/</link>
+      <link>https://lanshi.space/studynotes/api_usage_example/</link>
       <pubDate>Fri, 27 Jun 2025 23:11:22 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/api_usage_example/</guid>
+      <guid>https://lanshi.space/studynotes/api_usage_example/</guid>
       <description>本文介绍了如何使用API进行文本总结、文本撰写、文本分类和文本翻译。</description>
     </item>
     <item>
       <title>提示词工程</title>
-      <link>https://lanshi.xyz/posts/promptengineering/</link>
+      <link>https://lanshi.space/posts/promptengineering/</link>
       <pubDate>Fri, 27 Jun 2025 16:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/promptengineering/</guid>
+      <guid>https://lanshi.space/posts/promptengineering/</guid>
       <description>本文详细介绍了提示词优化的原则和方法，帮助读者更好地利用AI模型。</description>
     </item>
     <item>
       <title>LobeChat 部署 - 服务端</title>
-      <link>https://lanshi.xyz/posts/lobechat_deploy/</link>
+      <link>https://lanshi.space/posts/lobechat_deploy/</link>
       <pubDate>Sun, 15 Jun 2025 19:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/lobechat_deploy/</guid>
+      <guid>https://lanshi.space/posts/lobechat_deploy/</guid>
       <description>详细步骤和命令，帮助你在服务器上部署 LobeChat 服务端。</description>
     </item>
     <item>
       <title>模型评估与选择</title>
-      <link>https://lanshi.xyz/studynotes/watermelonbook02/</link>
+      <link>https://lanshi.space/studynotes/watermelonbook02/</link>
       <pubDate>Sun, 15 Jun 2025 18:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/watermelonbook02/</guid>
+      <guid>https://lanshi.space/studynotes/watermelonbook02/</guid>
       <description>本文深入探讨了模型评估与选择的核心概念，包括经验误差与拟合、评估方法、性能度量等，帮助读者更好地理解和应用这些知识。</description>
     </item>
     <item>
       <title>LaTeX常用数学符号大全</title>
-      <link>https://lanshi.xyz/posts/common_mathematical_formulas/</link>
+      <link>https://lanshi.space/posts/common_mathematical_formulas/</link>
       <pubDate>Tue, 08 Apr 2025 14:30:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/common_mathematical_formulas/</guid>
+      <guid>https://lanshi.space/posts/common_mathematical_formulas/</guid>
       <description>&lt;h2 id=&#34;latex常用数学符号大全&#34;&gt;LaTeX常用数学符号大全&lt;/h2&gt;
 &lt;p&gt;本文整理了LaTeX中常用的数学符号，包括关系符号、运算符号、集合符号、逻辑符号、箭头符号和希腊字母等。每个符号都附有LaTeX代码和效果展示，方便大家快速查阅和使用。&lt;/p&gt;
 &lt;h3 id=&#34;一关系符号&#34;&gt;一、关系符号&lt;/h3&gt;
@@ -427,65 +434,65 @@
     </item>
     <item>
       <title>火力发电效率数据探索分析</title>
-      <link>https://lanshi.xyz/studynotes/aiot1.1.1/</link>
+      <link>https://lanshi.space/studynotes/aiot1.1.1/</link>
       <pubDate>Wed, 02 Apr 2025 10:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/aiot1.1.1/</guid>
+      <guid>https://lanshi.space/studynotes/aiot1.1.1/</guid>
       <description>火力发电效率数据的探索性分析，包括相关性热力图、特征分布可视化和数据预处理</description>
     </item>
     <item>
       <title>数据库系统原理课程学习笔记(四)</title>
-      <link>https://lanshi.xyz/studynotes/databaseex4/</link>
+      <link>https://lanshi.space/studynotes/databaseex4/</link>
       <pubDate>Wed, 26 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>https://lanshi.xyz/studynotes/databaseex4/</guid>
+      <guid>https://lanshi.space/studynotes/databaseex4/</guid>
       <description>数据库系统原理课程复习笔记，包括核心概念、理论、操作技巧及练习题解析。</description>
     </item>
     <item>
       <title>西瓜书学习笔记(一)--绪论</title>
-      <link>https://lanshi.xyz/studynotes/watermelonbook01/</link>
+      <link>https://lanshi.space/studynotes/watermelonbook01/</link>
       <pubDate>Thu, 20 Mar 2025 18:30:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/watermelonbook01/</guid>
+      <guid>https://lanshi.space/studynotes/watermelonbook01/</guid>
       <description>机器学习的基本概念包括样本、示例、训练集、测试集等，对于机器学习的发展历程和现状进行分析，并引用了“没有免费午餐”定理来讨论归纳偏好问题。</description>
     </item>
     <item>
       <title>数据库系统原理课程学习笔记(三)</title>
-      <link>https://lanshi.xyz/studynotes/databaseex3/</link>
+      <link>https://lanshi.space/studynotes/databaseex3/</link>
       <pubDate>Wed, 19 Mar 2025 12:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/databaseex3/</guid>
+      <guid>https://lanshi.space/studynotes/databaseex3/</guid>
       <description>数据库系统原理课程学习笔记(三)，主要整理数据库概念、关系数据库、SQL语言、数据库设计、数据库恢复技术、数据库安全性及完整性等核心知识点，适用于期末复习和知识点查漏补缺。</description>
     </item>
     <item>
       <title>如何有效提问?</title>
-      <link>https://lanshi.xyz/posts/how_to_ask_effective_questions/</link>
+      <link>https://lanshi.space/posts/how_to_ask_effective_questions/</link>
       <pubDate>Mon, 17 Mar 2025 16:48:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/how_to_ask_effective_questions/</guid>
+      <guid>https://lanshi.space/posts/how_to_ask_effective_questions/</guid>
       <description>怎么样提问高效获取信息</description>
     </item>
     <item>
       <title>SQL数据库系统课后练习(二)</title>
-      <link>https://lanshi.xyz/studynotes/databaseex2/</link>
+      <link>https://lanshi.space/studynotes/databaseex2/</link>
       <pubDate>Sat, 15 Mar 2025 19:30:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/databaseex2/</guid>
+      <guid>https://lanshi.space/studynotes/databaseex2/</guid>
       <description>数据库系统核心知识点练习题集，包含SQL查询、关系代数、范式分解和E-R图设计等实践内容</description>
     </item>
     <item>
       <title>SQL数据库系统课后练习(一)</title>
-      <link>https://lanshi.xyz/studynotes/databaseex1/</link>
+      <link>https://lanshi.space/studynotes/databaseex1/</link>
       <pubDate>Sun, 09 Mar 2025 16:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/databaseex1/</guid>
+      <guid>https://lanshi.space/studynotes/databaseex1/</guid>
       <description>数据库系统核心知识点练习题集，包含SQL查询、关系代数、范式分解和E-R图设计等实践内容</description>
     </item>
     <item>
       <title>FishStone Cloud V1.0 云存储系统</title>
-      <link>https://lanshi.xyz/portfolio/fishstone-cloud-v1.0/</link>
+      <link>https://lanshi.space/portfolio/fishstone-cloud-v1.0/</link>
       <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
-      <guid>https://lanshi.xyz/portfolio/fishstone-cloud-v1.0/</guid>
+      <guid>https://lanshi.space/portfolio/fishstone-cloud-v1.0/</guid>
       <description>基于 Flask 框架开发的文件管理系统</description>
     </item>
     <item>
       <title>自动连接校园网-南通理工学院</title>
-      <link>https://lanshi.xyz/portfolio/auto_connect_school_network/</link>
+      <link>https://lanshi.space/portfolio/auto_connect_school_network/</link>
       <pubDate>Sat, 08 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/portfolio/auto_connect_school_network/</guid>
+      <guid>https://lanshi.space/portfolio/auto_connect_school_network/</guid>
       <description>&lt;h2 id=&#34;校园网络自动登录脚本&#34;&gt;校园网络自动登录脚本&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://github.com/lanshi47/connect_ntit_network&#34;&gt;Github项目链接&lt;/a&gt;&lt;/p&gt;
 &lt;h4 id=&#34;项目简介&#34;&gt;项目简介&lt;/h4&gt;
@@ -562,16 +569,16 @@
     </item>
     <item>
       <title>ctex的字体设置</title>
-      <link>https://lanshi.xyz/posts/latex01/</link>
+      <link>https://lanshi.space/posts/latex01/</link>
       <pubDate>Fri, 07 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/latex01/</guid>
+      <guid>https://lanshi.space/posts/latex01/</guid>
       <description>latex的字体设置</description>
     </item>
     <item>
       <title>数据库学习笔记</title>
-      <link>https://lanshi.xyz/studynotes/database/</link>
+      <link>https://lanshi.space/studynotes/database/</link>
       <pubDate>Wed, 05 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/studynotes/database/</guid>
+      <guid>https://lanshi.space/studynotes/database/</guid>
       <description>这是我的第一篇学习日志。</description>
     </item>
   </channel>

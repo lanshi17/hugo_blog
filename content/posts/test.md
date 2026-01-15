@@ -15,7 +15,6 @@ description: "Desc Text." # 页面描述文字，用于SEO
 canonicalURL: "https://canonical.url/to/page" # 正文的首选URL（canonical链接）
 disableHLJS: true # 禁用代码高亮（Highlight.js）
 disableShare: false # 是否禁用分享功能
-disableHLJS: false # 再次设置是否禁用代码高亮（可能为冗余设置）
 hideSummary: false # 是否隐藏文章摘要
 searchHidden: true # 是否从站点搜索中隐藏文章
 ShowReadingTime: true # 是否显示阅读时间

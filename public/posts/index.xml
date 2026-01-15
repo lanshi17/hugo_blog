@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on lanshi个人博客</title>
-    <link>https://lanshi.xyz/posts/</link>
+    <link>https://lanshi.space/posts/</link>
     <description>Recent content in Posts on lanshi个人博客</description>
-    <generator>Hugo -- 0.148.1</generator>
+    <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 08 Jul 2025 23:11:16 +0800</lastBuildDate>
-    <atom:link href="https://lanshi.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://lanshi.space/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>给AI模型添加记忆</title>
-      <link>https://lanshi.xyz/posts/ai-memory/</link>
+      <link>https://lanshi.space/posts/ai-memory/</link>
       <pubDate>Tue, 08 Jul 2025 23:11:16 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/ai-memory/</guid>
+      <guid>https://lanshi.space/posts/ai-memory/</guid>
       <description>本文介绍了如何给AI模型添加记忆，包括手动存储记忆、自动带记忆的对话链以及不同类型的记忆（如ConversationBufferMemory、ConversationBufferWindowMemory、ConversationSummaryMemory、ConversationSummaryBufferMemory和ConversationTokenBufferMemory）的详细对比和使用示例。</description>
     </item>
     <item>
       <title>LangChain介绍</title>
-      <link>https://lanshi.xyz/posts/langchain_introduce/</link>
+      <link>https://lanshi.space/posts/langchain_introduce/</link>
       <pubDate>Tue, 01 Jul 2025 15:18:24 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/langchain_introduce/</guid>
+      <guid>https://lanshi.space/posts/langchain_introduce/</guid>
       <description>本文介绍了LangChain的必要性、功能以及如何安装和使用LangChain。</description>
     </item>
     <item>
       <title>提示词工程</title>
-      <link>https://lanshi.xyz/posts/promptengineering/</link>
+      <link>https://lanshi.space/posts/promptengineering/</link>
       <pubDate>Fri, 27 Jun 2025 16:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/promptengineering/</guid>
+      <guid>https://lanshi.space/posts/promptengineering/</guid>
       <description>本文详细介绍了提示词优化的原则和方法，帮助读者更好地利用AI模型。</description>
     </item>
     <item>
       <title>LobeChat 部署 - 服务端</title>
-      <link>https://lanshi.xyz/posts/lobechat_deploy/</link>
+      <link>https://lanshi.space/posts/lobechat_deploy/</link>
       <pubDate>Sun, 15 Jun 2025 19:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/lobechat_deploy/</guid>
+      <guid>https://lanshi.space/posts/lobechat_deploy/</guid>
       <description>详细步骤和命令，帮助你在服务器上部署 LobeChat 服务端。</description>
     </item>
     <item>
       <title>LaTeX常用数学符号大全</title>
-      <link>https://lanshi.xyz/posts/common_mathematical_formulas/</link>
+      <link>https://lanshi.space/posts/common_mathematical_formulas/</link>
       <pubDate>Tue, 08 Apr 2025 14:30:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/common_mathematical_formulas/</guid>
+      <guid>https://lanshi.space/posts/common_mathematical_formulas/</guid>
       <description>&lt;h2 id=&#34;latex常用数学符号大全&#34;&gt;LaTeX常用数学符号大全&lt;/h2&gt;
 &lt;p&gt;本文整理了LaTeX中常用的数学符号，包括关系符号、运算符号、集合符号、逻辑符号、箭头符号和希腊字母等。每个符号都附有LaTeX代码和效果展示，方便大家快速查阅和使用。&lt;/p&gt;
 &lt;h3 id=&#34;一关系符号&#34;&gt;一、关系符号&lt;/h3&gt;
@@ -378,16 +378,16 @@
     </item>
     <item>
       <title>如何有效提问?</title>
-      <link>https://lanshi.xyz/posts/how_to_ask_effective_questions/</link>
+      <link>https://lanshi.space/posts/how_to_ask_effective_questions/</link>
       <pubDate>Mon, 17 Mar 2025 16:48:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/how_to_ask_effective_questions/</guid>
+      <guid>https://lanshi.space/posts/how_to_ask_effective_questions/</guid>
       <description>怎么样提问高效获取信息</description>
     </item>
     <item>
       <title>ctex的字体设置</title>
-      <link>https://lanshi.xyz/posts/latex01/</link>
+      <link>https://lanshi.space/posts/latex01/</link>
       <pubDate>Fri, 07 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/posts/latex01/</guid>
+      <guid>https://lanshi.space/posts/latex01/</guid>
       <description>latex的字体设置</description>
     </item>
   </channel>

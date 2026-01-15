@@ -2,143 +2,143 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Categories on lanshi个人博客</title>
-    <link>https://lanshi.xyz/categories/</link>
+    <link>https://lanshi.space/categories/</link>
     <description>Recent content in Categories on lanshi个人博客</description>
-    <generator>Hugo -- 0.148.1</generator>
+    <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 13 Sep 2025 12:47:02 +0800</lastBuildDate>
-    <atom:link href="https://lanshi.xyz/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 13 Dec 2025 12:47:02 +0800</lastBuildDate>
+    <atom:link href="https://lanshi.space/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>机器学习</title>
-      <link>https://lanshi.xyz/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
-      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+      <link>https://lanshi.space/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Sat, 13 Dec 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.space/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
       <description></description>
     </item>
     <item>
       <title>数据科学</title>
-      <link>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</link>
-      <pubDate>Sat, 13 Sep 2025 12:47:02 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</guid>
+      <link>https://lanshi.space/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</link>
+      <pubDate>Sat, 13 Dec 2025 12:47:02 +0800</pubDate>
+      <guid>https://lanshi.space/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</guid>
       <description></description>
     </item>
     <item>
       <title>编程</title>
-      <link>https://lanshi.xyz/categories/%E7%BC%96%E7%A8%8B/</link>
+      <link>https://lanshi.space/categories/%E7%BC%96%E7%A8%8B/</link>
       <pubDate>Sat, 26 Jul 2025 18:06:26 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E7%BC%96%E7%A8%8B/</guid>
+      <guid>https://lanshi.space/categories/%E7%BC%96%E7%A8%8B/</guid>
       <description></description>
     </item>
     <item>
       <title>技术教程</title>
-      <link>https://lanshi.xyz/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/</link>
+      <link>https://lanshi.space/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/</link>
       <pubDate>Fri, 27 Jun 2025 16:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/</guid>
+      <guid>https://lanshi.space/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/</guid>
       <description></description>
     </item>
     <item>
       <title>教程</title>
-      <link>https://lanshi.xyz/categories/%E6%95%99%E7%A8%8B/</link>
+      <link>https://lanshi.space/categories/%E6%95%99%E7%A8%8B/</link>
       <pubDate>Sun, 15 Jun 2025 19:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E6%95%99%E7%A8%8B/</guid>
+      <guid>https://lanshi.space/categories/%E6%95%99%E7%A8%8B/</guid>
       <description></description>
     </item>
     <item>
       <title>技术</title>
-      <link>https://lanshi.xyz/categories/%E6%8A%80%E6%9C%AF/</link>
+      <link>https://lanshi.space/categories/%E6%8A%80%E6%9C%AF/</link>
       <pubDate>Tue, 08 Apr 2025 14:30:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E6%8A%80%E6%9C%AF/</guid>
+      <guid>https://lanshi.space/categories/%E6%8A%80%E6%9C%AF/</guid>
       <description></description>
     </item>
     <item>
       <title>教学资源</title>
-      <link>https://lanshi.xyz/categories/%E6%95%99%E5%AD%A6%E8%B5%84%E6%BA%90/</link>
+      <link>https://lanshi.space/categories/%E6%95%99%E5%AD%A6%E8%B5%84%E6%BA%90/</link>
       <pubDate>Wed, 26 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>https://lanshi.xyz/categories/%E6%95%99%E5%AD%A6%E8%B5%84%E6%BA%90/</guid>
+      <guid>https://lanshi.space/categories/%E6%95%99%E5%AD%A6%E8%B5%84%E6%BA%90/</guid>
       <description></description>
     </item>
     <item>
       <title>AI学习</title>
-      <link>https://lanshi.xyz/categories/ai%E5%AD%A6%E4%B9%A0/</link>
+      <link>https://lanshi.space/categories/ai%E5%AD%A6%E4%B9%A0/</link>
       <pubDate>Thu, 20 Mar 2025 18:30:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/ai%E5%AD%A6%E4%B9%A0/</guid>
+      <guid>https://lanshi.space/categories/ai%E5%AD%A6%E4%B9%A0/</guid>
       <description></description>
     </item>
     <item>
       <title>数据库系统</title>
-      <link>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/</link>
+      <link>https://lanshi.space/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/</link>
       <pubDate>Wed, 19 Mar 2025 12:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/</guid>
+      <guid>https://lanshi.space/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/</guid>
       <description></description>
     </item>
     <item>
       <title>高效</title>
-      <link>https://lanshi.xyz/categories/%E9%AB%98%E6%95%88/</link>
+      <link>https://lanshi.space/categories/%E9%AB%98%E6%95%88/</link>
       <pubDate>Mon, 17 Mar 2025 16:48:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E9%AB%98%E6%95%88/</guid>
+      <guid>https://lanshi.space/categories/%E9%AB%98%E6%95%88/</guid>
       <description></description>
     </item>
     <item>
       <title>人文</title>
-      <link>https://lanshi.xyz/categories/%E4%BA%BA%E6%96%87/</link>
+      <link>https://lanshi.space/categories/%E4%BA%BA%E6%96%87/</link>
       <pubDate>Mon, 17 Mar 2025 16:48:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E4%BA%BA%E6%96%87/</guid>
+      <guid>https://lanshi.space/categories/%E4%BA%BA%E6%96%87/</guid>
       <description></description>
     </item>
     <item>
       <title>备考</title>
-      <link>https://lanshi.xyz/categories/%E5%A4%87%E8%80%83/</link>
+      <link>https://lanshi.space/categories/%E5%A4%87%E8%80%83/</link>
       <pubDate>Sat, 15 Mar 2025 19:30:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E5%A4%87%E8%80%83/</guid>
+      <guid>https://lanshi.space/categories/%E5%A4%87%E8%80%83/</guid>
       <description></description>
     </item>
     <item>
       <title>Flask</title>
-      <link>https://lanshi.xyz/categories/flask/</link>
+      <link>https://lanshi.space/categories/flask/</link>
       <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/flask/</guid>
+      <guid>https://lanshi.space/categories/flask/</guid>
       <description></description>
     </item>
     <item>
       <title>云盘系统</title>
-      <link>https://lanshi.xyz/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</link>
+      <link>https://lanshi.space/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</link>
       <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</guid>
+      <guid>https://lanshi.space/categories/%E4%BA%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</guid>
       <description></description>
     </item>
     <item>
       <title>作品集</title>
-      <link>https://lanshi.xyz/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</link>
+      <link>https://lanshi.space/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</link>
       <pubDate>Sat, 08 Mar 2025 14:15:45 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</guid>
+      <guid>https://lanshi.space/categories/%E4%BD%9C%E5%93%81%E9%9B%86/</guid>
       <description></description>
     </item>
     <item>
       <title>Python</title>
-      <link>https://lanshi.xyz/categories/python/</link>
+      <link>https://lanshi.space/categories/python/</link>
       <pubDate>Sat, 08 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/python/</guid>
+      <guid>https://lanshi.space/categories/python/</guid>
       <description></description>
     </item>
     <item>
       <title>爬虫</title>
-      <link>https://lanshi.xyz/categories/%E7%88%AC%E8%99%AB/</link>
+      <link>https://lanshi.space/categories/%E7%88%AC%E8%99%AB/</link>
       <pubDate>Sat, 08 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E7%88%AC%E8%99%AB/</guid>
+      <guid>https://lanshi.space/categories/%E7%88%AC%E8%99%AB/</guid>
       <description></description>
     </item>
     <item>
       <title>Latex</title>
-      <link>https://lanshi.xyz/categories/latex/</link>
+      <link>https://lanshi.space/categories/latex/</link>
       <pubDate>Fri, 07 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/latex/</guid>
+      <guid>https://lanshi.space/categories/latex/</guid>
       <description></description>
     </item>
     <item>
       <title>学习打卡</title>
-      <link>https://lanshi.xyz/categories/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</link>
+      <link>https://lanshi.space/categories/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</link>
       <pubDate>Wed, 05 Mar 2025 00:00:00 +0800</pubDate>
-      <guid>https://lanshi.xyz/categories/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</guid>
+      <guid>https://lanshi.space/categories/%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/</guid>
       <description></description>
     </item>
   </channel>
