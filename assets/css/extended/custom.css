@@ -1,191 +1,523 @@
-/* 全局基础样式 */
-/* 全局变量定义 */
+/* ================= 沉浸式阅读主题 - 全局优化 ================= */
+
+/* 全局变量定义 - 现代化配色方案 */
 :root {
   --gap: 24px;
   --content-gap: 20px;
   --nav-width: 1024px;
-  --main-width: 720px;
-  --header-height: 60px;
+  --main-width: 800px;
+  --header-height: 64px;
   --footer-height: 60px;
-  --radius: 8px;
-  --theme: #f9fdfe; /* 浅色主题背景 */
+  --radius: 12px;
+  
+  /* 沉浸式阅读调色板 */
+  --theme: #fafbfc; /* 浅色主题背景 */
   --entry: #ffffff; /* 内容区块背景 */
-  --primary: #205072; /* 主色（深绿） */
-  --secondary: #329D9C; /* 强调色（蓝绿） */
-  --tertiary: #56C596; /* 辅助色（中绿） */
-  --accent: #7BE495; /* 高亮色（亮绿） */
-  --light-bg: #CFF4D2; /* 浅色背景 */
-  --text-color: #222222; /* 主文字颜色 */
-  --border-color: #e1e1e1; /* 边框颜色 */
+  --primary: #205072; /* 深蓝主色 */
+  --secondary: #329D9C; /* 青绿强调色 */
+  --tertiary: #56C596; /* 中绿辅助色 */
+  --accent: #7BE495; /* 亮绿高亮色 */
+  --light-bg: #f0f8f7; /* 浅色背景 */
+  --text-color: #2c3e50; /* 主文字颜色 */
+  --text-secondary: #7f8c8d; /* 次要文字颜色 */
+  --border-color: #e8ecef; /* 边框颜色 */
+  
+  /* 排版优化 */
+  --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-mono: 'Fira Code', 'Monaco', 'Ubuntu Mono', monospace;
+  --line-height-base: 1.8;
+  --letter-spacing-base: 0.02em;
 }
 
-/* 暗黑模式变量覆盖 */
+/* 暗黑模式变量覆盖 - 精心设计 */
 .dark {
-  --theme: #2d3748; /* 暗黑背景 */
-  --entry: #222831; /* 暗黑内容背景 */
-  --primary: #329D9C; /* 主色（蓝绿） */
-  --secondary: #56C596; /* 辅助色（中绿） */
-  --tertiary: #4a5568; /* 暗色辅助 */
-  --accent: #7BE495; /* 高亮色 */
-  --light-bg: #3a414d; /* 暗黑浅背景 */
+  --theme: #1a1a1a; /* 暗黑背景 */
+  --entry: #242424; /* 暗黑内容背景 */
+  --primary: #7BE495; /* 亮绿主色 */
+  --secondary: #56C596; /* 中绿强调色 */
+  --tertiary: #329D9C; /* 青绿辅助色 */
+  --accent: #329D9C; /* 青绿高亮色 */
+  --light-bg: #2a2a2a; /* 暗黑浅背景 */
   --text-color: #e0e7eb; /* 暗黑文字 */
-  --border-color: #3d4756; /* 暗黑边框 */
+  --text-secondary: #a8adb8; /* 暗黑次要文字 */
+  --border-color: #3d4451; /* 暗黑边框 */
 }
 
-/* 列表样式 */
-.list {
-  background: var(--light-bg);
-}
-.dark .list {
-  background: var(--entry);
+/* 基础样式优化 */
+* {
+  box-sizing: border-box;
 }
 
-/* 通用样式 */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 通用样式 - 沉浸式阅读体验 */
 body {
   color: var(--text-color);
-  line-height: 1.7;
   background-color: var(--theme);
-  font-family: 'Segoe UI', Arial, sans-serif;
-  transition: background-color 0.3s, color 0.3s;
+  font-family: var(--font-family-base);
+  font-size: 16px;
+  line-height: var(--line-height-base);
+  letter-spacing: var(--letter-spacing-base);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
-/* 导航栏样式 */
+/* 标题优化 */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  font-weight: 700;
+  margin: 1.5rem 0 1rem 0;
+}
+
+h1 { font-size: 2.2rem; color: var(--primary); }
+h2 { font-size: 1.8rem; color: var(--primary); }
+h3 { font-size: 1.5rem; color: var(--secondary); }
+h4 { font-size: 1.2rem; color: var(--text-color); }
+h5 { font-size: 1.1rem; }
+h6 { font-size: 1rem; }
+
+/* 列表样式优化 */
+.list {
+  background: var(--light-bg);
+  padding: 0;
+  border-radius: 0;
+}
+
+.dark .list {
+  background: transparent;
+}
+
+/* 导航栏增强 - 现代化设计 */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--entry);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.dark header {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
 header nav {
-  background: linear-gradient(145deg, var(--primary), var(--secondary)) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 12px 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 nav a {
-  color: white !important;
-  transition: all 0.3s ease;
-  padding: 8px 15px;
-  border-radius: 4px;
+  color: var(--text-color) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  padding: 8px 16px !important;
+  border-radius: 6px;
   text-decoration: none;
+  position: relative;
+  font-weight: 500;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--secondary);
+  transition: width 0.3s ease, left 0.3s ease;
+  transform: translateX(-50%);
 }
 
 nav a:hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(50, 157, 156, 0.08);
+  color: var(--secondary) !important;
   transform: translateY(-1px);
 }
 
-/* 文章卡片样式 */
+nav a:hover::after {
+  width: 20px;
+}
+
+/* 文章卡片样式 - 精致优雅 */
 .post-entry {
   background: var(--entry);
-  border-radius: 10px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   margin-bottom: 1.5rem;
   border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.dark .post-entry {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .post-entry:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--secondary);
 }
 
-/* 代码块样式 */
+.dark .post-entry:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* 文章卡片内部 */
+.post-entry-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.post-entry-title {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.post-entry-meta {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+}
+
+.post-entry-content {
+  padding: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-color);
+}
+
+/* 代码块优化 */
 pre {
-  background: #282c34;
+  background: #0f1419;
   color: #e0e7eb;
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: var(--radius);
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #3a3f47;
+  font-family: var(--font-family-mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 1.5rem 0;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+pre code {
+  color: inherit;
+  background: transparent;
+  padding: 0;
+}
+
+/* 复制代码按钮 */
 .copy-code {
   display: none;
   position: absolute;
-  top: 4px;
-  right: 4px;
-  color: var(--text-color);
-  background: var(--light-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 0 5px;
-  font-size: 14px;
+  top: 1rem;
+  right: 1rem;
+  color: #999;
+  background: transparent;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-family-mono);
+}
+
+pre:hover .copy-code {
+  display: block;
 }
 
 .copy-code:hover {
-  background: var(--accent);
+  background: var(--secondary);
+  border-color: var(--secondary);
   color: white;
 }
 
-/* 按钮样式 */
+/* 按钮样式 - 现代化 */
 button, .button {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
   border: none;
-  padding: 8px 20px;
-  border-radius: 25px;
-  transition: all 0.3s ease;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-family: var(--font-family-base);
+  font-size: 0.95rem;
+  position: relative;
+  overflow: hidden;
 }
 
-button:hover, .button:hover {
-  background: var(--secondary);
+button::before,
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+button:hover,
+.button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 16px rgba(50, 157, 156, 0.3);
+}
+
+button:hover::before,
+.button:hover::before {
+  left: 100%;
 }
 
 /* 分页器样式 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
 .pagination a {
-  color: var(--primary);
+  color: var(--secondary);
   border: 1px solid var(--border-color);
-  margin: 0 5px;
-  padding: 6px 12px;
-  border-radius: 4px;
+  margin: 0.25rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 .pagination a:hover {
+  background: var(--secondary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.pagination .current {
   background: var(--primary);
   color: white;
+  border-color: var(--primary);
 }
 
 /* 分类标签样式 */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .tags a {
   background: var(--light-bg);
   color: var(--primary);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 4px 12px;
-  margin: 3px;
+  border-radius: 24px;
+  padding: 6px 14px;
   text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.dark .tags a {
+  background: var(--light-bg);
+  color: var(--text-color);
 }
 
 .tags a:hover {
   background: var(--primary);
   color: white;
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }
 
-/* 夜间模式适配 */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: var(--theme);
-    color: var(--text-color);
-  }
-  
-  .post-entry {
-    background: var(--entry);
-  }
-  
-  nav a {
-    color: var(--text-color);
-  }
-  
-  /* 暗黑模式下代码块 */
-  pre {
-    background: #282c34;
-    color: #e0e7eb;
-  }
+/* 链接优化 */
+a {
+  color: var(--secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+/* 焦点状态 */
+a:focus {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /* 自定义动画 */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .post-entry {
   animation: fadeIn 0.6s ease forwards;
+}
+
+/* 页脚样式 */
+footer {
+  background: var(--light-bg);
+  border-top: 1px solid var(--border-color);
+  padding: 2rem 0;
+  margin-top: 3rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.dark footer {
+  background: var(--entry);
+}
+
+footer a {
+  color: var(--secondary);
+}
+
+footer a:hover {
+  color: var(--primary);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  :root {
+    --main-width: 100%;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1.05rem; }
+
+  .post-entry {
+    margin-bottom: 1.2rem;
+    border-radius: 8px;
+  }
+
+  nav a {
+    padding: 6px 12px !important;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --header-height: 56px;
+  }
+
+  body {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.1rem; }
+
+  header nav {
+    padding: 0 1rem !important;
+  }
+
+  nav a {
+    padding: 6px 10px !important;
+    font-size: 0.85rem;
+  }
+
+  pre {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+
+  button, .button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+/* 无障碍支持 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  header,
+  footer,
+  .pagination,
+  .tags {
+    display: none;
+  }
+
+  .post-entry,
+  article {
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
 }

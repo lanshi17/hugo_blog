@@ -9,6 +9,20 @@
     <lastBuildDate>Mon, 12 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://lanshi.space/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>编程</title>
+      <link>https://lanshi.space/tags/%E7%BC%96%E7%A8%8B/</link>
+      <pubDate>Thu, 01 Jan 2026 12:00:00 +0800</pubDate>
+      <guid>https://lanshi.space/tags/%E7%BC%96%E7%A8%8B/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>教程</title>
+      <link>https://lanshi.space/tags/%E6%95%99%E7%A8%8B/</link>
+      <pubDate>Thu, 01 Jan 2026 12:00:00 +0800</pubDate>
+      <guid>https://lanshi.space/tags/%E6%95%99%E7%A8%8B/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>LightGBM</title>
       <link>https://lanshi.space/tags/lightgbm/</link>
       <pubDate>Sat, 13 Dec 2025 12:47:02 +0800</pubDate>
@@ -286,13 +300,6 @@
       <link>https://lanshi.space/tags/latex/</link>
       <pubDate>Tue, 08 Apr 2025 14:30:00 +0800</pubDate>
       <guid>https://lanshi.space/tags/latex/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>教程</title>
-      <link>https://lanshi.space/tags/%E6%95%99%E7%A8%8B/</link>
-      <pubDate>Tue, 08 Apr 2025 14:30:00 +0800</pubDate>
-      <guid>https://lanshi.space/tags/%E6%95%99%E7%A8%8B/</guid>
       <description></description>
     </item>
     <item>

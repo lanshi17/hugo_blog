@@ -12,6 +12,11 @@ busuanzi:
   enable: true
 buildDrafts: false
 
+# --- 沉浸式阅读配置 ---
+immersiveReading: true
+readingProgressBar: true
+focusMode: true
+
 # --- 资源压缩 ---
 minify:
   disableXML: true
@@ -60,7 +65,8 @@ params:
   showReadingTime: true
   showToc: true
   tocOpen: false
-  headerDepth: 2
+  tocSide: true
+  headerDepth: 3
   enableGitInfo: true
   canonifyURLs: true
   disableScrollToTop: false
@@ -68,6 +74,16 @@ params:
   livePreview: true
   fastSearch: true
   enableTaxonomies: true
+  # 沉浸式阅读增强
+  immersiveReadingMode: true
+  readingProgressBar: true
+  readingProgressPosition: "top"
+  focusMode: true
+  distractionFreeMode: false
+  lineHeight: 1.8
+  paragraphSpacing: 1.8
+  letterSpacing: 0.02
+  fontSize: 17
   assets:
     disableFingerprinting: true
     favicon: "/favicon.ico"

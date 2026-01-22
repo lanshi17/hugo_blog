@@ -1,0 +1,432 @@
+/* ================= 沉浸式阅读体验优化 ================= */
+
+/* 阅读进度条 */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #329D9C, #56C596, #7BE495);
+    width: 0%;
+    z-index: 9999;
+    transition: width 0.2s ease;
+    box-shadow: 0 0 10px rgba(82, 157, 156, 0.5);
+}
+
+.dark .reading-progress {
+    box-shadow: 0 0 10px rgba(82, 157, 156, 0.8);
+}
+
+/* 文章内容容器 - 沉浸式焦点 */
+.post-content {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    line-height: 1.8 !important;
+    letter-spacing: 0.02em;
+    font-size: 1.05rem;
+    color: var(--text-color);
+    position: relative;
+}
+
+/* 段落优化 */
+.post-content p {
+    margin: 1.8rem 0;
+    text-align: justify;
+    text-justify: inter-character;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+/* 标题优化 */
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+    margin: 2.5rem 0 1.5rem 0;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+}
+
+.post-content h1 {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.post-content h2 {
+    font-size: 1.6rem;
+    color: var(--primary);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--secondary);
+}
+
+.post-content h3 {
+    font-size: 1.3rem;
+    color: var(--secondary);
+}
+
+.post-content h4 {
+    font-size: 1.15rem;
+    color: var(--text-color);
+}
+
+/* 列表优化 */
+.post-content ul,
+.post-content ol {
+    margin: 1.8rem 0;
+    padding-left: 2rem;
+}
+
+.post-content li {
+    margin: 0.6rem 0;
+    line-height: 1.8;
+}
+
+.post-content ul li::marker {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+.post-content ol li::marker {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+/* 引用块优化 */
+.post-content blockquote {
+    margin: 2rem 0;
+    padding: 1.5rem 2rem;
+    border-left: 4px solid var(--secondary);
+    background: rgba(50, 157, 156, 0.08);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    line-height: 1.8;
+}
+
+.dark .post-content blockquote {
+    background: rgba(50, 157, 156, 0.15);
+}
+
+.post-content blockquote p {
+    margin: 0.5rem 0;
+    color: var(--secondary);
+}
+
+/* 代码块优化 */
+.post-content code {
+    font-family: 'Fira Code', 'Monaco', monospace;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+}
+
+.post-content pre {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #1e1e1e;
+    border-radius: 12px;
+    border: 1px solid #404040;
+    line-height: 1.6;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.post-content pre code {
+    color: #e0e7eb;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+.dark .post-content pre {
+    background: #0d0d0d;
+    border-color: #333;
+}
+
+/* 内联代码 */
+.post-content :not(pre) > code {
+    background: rgba(50, 157, 156, 0.15);
+    color: var(--secondary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.dark .post-content :not(pre) > code {
+    background: rgba(50, 157, 156, 0.25);
+}
+
+/* 图片优化 */
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-content img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.dark .post-content img {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.dark .post-content img:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* 表格优化 */
+.post-content table {
+    margin: 2rem auto;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+.post-content table thead {
+    background: var(--secondary);
+    color: white;
+}
+
+.post-content table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.post-content table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-content table tbody tr:hover {
+    background: rgba(50, 157, 156, 0.05);
+}
+
+.dark .post-content table tbody tr:hover {
+    background: rgba(50, 157, 156, 0.1);
+}
+
+/* 水平分割线 */
+.post-content hr {
+    margin: 3rem 0;
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+    border-radius: 1px;
+}
+
+/* 焦点模式 - 阅读时隐藏侧边栏和干扰元素 */
+body.focus-mode header {
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+body.focus-mode aside {
+    display: none;
+}
+
+body.focus-mode .post-content {
+    padding: 0 3rem;
+    max-width: 700px;
+}
+
+/* 响应式焦点模式 */
+@media (max-width: 768px) {
+    .post-content {
+        padding: 0 1.5rem;
+        font-size: 1rem;
+    }
+
+    .post-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .post-content h2 {
+        font-size: 1.3rem;
+    }
+
+    .post-content h3 {
+        font-size: 1.1rem;
+    }
+
+    .post-content blockquote {
+        padding: 1rem 1.5rem;
+    }
+
+    .post-content pre {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+
+    body.focus-mode .post-content {
+        padding: 0 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-content {
+        padding: 0 1rem;
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    .post-content h1 {
+        font-size: 1.3rem;
+        margin: 1.5rem 0 1rem 0;
+    }
+
+    .post-content h2 {
+        font-size: 1.1rem;
+    }
+
+    .post-content h3 {
+        font-size: 1rem;
+    }
+
+    .post-content p {
+        margin: 1.2rem 0;
+    }
+
+    .post-content blockquote {
+        padding: 0.8rem 1rem;
+        margin: 1.2rem 0;
+    }
+
+    .post-content pre {
+        padding: 0.8rem;
+        margin: 1.2rem 0;
+    }
+}
+
+/* 深色模式适配 */
+.dark .post-content {
+    color: #e0e7eb;
+}
+
+.dark .post-content h1,
+.dark .post-content h2 {
+    color: #7BE495;
+}
+
+.dark .post-content h3 {
+    color: #56C596;
+}
+
+.dark .post-content blockquote {
+    background: rgba(86, 197, 150, 0.1);
+    color: #7BE495;
+}
+
+.dark .post-content blockquote p {
+    color: #7BE495;
+}
+
+/* 目录样式增强 */
+.toc {
+    background: rgba(50, 157, 156, 0.08);
+    border: 1px solid rgba(50, 157, 156, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.dark .toc {
+    background: rgba(50, 157, 156, 0.12);
+    border-color: rgba(50, 157, 156, 0.3);
+}
+
+.toc h2 {
+    margin: 0 0 1rem 0 !important;
+    font-size: 1rem !important;
+    border: none !important;
+    color: var(--secondary) !important;
+}
+
+.toc ul {
+    list-style: none;
+    padding: 0;
+}
+
+.toc li {
+    margin: 0.3rem 0;
+}
+
+.toc a {
+    color: var(--secondary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+}
+
+.toc a:hover {
+    background: rgba(50, 157, 156, 0.15);
+    color: var(--primary);
+    transform: translateX(4px);
+}
+
+.toc ul ul {
+    margin-left: 1rem;
+    border-left: 2px solid rgba(50, 157, 156, 0.3);
+    padding-left: 0.5rem;
+}
+
+/* 平滑滚动 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 选中文本样式 */
+.post-content ::selection {
+    background: var(--secondary);
+    color: white;
+}
+
+.dark .post-content ::selection {
+    background: #56C596;
+    color: #0d0d0d;
+}
+
+/* 脚注样式 */
+.post-content .footnote-ref {
+    font-size: 0.85rem;
+    vertical-align: super;
+}
+
+.post-content .footnote-ref a {
+    color: var(--secondary);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--secondary);
+}
+
+.post-content .footnote-ref a:hover {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+/* 最后更新时间 */
+.post-updated {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: var(--secondary);
+    text-align: center;
+}
+
+.dark .post-updated {
+    border-top-color: #404040;
+}
