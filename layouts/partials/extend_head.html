@@ -9,3 +9,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {{ end }}
 {{ partial "math.html" . }}
+<script>
+    const root = document.documentElement;
+    const isDark = root.dataset.theme === 'dark';
+
+    root.classList.toggle('dark', isDark);
+</script>

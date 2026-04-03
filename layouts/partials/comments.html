@@ -1,15 +1,21 @@
+{{- with site.Params.comments -}}
+{{- if and .enabled (eq .provider "giscus") -}}
+{{- $giscus := .giscusConfig -}}
 <script src="https://giscus.app/client.js"
-        data-repo="lanshi47/Blog_comments"
-        data-repo-id="R_kgDOOBWQzw"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOOBWQz84Cnc1e"
-        data-mapping="url"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="fro"
-        data-lang="zh-CN"
+        data-repo="{{ $giscus.repo }}"
+        data-repo-id="{{ $giscus.repoID }}"
+        data-category="{{ $giscus.category }}"
+        data-category-id="{{ $giscus.categoryID }}"
+        data-mapping="{{ $giscus.mapping }}"
+        data-strict="{{ if $giscus.strict }}1{{ else }}0{{ end }}"
+        data-reactions-enabled="{{ if $giscus.reactionsEnabled }}1{{ else }}0{{ end }}"
+        data-emit-metadata="{{ if $giscus.emitMetadata }}1{{ else }}0{{ end }}"
+        data-input-position="{{ $giscus.inputPosition }}"
+        data-theme="{{ $giscus.theme }}"
+        data-lang="{{ $giscus.lang }}"
+        data-loading="{{ $giscus.loading }}"
         crossorigin="anonymous"
         async>
 </script>
+{{- end -}}
+{{- end -}}

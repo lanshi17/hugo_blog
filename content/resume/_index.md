@@ -1,181 +1,103 @@
 ---
-title: "简历"
-description: "个人简历"
+title: "Resume"
+description: "Personal Resume"
 tags: ["resume"]
 date: 2025-02-28
-lastmod: 2026-01-12
+lastmod: 2026-03-12
 ---
-# 杨正帅的简历
 
-## 基本信息
+# Dave Paine｜Rust Backend / Distributed Systems / AI Engineering
 
-- 姓名：杨正帅
-- 性别：男
-- 年龄：22
-- 联系电话：17608420487
-- 邮箱：<yzs20030317@gmail.com>
+- Phone: 19040577002
+- Email: yzs20030317@gmail.com
 - GitHub: lanshi17
-- 个人博客: lanshi.space
-- 个人作品集
+- Blog: blog.lanshi.site
 
-## 技术栈
+## Skills Overview
 
-**核心编程语言**  
-- Python (精通)：熟练运用NumPy、Pandas、Scikit-learn进行数据分析与机器学习应用；熟悉TensorFlow/PyTorch框架；  
-- C++ (熟练)：STL、多线程编程、高性能计算；Qt框架应用  
-- Rust ：Axum、Tokio
+**Programming Languages**
+- Rust: Proficient in the Tokio asynchronous model and Axum web development, capable of service decomposition, API design, and basic performance troubleshooting.
+- Python: Familiar with data processing (NumPy/Pandas), modeling and analysis, and the basic workflow of deep learning training/inference (PyTorch/TensorFlow).
+- C++: Mastered STL and multithreading fundamentals, with a strong awareness of performance and resource management (threads/locks/memory).
 
-**AI/ML技术栈**  
-- 深度学习：DenseNet、卷积神经网络、Transformer架构；图像识别、自然语言处理领域应用经验  
-- 优化算法：遗传算法、启发式搜索、图论算法；多目标优化问题解决经验  
+**Distributed Systems and Engineering**
+- Docker: Experienced in containerized build and deployment processes.
+- Kubernetes: Understands core concepts and common resources (Deployment/Service/Ingress), with practical deployment experience.
+- Microservices and Gateways: Understands service decomposition principles; has practical experience using Kong for unified authentication/throttling.
+- Message Queues: Uses Kafka for asynchronous decoupling and event propagation (production/consumption, topic partitioning).
+- Object Storage: Uses MinIO for file storage and access control.
+- Databases: MySQL (basic table design, indexing, and query optimization strategies).
+- Engineering Collaboration: Git Flow, API documentation (Swagger), joint debugging, and issue tracking.
 
-**分布式系统与云平台**  
-- Docker & Kubernetes：容器化部署，Kubernetes集群管理经验  
-- 微服务架构：Axum/Tokio、Kong网关、Kafka消息队列  
-- 云服务：MinIO对象存储，了解AWS基础服务  
+**Algorithms and AI**
+- Deep Learning Fundamentals: Basic principles of CNNs/Transformers and common training/inference workflows; hands-on experience with image recognition projects.
+- Optimization and Graph Algorithms: Genetic algorithms, heuristic search; graph modeling and analysis (NetworkX).
 
-**数据库与工具**  
-- MySQL：数据库优化、索引设计、查询性能优化  
-- Git：团队协作开发、代码审查、Git Flow规范  
+## Education
 
-**数学能力**  
-- 高等数学、线性代数、概率论与数理统计
-- MATLAB：数据可视化、算法仿真、数学建模经验
+**Hunan Agricultural University | Computer Science and Technology | Master’s Candidate (Sep 2025–Jun 2028)**
+Research/Study Focus: Deep learning, machine learning, algorithm design and analysis, large model principles and applications, computer networks, etc.
 
-## 教育背景
+**Nantong Institute of Technology | Bachelor’s Degree | Dual Degree: Engineering Management & Standardization Engineering (Sep 2021–Jun 2025)**
 
-**湖南农业大学** | 计算机科学与技术 | 硕士 (2025.09 - 2028.06)
+## Internship Experience
 
-- **主修课程**:
-  - 深度学习
-  - 机器学习
-  - 高级算法设计与分析
-  - 高级工程数学
-  - 数据科学与工程
-  - 数字图像处理
-  - 大模型原理与应用
-  - 高级计算机网络
-  - 网络与信息安全
-- 具备扎实的数学基础，包括高等数学、线性代数和概率论与数理统计，为算法研究与开发奠定坚实基础。
-- 深入学习和掌握了自然语言处理、计算机视觉等前沿人工智能技术，并具备将理论知识应用于实际问题的能力。
+**Hunan Kangtong Communication Technology Co., Ltd. | Software Development Intern (Jan 2025–Feb 2025)**
+- Participated in the development of the log query module (Spring Boot + Vue), responsible for backend API implementation and front-end/back-end integration.
+- Organized code according to a layered structure (Controller/Service/DAO); used Swagger/Postman for self-testing and joint debugging of APIs.
+- Followed Git Flow for branch development and merging, participated in code reviews and bug fixes.
 
-**南通理工学院** | 本科 (2021.09 - 2025.06)
+## Project Experience
 
-- 双学位：工程管理&标准化工程
-- **主修课程**：
-  - C语言程序设计
-  - Python基础课程
-  - 标准化技术与方法
-  - 系统工程概论
-  - 工程项目管理
-- 掌握了扎实的计算机科学基础，为后续的算法研究和开发奠定了基础。
-- 具备良好的逻辑思维能力和问题解决能力，能够快速学习和掌握新的技术和知识。
-- 通过工程管理和标准化工程的双学位学习，培养了跨学科的知识体系和综合分析能力。
+**Smart Fruit and Vegetable Sorting System | Rust Microservices + AI Inference Integration (Sep 2024–Nov 2025)**
+- Project Goal: Implement fruit and vegetable image upload, recognition, result query, and real-time notifications, with support for subsequent integration with sorting equipment.
+- Backend: Used Rust (Tokio + Axum) to implement business services and APIs; decomposed functionality into modules (upload/query/push, etc.).
+- Communication and Decoupling: Introduced Kafka for event propagation, reducing direct coupling between services.
+- Storage: Used MinIO to store uploaded images and files related to recognition results.
+- Gateway: Used Kong as a unified entry point (basic authentication, rate-limiting policy configuration and verification).
+- Real-Time Capability: Implemented real-time push of recognition results via WebSocket.
+- Deployment: Used Docker to containerize services; deployed and verified operation in a Kubernetes environment (Deployment/Service, etc.).
 
-## 实习经历
+**Neural Processing Unit (NPU) DAG Scheduling Multi-Objective Optimization System (Sep 2025–Oct 2025)**
+- Background: Addressed the issue of DAG task scheduling and cache allocation within NPU cores, conducting multi-objective optimization (memory/time, etc.).
+- Modeling and Implementation: Used Python + NetworkX to model task dependency graphs; combined heuristic search and genetic algorithms to optimize scheduling and cache strategies.
+- Verification: Compared baseline strategies on self-built test cases (including FlashAttention/MatMul/Conv operator DAGs), measuring peak memory usage, execution time, and other metrics.
+- Results: Achieved an average reduction of 29.8% in peak memory usage and up to 39.9% improvement in execution time on test cases (based on experimental records).
 
-**软件开发实习生 - 湖南康普通信技术有限公司** (2025.01 - 2025.02)
+**Cloud Storage System FishStone-Cloud | Flask + MySQL (Sep 2024–Nov 2024)**
+- Built from scratch: implemented user registration/login, file upload/download, directory management, and permission control.
+- Adopted a modular code organization; completed server deployment and basic operations (process management, configuration, and log troubleshooting).
+- Output: Software copyright (first author).
 
-- 参与基于Spring Boot + Vue的日志查询模块开发，负责后端接口设计与实现、以及前后端联调。
-- **技术应用**：
-  - 熟练运用Spring Boot框架，构建RESTful API，并使用@FeignClient注解实现微服务间的通信与解耦，提高了代码的可维护性和可扩展性。
-  - 利用Controller-Service-DAO分层架构，规范化代码结构，提高了代码的可读性和可维护性。
-  - 使用Postman进行接口测试，并结合Swagger文档，高效完成前后端协作，确保了接口的正确性和稳定性。
-- **团队协作**：
-  - 遵循企业Git Flow规范，创建功能分支进行开发，并进行代码审查，保障版本质量，提升团队协作效率。
-  - 参与团队代码Review，并提出优化建议，提高了代码质量和团队协作能力。
-- **成果**：
-  - 独立完成了日志查询模块的后端开发，提高了系统日志查询效率和准确性。
-  - 参与了项目整体架构的讨论与设计，提升了对系统架构的理解和设计能力。
+**Research on Multi-Objective Optimization Algorithm for Heliostat Fields (Sep 2023–Jan 2024)**
+- Used genetic algorithms to construct a multi-objective optimization model (coverage, energy reception efficiency, etc.), and conducted simulation experiments and parameter tuning using MATLAB.
+- Output: Paper (first author); First Prize in the Provincial Mathematical Modeling Competition.
 
-## 项目经历
-**定日镜场多目标优化算法研究** (2023.09 - 2024.01)
+**Research on the Relationship Between Standardization and Technological Innovation (Jun 2024–Sep 2024)**
+- Based on panel data from 2006–2022, used the 3SLS simultaneous equations model to analyze the bidirectional impact of STA and TIP.
+- Used Python to clean data, handle missing values (random forest), perform ADF tests, build models, and analyze results (statsmodels, etc.).
 
-- **项目描述**：
-  - 针对定日镜场布局优化问题，提出并实现了一种基于遗传算法的多目标优化模型。
-  - 考虑了光斑覆盖率、能量接收效率等多个优化目标，构建了多目标优化函数。
-  - **算法应用**：
-    - 运用MATLAB进行仿真实验，验证了算法的有效性，并对不同参数下的优化结果进行了分析和比较。
-    - 实现了遗传算法的参数调优，提高了算法的收敛速度和优化效果。
-  - **成果**：
-    - 成果发表于CSP期刊论文《Research on Heliostat Field Based on Multi-objective Optimization Intelligent Algorithm》。
-    - 获得了高数杯全国大学生数学建模省赛一等奖，证明了在数学建模和算法优化方面的能力。
-    - 通过该项目，深入理解了优化算法的原理和应用，并掌握了多目标优化的方法。
+## Papers and Achievements
 
-**标准化与技术创新关系研究项目** (2024.06 - 2024.09)
-- **项目描述**：
-    本项目基于江苏省13个地级市2006-2022年的面板数据，运用联立方程模型(3SLS)研究标准化活动(STA)与技术创新产出(TIP)之间的双向影响关系。
-  - **技术栈**：项目采用Python数据分析技术栈(Pandas、NumPy、Statsmodels、Scikit-learn等)，完成了从数据清洗、异常值处理、缺失值填补(随机森林)、平稳性检验(ADF检验)到联立方程建模的完整流程。
-  - **成果**：
-    研究发现标准化与技术创新之间存在显著的互促关系，并通过中介效应(知识管理能力KMC、组织学习能力OLC)和调节效应(市场竞争强度MCI)分析揭示了其作用机制，为企业技术创新提供了实证支持。
-  
-**云盘系统** (2024.09 - 2024.11)
-- **项目描述**：
-  - FishStone-Cloud 是一个基于 Flask 框架开发的现代化文件管理系统，提供了完整的用户认证、文件操作、数据可视化等功能。该项目从零开始构建，实现了企业级的文件管理解决方案。
-  - **技术栈**：Flask,Werkzeug, MySQL，HTML, CSS, JavaScript，Bootstrap， ECharts
-  - 采用模块化设计，提升了代码的可维护性和可扩展性。
-  - 实现了用户权限管理，保障了数据的安全性和隐私性。
-  - **成果**：
-    - 成功发布了个人云盘系统，拥有稳定性和可靠性，满足了个人日常文件存储和管理需求。
-    - 通过个人服务器部署，熟悉了Web应用程序的部署和运维流程。
-    - 申请了软件著作权，验证了技术能力和创新成果。
-  
+**Papers**
+- *Research on Heliostat Field Based on Multi-objective Optimization Intelligent Algorithm* (First Author, 2023)
+- *Analysis of the Synergistic Effect Between Technological Innovation and Standardization in Jiangsu Province* (First Author, 2024)
+- *Research on a Standardized Management System for Companion Medical Services Based on Current Conditions* (First Author, 2023)
+- *Design of a Personalized Action Recommendation System Based on Mobile Platforms* (Second Author, 2024)
 
-**神经网络处理器DAG调度多目标优化系统** (2025.09 - 2025.10)
+**Software Copyrights (First Author)**
+- Lanshi Photography Platform (Sep 2023–Sep 2024)
+- Lanshi Cloud Storage System (Sep 2024–Nov 2024)
+- FishStone Cloud Storage System (Dec 2024–May 2025)
 
-- **项目描述**：
-    本项目针对神经网络处理器（NPU）核内DAG任务调度问题，设计并实现了完整的多目标优化解决方案。
-  - **算法应用**：
-  - 项目采用**Python + NetworkX + Plotly**技术栈，结合图论算法、启发式搜索和遗传算法，解决了最小缓存驻留调度、智能缓存分配与SPILL优化、多目标性能联合优化三大核心问题。
-  - **成果**：
-    通过三层渐进式优化策略，在FlashAttention、MatMul、Conv等6个测试案例上实现了**100%成功率**，峰值内存平均减少**29.8%**，执行时间最高优化**39.9%**，缓存利用率达**92.8%**。
+## Honors and Certificates
+- National College Students’ Advanced Mathematics Cup Mathematical Modeling Competition | First Prize in Jiangsu Province (2023)
+- MathorCup University Mathematical Modeling Challenge | Second Prize Nationwide (2023)
+- National College Computer Skills Challenge | Third Prize Nationwide (Algorithm Track, 2021–2022)
+- Software Designer (Intermediate Level, National Computer Professional Qualification Exam)
+- College English Test Band 4
 
-**果蔬智能分拣系统** (2024.09 - 2025.11)
-- **项目描述**：
-  - 本项目是一个基于微服务架构的果蔬智能分拣系统，采用 AI 图像识别技术实现果蔬的自动检测、质量评级和智能分拣。系统通过集成深度学习模型（DenseNet）、对象存储（MinIO）、消息队列（Kafka）和实时通信（WebSocket）等技术，构建了一套完整的工业级果蔬分拣解决方案。
-  - **技术栈**：后端采用 Rust（Tokio + Axum）微服务架构，前端使用 Vue3 + TypeScript + Vite，AI 推理服务基于 Python + DenseNet，网关使用 Kong 实现统一认证和限流。项目已实现图像上传、AI 识别、结果查询、WebSocket 实时推送和分拣设备控制等核心功能，支持 Docker 容器化部署和 Kubernetes 集群部署。
-  - **成果**：
-  - 技术栈前沿：Rust + Vue3 + DenseNet + Kafka + MinIO
-  - 架构设计：微服务 + 事件驱动 + 领域驱动设计
-  - 工程化：Docker 容器化 + Kubernetes 编排 + 完整文档
-  - 实时性：WebSocket 实时推送 + 毫秒级延迟
-  - 可扩展性：水平扩展 + 服务解耦 + 消息队列
-  - AI 集成：深度学习模型工业化应用
-
-## 荣誉证书
-
-- 2023 全国大学生高数杯数学建模竞赛 | 江苏省一等奖
-- 2023 MathorCup高校数学建模挑战赛 | 全国二等奖
-- 2021-2022 全国高校计算机能力挑战赛 | 全国三等奖（算法赛道）
-- 校级奖学金（2021-2023，累计3次）
-
-## 软件著作权
-
-- Lanshi摄影平台 (2023/09 - 2024/09) | 第一著作人
-- Lanshi云盘系统 (2024/09 - 2024/11) | 第一著作人
-- FishStone 云盘系统 (2024/12—2025/5) | 第一著作人
-
-## 学术论文
-
-- 2023 《Research on Heliostat Field Based on Multi-objective Optimization Intelligent Algorithm》 一作
-- 2024 《Design of personalized action recommendation system based on mobile platform》 二作
-- 2023 《基于现状分析的陪诊服务规范化管理标准体系研究》 一作
-- 2024 《江苏省技术创新与标准化协同效应分析》 一作
-
-
-## 证书
-
-- 软件设计师（软考中级）
-- 大学英语四级
-- C1类驾驶执照
-- 全国计算机Python二级
-- 江苏省计算机C语言二级
-
-## 自我评价
-
-- **扎实的理论基础**：具备计算机科学与技术、算法设计与分析、人工智能等领域的扎实理论基础，能够快速学习和掌握新的算法和技术。
-- **丰富的实践经验**：拥有多个项目经验，包括云盘系统、定日镜场优化算法研究，以及软件开发实习，能够将理论知识应用于实际问题。
-- **突出的算法能力**：熟悉各种机器学习和优化算法，具备较强的算法设计、优化和实现能力，能够在实际应用中解决复杂问题。
-- **优秀的学习能力**：具备快速学习和适应新技术的潜力，能够在短时间内掌握新的编程语言、框架和工具。
-- **良好的团队合作精神**：在实习和项目中，积极参与团队合作，与团队成员共同完成任务，具备良好的沟通和协作能力。
-- **强烈的求知欲和责任心**：对算法领域充满热情，积极探索和研究新技术，并具备强烈的责任心和进取心，致力于在算法领域取得更大的成就。
+## Self-Assessment
+- Focuses on system engineering implementation: able to independently complete service development, API integration, containerized deployment, and basic problem troubleshooting.
+- Possesses the ability to integrate algorithms with engineering: can translate optimization/model results into runnable processes and services, and conduct reproducible experimental validation.
+- Pragmatic work style: avoids exaggerating uncertain metrics, identifies root causes when problems arise, and drives closed-loop solutions.

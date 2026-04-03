@@ -34,7 +34,8 @@
         // 轻量加载指示器（避免打断布局）
         const loadingIndicator = document.createElement('div');
         loadingIndicator.textContent = '加载中...';
-        loadingIndicator.style.cssText = 'display:none;text-align:center;margin:1rem 0;color:var(--secondary);';
+        loadingIndicator.className = 'search-loading-indicator';
+        loadingIndicator.hidden = true;
         const container = searchResults.parentElement || document.body;
         container.insertBefore(loadingIndicator, searchResults);
 
@@ -42,7 +43,7 @@
         if (clearButton) {
             clearButton.addEventListener('click', () => {
                 searchInput.value = '';
-                clearButton.style.display = 'none';
+                clearButton.hidden = true;
                 searchResults.innerHTML = `
                     <div class="search-initial-state">
                         <svg class="initial-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -71,9 +72,13 @@
         // 监听输入，显示/隐藏清除按钮
         searchInput.addEventListener('input', (e) => {
             if (clearButton) {
-                clearButton.style.display = e.target.value ? 'flex' : 'none';
+                clearButton.hidden = !e.target.value.trim();
             }
         });
+
+        if (clearButton) {
+            clearButton.hidden = !searchInput.value.trim();
+        }
 
         // 搜索处理函数（提前定义，避免作用域问题）
         const performSearch = (query) => {
@@ -200,13 +205,14 @@
             document.querySelectorAll('.quick-tag').forEach(tag => {
                 tag.addEventListener('click', () => {
                     searchInput.value = tag.textContent;
-                    if (clearButton) clearButton.style.display = 'flex';
+                    if (clearButton) clearButton.hidden = false;
                     performSearch(tag.textContent);
                 });
             });
         };
 
         try {
+            loadingIndicator.hidden = false;
             // 加载搜索数据
             const startTime = performance.now();
             const response = await fetch('/index.json');
@@ -230,8 +236,6 @@
             });
 
             console.log(`搜索索引加载完成 (${loadTime}ms), 共 ${searchData.length} 条记录`);
-            // 隐藏加载指示器
-            loadingIndicator.style.display = 'none';
 
             // 绑定搜索事件（带防抖）
             searchInput.addEventListener('input', debounce((e) => {
@@ -246,16 +250,12 @@
             const queryParam = urlParams.get('q');
             if (queryParam) {
                 searchInput.value = queryParam;
-                if (clearButton) clearButton.style.display = 'flex';
+                if (clearButton) clearButton.hidden = false;
                 performSearch(queryParam);
             }
 
         } catch (err) {
             console.error('Search init failed:', err);
-            // 隐藏加载指示器（发生错误时）
-            if (typeof loadingIndicator !== 'undefined') {
-                loadingIndicator.style.display = 'none';
-            }
             searchResults.innerHTML = `
                 <div class="error-message">
                     <p>❌ 搜索功能初始化失败</p>
@@ -263,6 +263,8 @@
                     <p>请刷新页面重试</p>
                 </div>
             `;
+        } finally {
+            loadingIndicator.hidden = true;
         }
     });
 </script>
@@ -280,7 +282,7 @@
         text-align: center;
         margin-bottom: 3rem;
         padding-bottom: 2rem;
-        border-bottom: 2px solid var(--border);
+        border-bottom: 2px solid var(--border-color);
     }
 
     .search-title-section {
@@ -312,11 +314,22 @@
         display: flex;
         align-items: center;
         background: var(--entry);
-        border: 2px solid var(--border);
+        border: 2px solid var(--border-color);
         border-radius: 12px;
         padding: 0.75rem 1rem;
         transition: all 0.3s ease;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-loading-indicator {
+        text-align: center;
+        margin: 1rem 0;
+        color: var(--secondary);
+    }
+
+    .search-loading-indicator[hidden],
+    .clear-button[hidden] {
+        display: none;
     }
 
     .search-box:focus-within {
@@ -358,9 +371,15 @@
         transition: all 0.2s ease;
     }
 
+    .clear-button::before {
+        content: none;
+    }
+
     .clear-button:hover {
         background: var(--theme);
         color: var(--primary);
+        transform: none;
+        box-shadow: none;
     }
 
     /* 搜索提示标签 */
@@ -376,7 +395,7 @@
         font-size: 0.875rem;
         color: var(--secondary);
         padding: 0.4rem 0.8rem;
-        background: var(--code-bg);
+        background: var(--light-bg);
         border-radius: 20px;
         display: inline-flex;
         align-items: center;
@@ -391,7 +410,7 @@
         align-items: center;
         margin-bottom: 2rem;
         padding: 1rem;
-        background: var(--code-bg);
+        background: var(--light-bg);
         border-radius: 8px;
         flex-wrap: wrap;
     }
@@ -460,7 +479,7 @@
     .quick-tag {
         padding: 0.5rem 1rem;
         background: var(--entry);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-color);
         border-radius: 20px;
         font-size: 0.875rem;
         cursor: pointer;
@@ -479,7 +498,7 @@
     .search-result-item {
         padding: 1.5rem;
         margin-bottom: 1.25rem;
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         background: var(--entry);
         transition: all 0.3s ease;
@@ -566,7 +585,7 @@
 
     .result-score {
         padding: 0.3rem 0.75rem;
-        background: var(--code-bg);
+        background: var(--light-bg);
         border-radius: 20px;
         display: inline-flex;
         align-items: center;
@@ -581,7 +600,7 @@
         animation: fadeIn 0.3s ease-in;
         background: var(--entry);
         border-radius: 12px;
-        border: 1px dashed var(--border);
+        border: 1px dashed var(--border-color);
     }
 
     .no-results p {
@@ -609,9 +628,9 @@
 
     /* 错误消息 */
     .error-message {
-        background: #fee;
-        border: 2px solid #fcc;
-        color: #c00;
+        background: color-mix(in srgb, #ff5f56 10%, var(--entry));
+        border: 1px solid color-mix(in srgb, #ff5f56 35%, var(--border-color));
+        color: color-mix(in srgb, #ff5f56 75%, #7a0f0f);
     }
 
     /* ==================== 动画 ==================== */

@@ -1,7 +1,7 @@
 ---
 # 核心元数据
 author: lanshi
-date: "2025-01-02T12:00:00+08:00"
+date: "2026-01-02T12:00:00+08:00"
 lastmod:
 title: "Hello World Graph"
 

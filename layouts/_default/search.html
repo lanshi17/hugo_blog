@@ -1,6 +1,5 @@
 {{ define "main" }}
 <div class="search-page-wrapper">
-  <!-- 搜索头部 -->
   <div class="search-header">
     <div class="search-title-section">
       <h1 class="search-page-title">站内搜索</h1>
@@ -8,9 +7,7 @@
     </div>
   </div>
 
-  <!-- 搜索主体 -->
   <div class="search-main-content">
-    <!-- 搜索输入区 -->
     <div class="search-input-wrapper">
       <div class="search-box">
         <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -23,7 +20,7 @@
                autocomplete="off"
                placeholder="输入关键词进行搜索..."
                aria-label="全站搜索">
-        <button class="clear-button" id="clearSearch" style="display: none;" aria-label="清除搜索">
+        <button class="clear-button" id="clearSearch" aria-label="清除搜索" hidden>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -31,7 +28,6 @@
         </button>
       </div>
       
-      <!-- 搜索提示 -->
       <div class="search-tips">
         <span class="tip-item">支持模糊搜索</span>
         <span class="tip-item">实时显示结果</span>
@@ -39,7 +35,6 @@
       </div>
     </div>
 
-    <!-- 搜索统计信息 -->
     <div id="searchMeta" class="search-stats">
       <div class="stats-item">
         <span class="stats-label">搜索结果：</span>
@@ -53,9 +48,7 @@
       </div>
     </div>
 
-    <!-- 搜索结果容器 -->
     <div id="searchResults" class="search-results-container">
-      <!-- 初始提示 -->
       <div class="search-initial-state">
         <svg class="initial-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"></circle>
@@ -75,6 +68,5 @@
   </div>
 </div>
 
-<!-- 核心脚本注入点 -->
 {{ partial "search/core" . }}
 {{ end }}

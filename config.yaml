@@ -1,5 +1,5 @@
 # --- 基本站点配置 ---
-baseURL: "https://lanshi.space/"
+baseURL: "https://blog.lanshi.site/"
 languageCode: "zh-cn"
 defaultContentLanguage: "zh-cn"
 title: "lanshi个人博客"
@@ -117,14 +117,18 @@ params:
     enabled: true
     provider: "giscus"
     giscusConfig:
-      repo: "lanshi47/Blog_comments"
-      repoID: "R_kgDOOBWQzw"
+      repo: "lanshi17/hugo_blog"
+      repoID: "R_kgDOOBU9PQ"
       category: "Announcements"
-      categoryID: "DIC_kwDOOBWQz84Cnc1e"
+      categoryID: "DIC_kwDOOBU9Pc4C540H"
       mapping: "pathname"
+      strict: false
       reactionsEnabled: true
       emitMetadata: false
-      theme: "preferred_color_scheme"
+      inputPosition: "bottom"
+      theme: "dark"
+      lang: "zh-CN"
+      loading: "lazy"
   share:
     wechat: true
     qq: true
