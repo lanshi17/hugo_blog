@@ -1,0 +1,55 @@
+{{- with site.Params.homeInfoParams -}}
+{{- $entries := where site.RegularPages "Type" "in" (slice "posts" "studynotes" "portfolio") -}}
+{{- $writing := where $entries "Type" "in" (slice "posts" "studynotes") -}}
+{{- $projects := where $entries "Type" "eq" "portfolio" -}}
+{{- $latestDate := "持续更新" -}}
+{{- with index (first 1 (sort $entries "Date" "desc")) 0 -}}
+  {{- $latestDate = .Date.Format "2006.01.02" -}}
+{{- end -}}
+{{- $totalWords := 0 -}}
+{{- range $writing -}}
+  {{- $totalWords = add $totalWords .WordCount -}}
+{{- end -}}
+<article class="first-entry home-info home-intro">
+  <div class="home-intro__eyebrow">TECHNICAL NOTEBOOK</div>
+  <header class="entry-header">
+    <h1>{{ .Title | markdownify }}</h1>
+  </header>
+  <div class="entry-content home-intro__content">
+    <div class="home-intro__lead">
+      <p>{{ site.Params.description }}</p>
+      {{- with .Content }}
+      <div class="home-intro__subcopy">
+        {{ . | markdownify }}
+      </div>
+      {{- end }}
+    </div>
+    <dl class="home-intro__metrics" aria-label="site overview">
+      <div class="home-intro__metric">
+        <dt>文章与笔记</dt>
+        <dd>{{ len $writing }}</dd>
+      </div>
+      <div class="home-intro__metric">
+        <dt>作品案例</dt>
+        <dd>{{ len $projects }}</dd>
+      </div>
+      <div class="home-intro__metric">
+        <dt>累计字数</dt>
+        <dd>{{ printf "%d" $totalWords }}</dd>
+      </div>
+      <div class="home-intro__metric">
+        <dt>最近更新</dt>
+        <dd>{{ $latestDate }}</dd>
+      </div>
+    </dl>
+  </div>
+  <footer class="entry-footer home-intro__footer">
+    <div class="home-intro__paths">
+      <a href="{{ "/posts/" | absLangURL }}">读文章</a>
+      <a href="{{ "/studynotes/" | absLangURL }}">看笔记</a>
+      <a href="{{ "/portfolio/" | absLangURL }}">浏览作品</a>
+    </div>
+    {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
+  </footer>
+</article>
+{{- end -}}

@@ -1,3 +1,9 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap"
+    rel="stylesheet">
+
 {{- if .Site.Params.fastSearch -}}
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
 {{- end -}}
@@ -15,3 +21,74 @@
 
     root.classList.toggle('dark', isDark);
 </script>
+
+{{- if .IsPage -}}
+{{- $immersiveReading := resources.Get "js/immersive-reading.js" | minify -}}
+<script>
+    window.immersiveReadingConfig = {
+        readingProgressBar: {{ if site.Params.readingProgressBar }}true{{ else }}false{{ end }},
+        progressPosition: {{ ((site.Params.readingProgressPosition | default "top") | jsonify) | safeJS }},
+        focusMode: {{ if site.Params.focusMode }}true{{ else }}false{{ end }},
+        labels: {
+            toolbar: {{ ((i18n "reading_toolbar" | default "Reading tools") | jsonify) | safeJS }},
+            enterFocus: {{ ((i18n "focus_mode" | default "Focus mode") | jsonify) | safeJS }},
+            exitFocus: {{ ((i18n "focus_mode_exit" | default "Exit focus mode") | jsonify) | safeJS }},
+            closeImage: {{ ((i18n "image_viewer_close" | default "Close preview") | jsonify) | safeJS }},
+            openImage: {{ ((i18n "image_viewer_open" | default "Open image preview") | jsonify) | safeJS }},
+            imagePreview: {{ ((i18n "image_viewer_preview" | default "Image preview") | jsonify) | safeJS }}
+        }
+    };
+</script>
+<script defer src="{{ $immersiveReading.RelPermalink }}"></script>
+{{- end -}}
+
+{{- if and .IsPage site.Params.aiAssistant.enabled -}}
+{{- $assistant := site.Params.aiAssistant -}}
+{{- $directRemoteEnabled := ($assistant.directRemote.enabled | default false) -}}
+{{- $directRemoteExpose := ($assistant.directRemote.exposeApiKeyInBrowser | default false) -}}
+{{- $directRemoteInject := and $directRemoteEnabled $directRemoteExpose -}}
+{{- $remoteApiKey := "" -}}
+{{- $remoteApiKeyEnv := ($assistant.directRemote.apiKeyEnv | default "") -}}
+{{- if $directRemoteInject -}}
+  {{- $remoteApiKey = ($assistant.directRemote.apiKey | default "") -}}
+  {{- if and (not $remoteApiKey) $remoteApiKeyEnv -}}
+    {{- $remoteApiKey = getenv $remoteApiKeyEnv -}}
+  {{- end -}}
+{{- end -}}
+{{- $assistantConfig := dict
+    "enabled" true
+    "title" ($assistant.title | default "AI 文章助手")
+    "greeting" ($assistant.greeting | default "我可以结合当前文章内容回答问题。")
+    "placeholder" ($assistant.placeholder | default "试着问：这篇文章主要讲了什么？")
+    "fallbackHint" ($assistant.fallbackHint | default "当前未配置 AI 接口，先使用文章检索模式回答。")
+    "errorHint" ($assistant.errorHint | default "AI 接口暂时不可用，已自动切换到文章检索模式。")
+    "endpoint" ($assistant.endpoint | default "")
+    "remote" (dict
+      "enabled" $directRemoteEnabled
+      "baseURL" ($assistant.directRemote.baseURL | default "")
+      "apiPath" ($assistant.directRemote.apiPath | default "/chat/completions")
+      "apiKey" ($remoteApiKey | default "")
+      "apiKeyEnv" ($remoteApiKeyEnv | default "")
+      "apiKeyHeader" ($assistant.directRemote.apiKeyHeader | default "Authorization")
+      "apiKeyPrefix" ($assistant.directRemote.apiKeyPrefix | default "Bearer ")
+      "exposeApiKeyInBrowser" $directRemoteExpose
+    )
+    "requestFormat" ($assistant.requestFormat | default "openai-chat")
+    "model" ($assistant.model | default "gpt-4.1-mini")
+    "models" ($assistant.models | default (slice ($assistant.model | default "gpt-4.1-mini")))
+    "temperature" ($assistant.temperature | default 0.2)
+    "maxContextChars" ($assistant.maxContextChars | default 12000)
+    "maxChunks" ($assistant.maxChunks | default 6)
+    "suggestedQuestions" ($assistant.suggestedQuestions | default (slice "这篇文章主要讲了什么？" "请总结这篇文章的 3 个要点" "文中最关键的代码或结论是什么？"))
+    "page" (dict
+      "title" .Title
+      "description" (.Description | default "")
+      "permalink" .Permalink
+    )
+  -}}
+{{- $aiAssistant := resources.Get "js/ai-assistant.js" | minify -}}
+<script>
+    window.aiArticleAssistantConfig = {{ $assistantConfig | jsonify | safeJS }};
+</script>
+<script defer src="{{ $aiAssistant.RelPermalink }}"></script>
+{{- end -}}

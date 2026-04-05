@@ -65,10 +65,26 @@
 {{- $class = "post-entry tag-entry" }}
 {{- end }}
 
-<article class="{{ $class }}">
+{{- $sectionLabel := .Section }}
+{{- if eq $sectionLabel "posts" }}
+  {{- $sectionLabel = "文章" }}
+{{- else if eq $sectionLabel "studynotes" }}
+  {{- $sectionLabel = "学习笔记" }}
+{{- else if eq $sectionLabel "portfolio" }}
+  {{- $sectionLabel = "作品记录" }}
+{{- else if eq $sectionLabel "resume" }}
+  {{- $sectionLabel = "简历" }}
+{{- end }}
+<article class="{{ $class }} journal-entry" data-section="{{ .Section }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
   <header class="entry-header">
+    <div class="entry-kicker">
+      <span class="entry-kicker__section">{{ $sectionLabel }}</span>
+      {{- with .Date }}
+      <time datetime="{{ .Format "2006-01-02T15:04:05Z07:00" }}">{{ .Format "2006.01.02" }}</time>
+      {{- end }}
+    </div>
     <h2 class="entry-hint-parent">
       {{- .Title }}
       {{- if .Draft }}

@@ -22,6 +22,14 @@ minify:
   disableXML: true
   minifyOutput: true
 
+security:
+  funcs:
+    getenv:
+      - '^HUGO_'
+      - '^CI$'
+      - '^OPENAI_'
+      - '^AI_ASSISTANT_'
+
 # --- 菜单配置 ---
 menu:
   main:
@@ -193,6 +201,35 @@ params:
     cardLayout: true
     hoverEffect: true
     compactTags: true
+  aiAssistant:
+    enabled: true
+    endpoint: "/api/blog-assistant"
+    requestFormat: "openai-chat"
+    model: "gpt-4.1-mini"
+    models:
+      - "gpt-4.1-mini"
+      - "gpt-4.1"
+    temperature: 0.2
+    maxContextChars: 12000
+    maxChunks: 6
+    title: "AI 文章助手"
+    greeting: "我可以结合当前文章内容回答问题，也能帮你快速定位关键段落。"
+    placeholder: "试着问：这篇文章主要讲了什么？"
+    fallbackHint: "当前未配置 AI 接口，先使用文章检索模式回答。"
+    errorHint: "AI 接口暂时不可用，已自动切换到文章检索模式。"
+    directRemote:
+      enabled: false
+      baseURL: ""
+      apiPath: "/chat/completions"
+      apiKeyEnv: "OPENAI_API_KEY"
+      apiKey: ""
+      apiKeyHeader: "Authorization"
+      apiKeyPrefix: "Bearer "
+      exposeApiKeyInBrowser: false
+    suggestedQuestions:
+      - "这篇文章主要讲了什么？"
+      - "请总结这篇文章的 3 个要点"
+      - "文中最关键的代码或结论是什么？"
 
 # --- 输出格式配置 ---
 outputFormats:

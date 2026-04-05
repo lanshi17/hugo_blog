@@ -11,6 +11,7 @@
   },
   "scripts": {
     "prebuild": "./gen-pdfinfo.sh",
-    "build": "hugo --minify"
+    "build": "hugo --minify",
+    "ai-proxy": "node server/ai-assistant-proxy.mjs"
   }
 }
