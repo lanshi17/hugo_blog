@@ -12,6 +12,8 @@
   "scripts": {
     "prebuild": "./gen-pdfinfo.sh",
     "build": "hugo --minify",
+    "postbuild": "node server/generate-search-embeddings.mjs",
+    "search:embed-index": "node server/generate-search-embeddings.mjs",
     "ai-proxy": "node server/ai-assistant-proxy.mjs"
   }
 }

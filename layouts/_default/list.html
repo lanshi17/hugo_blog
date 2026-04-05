@@ -54,6 +54,19 @@
 {{- end }}
 
 {{- $term := .Data.Term }}
+{{- if .IsHome }}
+<section class="home-feed">
+  {{- if eq $paginator.PageNumber 1 }}
+  <header class="home-feed__header">
+    <div>
+      <p class="home-feed__eyebrow">Latest Dispatch</p>
+      <h2>全部更新</h2>
+    </div>
+    <p>保留时间流，但用更易扫读的首页网格呈现最近发布的文章、笔记和作品。</p>
+  </header>
+  {{- end }}
+  <div class="home-feed__grid">
+{{- end }}
 {{- range $index, $page := $paginator.Pages }}
 
 {{- $class := "post-entry" }}
@@ -109,6 +122,10 @@
   {{- end }}
   <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
 </article>
+{{- end }}
+{{- if .IsHome }}
+  </div>
+</section>
 {{- end }}
 
 {{- if gt $paginator.TotalPages 1 }}

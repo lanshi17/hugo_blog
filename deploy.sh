@@ -175,7 +175,7 @@ cleanup() {
 trap cleanup EXIT
 
 check_dependencies() {
-  local deps=(hugo rsync flock find)
+  local deps=(hugo rsync flock find node)
 
   if [[ "$PULL_UPDATES" == true ]]; then
     deps+=(git)
@@ -481,6 +481,23 @@ build_site() {
   log_info "Hugo 构建完成"
 }
 
+run_search_embedding_generation() {
+  local generator="$HUGO_DIR/server/generate-search-embeddings.mjs"
+
+  if [[ ! -f "$generator" ]]; then
+    log_info "未找到 generate-search-embeddings.mjs，跳过向量索引生成"
+    return
+  fi
+
+  log_info "生成搜索向量索引..."
+  if ! (
+    cd "$HUGO_DIR"
+    SEARCH_OUTPUT_DIR="$BUILD_OUTPUT_DIR" node "$generator" >>"$BUILD_LOG" 2>&1
+  ); then
+    log_warn "搜索向量索引生成失败，搜索页将自动降级到关键词搜索"
+  fi
+}
+
 sync_site() {
   if [[ "$DRY_RUN" == true && "$TARGET_EXISTS" != true ]]; then
     log_info "跳过同步：dry-run 模式且目标目录不存在"
@@ -617,6 +634,7 @@ main() {
   pull_updates
   run_pdfinfo_generation
   build_site
+  run_search_embedding_generation
   sync_site
   fix_permissions
   manage_ai_proxy

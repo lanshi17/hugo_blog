@@ -1,53 +1,168 @@
 {{- with site.Params.homeInfoParams -}}
 {{- $entries := where site.RegularPages "Type" "in" (slice "posts" "studynotes" "portfolio") -}}
+{{- $articles := where $entries "Type" "eq" "posts" -}}
+{{- $notes := where $entries "Type" "eq" "studynotes" -}}
 {{- $writing := where $entries "Type" "in" (slice "posts" "studynotes") -}}
 {{- $projects := where $entries "Type" "eq" "portfolio" -}}
+{{- $articlesSorted := sort $articles "Date" "desc" -}}
+{{- $notesSorted := sort $notes "Date" "desc" -}}
+{{- $projectsSorted := sort $projects "Date" "desc" -}}
+{{- $recentEntries := first 3 (sort $entries "Date" "desc") -}}
 {{- $latestDate := "持续更新" -}}
+{{- $latestTitle := "新内容会在这里持续出现" -}}
+{{- $latestPermalink := "/archives/" | absLangURL -}}
 {{- with index (first 1 (sort $entries "Date" "desc")) 0 -}}
   {{- $latestDate = .Date.Format "2006.01.02" -}}
+  {{- $latestTitle = .Title -}}
+  {{- $latestPermalink = .Permalink -}}
 {{- end -}}
 {{- $totalWords := 0 -}}
 {{- range $writing -}}
   {{- $totalWords = add $totalWords .WordCount -}}
 {{- end -}}
+{{- $heroTitle := .Title -}}
+{{- if in $heroTitle "欢迎来到" -}}
+  {{- $heroTitle = "学习记录、教程整理与作品展示" -}}
+{{- end -}}
+{{- $introText := .Content | plainify | htmlUnescape -}}
 <article class="first-entry home-info home-intro">
-  <div class="home-intro__eyebrow">TECHNICAL NOTEBOOK</div>
-  <header class="entry-header">
-    <h1>{{ .Title | markdownify }}</h1>
-  </header>
-  <div class="entry-content home-intro__content">
-    <div class="home-intro__lead">
-      <p>{{ site.Params.description }}</p>
-      {{- with .Content }}
-      <div class="home-intro__subcopy">
-        {{ . | markdownify }}
+  <div class="home-intro__eyebrow">LANSHI / TECH JOURNAL</div>
+  <div class="home-intro__grid">
+    <div class="home-intro__main">
+      <header class="entry-header">
+        <h1>{{ $heroTitle | markdownify }}</h1>
+      </header>
+      <div class="entry-content home-intro__content">
+        <div class="home-intro__lead">
+          <p>{{ site.Params.description }}</p>
+          {{- if and .Content (not (in (lower $introText) "welcome to")) }}
+          <div class="home-intro__subcopy">
+            {{ .Content | markdownify }}
+          </div>
+          {{- else }}
+          <p class="home-intro__subcopy">
+            按文章、学习笔记和作品案例分区整理，方便检索、回看和持续积累。
+          </p>
+          {{- end }}
+        </div>
+        <ul class="home-intro__signals" aria-label="site focus">
+          <li>教程整理</li>
+          <li>学习笔记</li>
+          <li>项目实践</li>
+        </ul>
+        {{- with $recentEntries }}
+        <div class="home-intro__bulletin" aria-labelledby="home-bulletin-title">
+          <div class="home-intro__bulletin-header">
+            <p id="home-bulletin-title">最新速览</p>
+            <span>按最近更新时间梳理首页入口</span>
+          </div>
+          <div class="home-intro__bulletin-grid">
+            {{- range . }}
+            {{- $entryLabel := "文章" -}}
+            {{- if eq .Type "studynotes" -}}
+              {{- $entryLabel = "学习笔记" -}}
+            {{- else if eq .Type "portfolio" -}}
+              {{- $entryLabel = "作品案例" -}}
+            {{- end -}}
+            <a class="home-intro__bullet" href="{{ .Permalink }}">
+              <span>{{ $entryLabel }}</span>
+              <strong>{{ .Title }}</strong>
+              <em>{{ .Date.Format "2006.01.02" }}</em>
+            </a>
+            {{- end }}
+          </div>
+        </div>
+        {{- end }}
       </div>
-      {{- end }}
+      <div class="home-intro__actions">
+        <a class="home-intro__action home-intro__action--primary" href="{{ $latestPermalink }}">阅读最新更新</a>
+        <a class="home-intro__action" href="{{ "/search/" | absLangURL }}">搜索内容</a>
+      </div>
     </div>
-    <dl class="home-intro__metrics" aria-label="site overview">
-      <div class="home-intro__metric">
-        <dt>文章与笔记</dt>
-        <dd>{{ len $writing }}</dd>
+    <aside class="home-intro__panel" aria-labelledby="home-overview-title">
+      <div class="home-intro__panel-header">
+        <p id="home-overview-title">站点概览</p>
+        <a href="{{ "/archives/" | absLangURL }}">查看归档</a>
       </div>
-      <div class="home-intro__metric">
-        <dt>作品案例</dt>
-        <dd>{{ len $projects }}</dd>
-      </div>
-      <div class="home-intro__metric">
-        <dt>累计字数</dt>
-        <dd>{{ printf "%d" $totalWords }}</dd>
-      </div>
-      <div class="home-intro__metric">
-        <dt>最近更新</dt>
-        <dd>{{ $latestDate }}</dd>
-      </div>
-    </dl>
+      <dl class="home-intro__metrics" aria-label="site overview">
+        <div class="home-intro__metric">
+          <dt>内容总数</dt>
+          <dd>{{ len $entries }}</dd>
+        </div>
+        <div class="home-intro__metric">
+          <dt>学习笔记</dt>
+          <dd>{{ len $notes }}</dd>
+        </div>
+        <div class="home-intro__metric">
+          <dt>累计字数</dt>
+          <dd>{{ printf "%d" $totalWords }}</dd>
+        </div>
+        <div class="home-intro__metric">
+          <dt>最近更新</dt>
+          <dd>{{ $latestDate }}</dd>
+        </div>
+      </dl>
+      <a class="home-intro__latest" href="{{ $latestPermalink }}">
+        <span>最近更新</span>
+        <strong>{{ $latestTitle }}</strong>
+        <em>{{ $latestDate }}</em>
+      </a>
+    </aside>
+    <div class="home-intro__routes" aria-label="content sections">
+      <article class="home-intro__route">
+        <div class="home-intro__route-head">
+          <span class="home-intro__route-label">文章</span>
+          <span class="home-intro__route-count">{{ len $articles }} 篇</span>
+        </div>
+        <strong>教程、观点和完整输出</strong>
+        <p>适合阅读更成体系的内容整理和专题复盘。</p>
+        {{- with index (first 1 $articlesSorted) 0 }}
+        <a class="home-intro__route-feature" href="{{ .Permalink }}">
+          <span>最新文章</span>
+          <strong>{{ .Title }}</strong>
+          <em>{{ .Date.Format "2006.01.02" }}</em>
+        </a>
+        {{- end }}
+        <a class="home-intro__route-link" href="{{ "/posts/" | absLangURL }}">进入文章分区</a>
+      </article>
+      <article class="home-intro__route">
+        <div class="home-intro__route-head">
+          <span class="home-intro__route-label">学习笔记</span>
+          <span class="home-intro__route-count">{{ len $notes }} 篇</span>
+        </div>
+        <strong>课程实践、实验记录与知识摘录</strong>
+        <p>更偏过程性，方便按时间线回顾学习进度。</p>
+        {{- with index (first 1 $notesSorted) 0 }}
+        <a class="home-intro__route-feature" href="{{ .Permalink }}">
+          <span>最近笔记</span>
+          <strong>{{ .Title }}</strong>
+          <em>{{ .Date.Format "2006.01.02" }}</em>
+        </a>
+        {{- end }}
+        <a class="home-intro__route-link" href="{{ "/studynotes/" | absLangURL }}">进入学习笔记</a>
+      </article>
+      <article class="home-intro__route">
+        <div class="home-intro__route-head">
+          <span class="home-intro__route-label">作品案例</span>
+          <span class="home-intro__route-count">{{ len $projects }} 个</span>
+        </div>
+        <strong>网站、工具和自动化项目展示</strong>
+        <p>集中查看做过的东西、实现方式和结果呈现。</p>
+        {{- with index (first 1 $projectsSorted) 0 }}
+        <a class="home-intro__route-feature" href="{{ .Permalink }}">
+          <span>最新项目</span>
+          <strong>{{ .Title }}</strong>
+          <em>{{ .Date.Format "2006.01.02" }}</em>
+        </a>
+        {{- end }}
+        <a class="home-intro__route-link" href="{{ "/portfolio/" | absLangURL }}">进入作品案例</a>
+      </article>
+    </div>
   </div>
   <footer class="entry-footer home-intro__footer">
     <div class="home-intro__paths">
-      <a href="{{ "/posts/" | absLangURL }}">读文章</a>
-      <a href="{{ "/studynotes/" | absLangURL }}">看笔记</a>
-      <a href="{{ "/portfolio/" | absLangURL }}">浏览作品</a>
+      <a href="{{ "/archives/" | absLangURL }}">按时间归档</a>
+      <a href="{{ "/statistics/" | absLangURL }}">查看统计</a>
     </div>
     {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
   </footer>

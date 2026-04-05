@@ -1,273 +1,31 @@
-<!-- 加载 Fuse.js 库 -->
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
-
+{{- $searchParams := site.Params.search -}}
+{{- $embedding := ($searchParams.embedding | default (dict)) -}}
+{{- $rerank := ($searchParams.rerank | default (dict)) -}}
+{{- $embeddingEndpoint := ($embedding.endpoint | default "/api/blog-search-embedding") -}}
+{{- $rerankEndpoint := ($rerank.endpoint | default "/api/blog-search-rerank") -}}
+{{- $keywordIndexFile := printf "/%s" (replaceRE "^/+" "" ($searchParams.indexFile | default "index.json")) -}}
+{{- $vectorIndexFile := printf "/%s" (replaceRE "^/+" "" ($embedding.vectorIndexFile | default "search-vectors.json")) -}}
+{{- $searchConfig := dict
+    "engine" ($searchParams.engine | default "embedding")
+    "embeddingEndpoint" $embeddingEndpoint
+    "embeddingModel" ($embedding.model | default "baai/bge-m3(free)")
+    "rerankEnabled" ($rerank.enabled | default true)
+    "rerankEndpoint" $rerankEndpoint
+    "rerankModel" ($rerank.model | default "BAAI/bge-reranker-v2-m3(free)")
+    "keywordIndexFile" $keywordIndexFile
+    "vectorIndexFile" $vectorIndexFile
+    "minQueryLength" ($embedding.minQueryLength | default 2)
+    "maxResults" ($embedding.maxResults | default ($searchParams.maxResultsPerSection | default 8))
+    "scoreThreshold" ($embedding.scoreThreshold | default 0.18)
+    "recallK" ($rerank.recallK | default 24)
+    "rerankTopN" ($rerank.topN | default ($embedding.maxResults | default ($searchParams.maxResultsPerSection | default 8)))
+  -}}
 <script>
-    // 防抖函数
-    const debounce = (func, delay = 300) => {
-        let timeout;
-        return (...args) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), delay);
-        };
-    };
-
-    // 转义 HTML 特殊字符，防止 XSS
-    const escapeHtml = (text) => {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    };
-
-    // 全局变量
-    let fuse = null;
-    let searchData = [];
-    let isRendering = false; // 防止重复渲染
-
-    // 初始化搜索
-    document.addEventListener('DOMContentLoaded', async () => {
-        const searchInput = document.getElementById('searchQuery');
-        const searchResults = document.getElementById('searchResults');
-        const resultCount = document.getElementById('resultCount');
-        const searchTime = document.getElementById('searchTime');
-        const clearButton = document.getElementById('clearSearch');
-
-        // 轻量加载指示器（避免打断布局）
-        const loadingIndicator = document.createElement('div');
-        loadingIndicator.textContent = '加载中...';
-        loadingIndicator.className = 'search-loading-indicator';
-        loadingIndicator.hidden = true;
-        const container = searchResults.parentElement || document.body;
-        container.insertBefore(loadingIndicator, searchResults);
-
-        // 清除按钮功能
-        if (clearButton) {
-            clearButton.addEventListener('click', () => {
-                searchInput.value = '';
-                clearButton.hidden = true;
-                searchResults.innerHTML = `
-                    <div class="search-initial-state">
-                        <svg class="initial-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <h3>开始搜索</h3>
-                        <p>输入关键词即可开始搜索文章、笔记和学习资源</p>
-                        <div class="quick-search-tags">
-                            <span class="quick-tag">Python</span>
-                            <span class="quick-tag">数据库</span>
-                            <span class="quick-tag">机器学习</span>
-                            <span class="quick-tag">算法</span>
-                            <span class="quick-tag">Linux</span>
-                        </div>
-                    </div>
-                `;
-                resultCount.textContent = '0';
-                searchTime.textContent = '0';
-                searchInput.focus();
-                // 重新绑定快速标签
-                bindQuickTags();
-            });
-        }
-
-        // 监听输入，显示/隐藏清除按钮
-        searchInput.addEventListener('input', (e) => {
-            if (clearButton) {
-                clearButton.hidden = !e.target.value.trim();
-            }
-        });
-
-        if (clearButton) {
-            clearButton.hidden = !searchInput.value.trim();
-        }
-
-        // 搜索处理函数（提前定义，避免作用域问题）
-        const performSearch = (query) => {
-            // 防止重复渲染
-            if (isRendering) {
-                return;
-            }
-
-            if (!query || query.trim().length < 2) {
-                // 清空结果，显示初始状态
-                requestAnimationFrame(() => {
-                    searchResults.style.opacity = '0';
-                    setTimeout(() => {
-                        searchResults.innerHTML = `
-                            <div class="search-initial-state">
-                                <svg class="initial-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <path d="m21 21-4.35-4.35"></path>
-                                </svg>
-                                <h3>开始搜索</h3>
-                                <p>输入关键词即可开始搜索文章、笔记和学习资源</p>
-                                <div class="quick-search-tags">
-                                    <span class="quick-tag">Python</span>
-                                    <span class="quick-tag">数据库</span>
-                                    <span class="quick-tag">机器学习</span>
-                                    <span class="quick-tag">算法</span>
-                                    <span class="quick-tag">Linux</span>
-                                </div>
-                            </div>
-                        `;
-                        searchResults.style.opacity = '1';
-                        bindQuickTags();
-                    }, 150);
-                });
-                resultCount.textContent = '0';
-                searchTime.textContent = '0';
-                return;
-            }
-
-            isRendering = true;
-
-            // 先淡出
-            searchResults.style.opacity = '0';
-
-            // 等待淡出完成后再渲染新内容
-            setTimeout(() => {
-                if (!fuse) return;
-                
-                const searchStart = performance.now();
-                const results = fuse.search(query.trim());
-                const searchDuration = Math.round(performance.now() - searchStart);
-
-                // 更新统计信息
-                resultCount.textContent = results.length;
-                searchTime.textContent = searchDuration;
-
-                // 渲染结果
-                if (results.length === 0) {
-                    searchResults.innerHTML = `
-                        <div class="no-results">
-                            <p>未找到匹配 "${escapeHtml(query)}" 的内容</p>
-                            <p>建议：</p>
-                            <ul>
-                                <li>尝试使用不同的关键词</li>
-                                <li>使用更通用的搜索词</li>
-                                <li>检查拼写是否正确</li>
-                            </ul>
-                        </div>
-                    `;
-                } else {
-                    const resultHTML = results.map(result => {
-                        const item = result.item;
-                        let summary = item.summary || item.content || '';
-                        
-                        // 截取摘要长度
-                        if (summary.length > 150) {
-                            summary = summary.substring(0, 150) + '...';
-                        }
-
-                        // 转义所有文本内容
-                        const safeTitle = escapeHtml(item.title);
-                        const safeSummary = escapeHtml(summary);
-                        const safePermalink = escapeHtml(item.permalink);
-
-                        return `
-                            <article class="search-result-item" data-url="${safePermalink}">
-                                <h3 class="result-title">
-                                    <a href="${safePermalink}">${safeTitle}</a>
-                                </h3>
-                                <p class="result-summary">${safeSummary}</p>
-                                <div class="result-meta">
-                                    <span class="result-score">匹配度: ${(1 - result.score).toFixed(2)}</span>
-                                </div>
-                            </article>
-                        `;
-                    }).join('');
-
-                    searchResults.innerHTML = resultHTML;
-                    
-                    // 为所有搜索结果卡片绑定点击事件
-                    document.querySelectorAll('.search-result-item').forEach(item => {
-                        item.addEventListener('click', (e) => {
-                            // 如果点击的是链接，让链接自己处理
-                            if (e.target.tagName === 'A') return;
-                            
-                            const url = item.getAttribute('data-url');
-                            if (url) {
-                                window.location.href = url;
-                            }
-                        });
-                    });
-                }
-
-                // 淡入新内容
-                requestAnimationFrame(() => {
-                    searchResults.style.opacity = '1';
-                    isRendering = false;
-                });
-            }, 150);
-        };
-
-        // 快速标签点击功能
-        const bindQuickTags = () => {
-            document.querySelectorAll('.quick-tag').forEach(tag => {
-                tag.addEventListener('click', () => {
-                    searchInput.value = tag.textContent;
-                    if (clearButton) clearButton.hidden = false;
-                    performSearch(tag.textContent);
-                });
-            });
-        };
-
-        try {
-            loadingIndicator.hidden = false;
-            // 加载搜索数据
-            const startTime = performance.now();
-            const response = await fetch('/index.json');
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            searchData = await response.json();
-            const loadTime = Math.round(performance.now() - startTime);
-
-            // 初始化 Fuse.js
-            fuse = new Fuse(searchData, {
-                keys: ['title', 'content', 'summary'],
-                threshold: 0.3,
-                distance: 100,
-                minMatchCharLength: 2,
-                includeScore: true,
-                includeMatches: true,
-                ignoreLocation: true
-            });
-
-            console.log(`搜索索引加载完成 (${loadTime}ms), 共 ${searchData.length} 条记录`);
-
-            // 绑定搜索事件（带防抖）
-            searchInput.addEventListener('input', debounce((e) => {
-                performSearch(e.target.value);
-            }, 400)); // 增加防抖延迟，减少频繁渲染
-
-            // 绑定初始快速标签
-            bindQuickTags();
-
-            // 如果 URL 中有搜索参数，自动执行搜索
-            const urlParams = new URLSearchParams(window.location.search);
-            const queryParam = urlParams.get('q');
-            if (queryParam) {
-                searchInput.value = queryParam;
-                if (clearButton) clearButton.hidden = false;
-                performSearch(queryParam);
-            }
-
-        } catch (err) {
-            console.error('Search init failed:', err);
-            searchResults.innerHTML = `
-                <div class="error-message">
-                    <p>❌ 搜索功能初始化失败</p>
-                    <p>错误信息: ${escapeHtml(err.message)}</p>
-                    <p>请刷新页面重试</p>
-                </div>
-            `;
-        } finally {
-            loadingIndicator.hidden = true;
-        }
-    });
+    window.siteSearchConfig = {{ $searchConfig | jsonify | safeJS }};
 </script>
+{{- $siteSearch := resources.Get "js/site-search.js" | minify -}}
+<script defer src="{{ $siteSearch.RelPermalink }}"></script>
 
 <style>
     /* ==================== 搜索页面整体布局 ==================== */

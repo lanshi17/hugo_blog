@@ -3,7 +3,7 @@
   <div class="search-header">
     <div class="search-title-section">
       <h1 class="search-page-title">站内搜索</h1>
-      <p class="search-page-subtitle">快速定位您需要的技术文章和学习资源</p>
+      <p class="search-page-subtitle">先做向量召回，再用 reranker 精排相关技术文章和学习资源</p>
     </div>
   </div>
 
@@ -18,7 +18,7 @@
                id="searchQuery" 
                class="search-input"
                autocomplete="off"
-               placeholder="输入关键词进行搜索..."
+               placeholder="输入问题、主题或关键词..."
                aria-label="全站搜索">
         <button class="clear-button" id="clearSearch" aria-label="清除搜索" hidden>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -29,9 +29,9 @@
       </div>
       
       <div class="search-tips">
-        <span class="tip-item">支持模糊搜索</span>
-        <span class="tip-item">实时显示结果</span>
-        <span class="tip-item">智能匹配内容</span>
+        <span class="tip-item">向量召回 + 重排</span>
+        <span class="tip-item">问题和主题都能检索</span>
+        <span class="tip-item">异常时自动降级</span>
       </div>
     </div>
 
@@ -46,6 +46,10 @@
         <span class="stats-value" id="searchTime">0</span>
         <span class="stats-unit">ms</span>
       </div>
+      <div class="stats-item">
+        <span class="stats-label">检索模式：</span>
+        <span class="stats-value" id="searchMode">向量召回 + 重排</span>
+      </div>
     </div>
 
     <div id="searchResults" class="search-results-container">
@@ -55,7 +59,7 @@
           <path d="m21 21-4.35-4.35"></path>
         </svg>
         <h3>开始搜索</h3>
-        <p>输入关键词即可开始搜索文章、笔记和学习资源</p>
+        <p>输入问题、主题或关键词，先做向量召回，再用 reranker 重排结果</p>
         <div class="quick-search-tags">
           <span class="quick-tag">Python</span>
           <span class="quick-tag">数据库</span>
