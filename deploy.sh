@@ -22,12 +22,18 @@ WEB_GROUP="${WEB_GROUP:-}"
 HUGO_CONFIG="${HUGO_CONFIG:-config.yaml}"
 LOCK_FILE="${LOCK_FILE:-/tmp/hugo_blog_deploy.lock}"
 BUILD_LOG="${BUILD_LOG:-}"
+AI_PROXY_SERVICE_NAME="${AI_PROXY_SERVICE_NAME:-hugo-blog-ai-proxy}"
+AI_PROXY_USER="${AI_PROXY_USER:-$(id -un)}"
+AI_PROXY_GROUP="${AI_PROXY_GROUP:-}"
+AI_PROXY_SHELL_RC="${AI_PROXY_SHELL_RC:-}"
+AI_PROXY_ENV_FILE="${AI_PROXY_ENV_FILE:-}"
 
 DRY_RUN=false
 PULL_UPDATES=false
 SKIP_PDFINFO=false
 SKIP_PERMISSION_FIX=false
 SKIP_NGINX_RELOAD=false
+SKIP_AI_PROXY=false
 
 BUILD_OUTPUT_DIR=""
 LOCK_FD=""
@@ -61,6 +67,7 @@ usage() {
   --skip-pdfinfo           跳过 gen-pdfinfo.sh
   --skip-permission-fix    跳过 find + chmod 权限修正
   --skip-nginx-reload      跳过 Nginx 配置检查与重载
+  --skip-ai-proxy          跳过 AI 代理服务安装/启动
   --hugo-dir <path>        Hugo 项目目录（默认脚本所在目录）
   --target-dir <path>      网站目标目录（默认: $TARGET_DIR）
   --config <file>          Hugo 配置文件（相对 hugo-dir，默认: $HUGO_CONFIG）
@@ -72,6 +79,7 @@ usage() {
 
 环境变量同名参数可覆盖默认值:
   HUGO_DIR TARGET_DIR NGINX_USER WEB_GROUP HUGO_CONFIG LOCK_FILE BUILD_LOG
+  AI_PROXY_SERVICE_NAME AI_PROXY_USER AI_PROXY_GROUP AI_PROXY_SHELL_RC AI_PROXY_ENV_FILE
 EOF
 }
 
@@ -92,6 +100,9 @@ parse_args() {
         ;;
       --skip-nginx-reload)
         SKIP_NGINX_RELOAD=true
+        ;;
+      --skip-ai-proxy)
+        SKIP_AI_PROXY=true
         ;;
       --hugo-dir)
         [[ $# -ge 2 ]] || { log_error "--hugo-dir 需要参数"; exit 1; }
@@ -178,6 +189,13 @@ check_dependencies() {
     deps+=(systemctl)
   fi
 
+  if [[ "$SKIP_AI_PROXY" != true ]]; then
+    deps+=(node npm systemctl)
+    if [[ "$AI_PROXY_SHELL_RC" == *.zshrc ]]; then
+      deps+=(zsh)
+    fi
+  fi
+
   local cmd
   for cmd in "${deps[@]}"; do
     if ! command -v "$cmd" >/dev/null 2>&1; then
@@ -196,6 +214,33 @@ find_existing_reference_path() {
 
   if [[ -e "$path" ]]; then
     printf '%s\n' "$path"
+  fi
+}
+
+resolve_ai_proxy_defaults() {
+  if [[ -z "$AI_PROXY_GROUP" ]]; then
+    AI_PROXY_GROUP="$(id -gn "$AI_PROXY_USER")"
+    log_info "AI 代理服务用户组默认设置为: $AI_PROXY_GROUP"
+  fi
+
+  if [[ -z "$AI_PROXY_SHELL_RC" ]]; then
+    local ai_proxy_home=""
+
+    if command -v getent >/dev/null 2>&1; then
+      ai_proxy_home="$(getent passwd "$AI_PROXY_USER" | cut -d: -f6)"
+    fi
+
+    if [[ -z "$ai_proxy_home" ]]; then
+      ai_proxy_home="$(eval printf '%s' "~$AI_PROXY_USER")"
+    fi
+
+    if [[ -n "$ai_proxy_home" && -f "$ai_proxy_home/.zshrc" ]]; then
+      AI_PROXY_SHELL_RC="$ai_proxy_home/.zshrc"
+      log_info "自动检测 AI 代理环境文件: $AI_PROXY_SHELL_RC"
+    elif [[ -n "$ai_proxy_home" && -f "$ai_proxy_home/.bashrc" ]]; then
+      AI_PROXY_SHELL_RC="$ai_proxy_home/.bashrc"
+      log_info "自动检测 AI 代理环境文件: $AI_PROXY_SHELL_RC"
+    fi
   fi
 }
 
@@ -318,6 +363,32 @@ validate_settings() {
     ensure_sudo_ready
   else
     log_info "dry-run 模式下跳过用户/用户组与 sudo 校验"
+  fi
+
+  if [[ "$SKIP_AI_PROXY" != true ]]; then
+    if [[ ! -f "$HUGO_DIR/server/ai-assistant-proxy.mjs" ]]; then
+      log_error "未找到 AI 代理入口: $HUGO_DIR/server/ai-assistant-proxy.mjs"
+      exit 1
+    fi
+
+    if [[ ! -f "$HUGO_DIR/server/run-ai-assistant-proxy.sh" ]]; then
+      log_error "未找到 AI 代理启动脚本: $HUGO_DIR/server/run-ai-assistant-proxy.sh"
+      exit 1
+    fi
+
+    if [[ "$DRY_RUN" != true ]]; then
+      if ! id -u "$AI_PROXY_USER" >/dev/null 2>&1; then
+        log_error "AI 代理服务用户不存在: $AI_PROXY_USER"
+        exit 1
+      fi
+
+      if command -v getent >/dev/null 2>&1; then
+        if ! getent group "$AI_PROXY_GROUP" >/dev/null 2>&1; then
+          log_error "AI 代理服务用户组不存在: $AI_PROXY_GROUP"
+          exit 1
+        fi
+      fi
+    fi
   fi
 }
 
@@ -473,15 +544,71 @@ reload_nginx() {
   run_with_optional_sudo systemctl reload nginx
 }
 
+manage_ai_proxy() {
+  if [[ "$SKIP_AI_PROXY" == true ]]; then
+    log_info "已跳过 AI 代理服务安装/启动"
+    return
+  fi
+
+  local service_path="/etc/systemd/system/${AI_PROXY_SERVICE_NAME}.service"
+  local unit_tmp
+  unit_tmp="$(mktemp /tmp/${AI_PROXY_SERVICE_NAME}.XXXXXX.service)"
+
+  cat >"$unit_tmp" <<EOF
+[Unit]
+Description=Hugo Blog AI Assistant Proxy
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=$AI_PROXY_USER
+Group=$AI_PROXY_GROUP
+WorkingDirectory=$HUGO_DIR
+Environment=HUGO_DIR=$HUGO_DIR
+Environment=AI_PROXY_SHELL_RC=$AI_PROXY_SHELL_RC
+Environment=AI_PROXY_ENV_FILE=$AI_PROXY_ENV_FILE
+ExecStart=/usr/bin/env bash $HUGO_DIR/server/run-ai-assistant-proxy.sh
+Restart=always
+RestartSec=5
+TimeoutStartSec=30
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+  if [[ "$DRY_RUN" == true ]]; then
+    log_info "dry-run 模式下跳过 AI 代理服务安装"
+    rm -f "$unit_tmp"
+    return
+  fi
+
+  log_info "安装/更新 AI 代理 systemd 服务: $AI_PROXY_SERVICE_NAME"
+  run_with_optional_sudo install -m 644 "$unit_tmp" "$service_path"
+  rm -f "$unit_tmp"
+
+  log_info "重新加载 systemd 配置..."
+  run_with_optional_sudo systemctl daemon-reload
+
+  log_info "启用并重启 AI 代理服务..."
+  run_with_optional_sudo systemctl enable "$AI_PROXY_SERVICE_NAME"
+  run_with_optional_sudo systemctl restart "$AI_PROXY_SERVICE_NAME"
+  run_with_optional_sudo systemctl --no-pager --full status "$AI_PROXY_SERVICE_NAME"
+}
+
 main() {
   parse_args "$@"
   resolve_owner_group_defaults
+  resolve_ai_proxy_defaults
 
   log_info "==== 开始部署流程 ===="
   log_info "HUGO_DIR=$HUGO_DIR"
   log_info "TARGET_DIR=$TARGET_DIR"
   log_info "DEPLOY_OWNER=${NGINX_USER}:${WEB_GROUP}"
   log_info "DRY_RUN=$DRY_RUN"
+  log_info "AI_PROXY_SERVICE_NAME=$AI_PROXY_SERVICE_NAME"
+  log_info "AI_PROXY_RUNTIME=${AI_PROXY_USER}:${AI_PROXY_GROUP}"
 
   check_dependencies
   validate_settings
@@ -492,6 +619,7 @@ main() {
   build_site
   sync_site
   fix_permissions
+  manage_ai_proxy
   reload_nginx
 
   if [[ "$DRY_RUN" == true ]]; then

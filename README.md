@@ -125,6 +125,12 @@ http://127.0.0.1:8787/api/blog-assistant
 
 - [deploy.sh](/home/dave_paine/hugo_blog/deploy.sh)
 
+现在 `deploy.sh` 除了站点构建与同步，也会负责安装或更新 AI 代理的 systemd 服务并自动重启。
+
+AI 代理后端启动包装脚本：
+
+- [server/run-ai-assistant-proxy.sh](/home/dave_paine/hugo_blog/server/run-ai-assistant-proxy.sh)
+
 如果你已经在服务器上配置了 Hugo 构建目录和 Nginx，可按脚本参数执行部署。
 
 ## 安全提醒

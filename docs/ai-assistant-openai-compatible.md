@@ -41,6 +41,8 @@ Nginx 示例见：
 
 - `[ai-assistant-nginx.example.conf](/home/dave_paine/hugo_blog/docs/ai-assistant-nginx.example.conf)`
 
+如果你使用项目自带的 `[deploy.sh](/home/dave_paine/hugo_blog/deploy.sh)`，部署流程会一并安装/更新 AI 代理的 systemd 服务并自动重启。
+
 ## 1. 用 `.zshrc` 存明文密钥，`config.yaml` 只配变量名
 
 先在 `~/.zshrc` 里导出：
