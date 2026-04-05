@@ -7,6 +7,10 @@
         embeddingModel: 'baai/bge-m3(free)',
         rerankEnabled: true,
         rerankModel: 'BAAI/bge-reranker-v2-m3(free)',
+        localProxyBaseUrl: 'http://127.0.0.1:8787',
+        runtimeVectorBuildEnabled: true,
+        runtimeEmbeddingBatchSize: 16,
+        runtimeVectorInputMaxChars: 6000,
         minQueryLength: 2,
         maxResults: 8,
         scoreThreshold: 0.18,
@@ -40,6 +44,15 @@
             return '';
         }
         return text.replace(/\s+/g, ' ').trim();
+    };
+
+    const hashText = (text) => {
+        let hash = 0;
+        for (let index = 0; index < text.length; index += 1) {
+            hash = ((hash << 5) - hash) + text.charCodeAt(index);
+            hash |= 0;
+        }
+        return String(hash >>> 0);
     };
 
     const summarizeText = (text, maxLength = 150) => {
@@ -168,6 +181,9 @@
         const rerankTopN = Math.max(1, Math.min(recallK, Number(config.rerankTopN) || maxResults));
         const rerankEnabled = Boolean(config.rerankEnabled && config.rerankEndpoint && config.rerankModel);
         const rerankDocumentMaxChars = Math.max(200, Number(config.rerankDocumentMaxChars) || DEFAULT_CONFIG.rerankDocumentMaxChars);
+        const runtimeVectorBuildEnabled = Boolean(config.runtimeVectorBuildEnabled);
+        const runtimeEmbeddingBatchSize = Math.max(1, Number(config.runtimeEmbeddingBatchSize) || DEFAULT_CONFIG.runtimeEmbeddingBatchSize);
+        const runtimeVectorInputMaxChars = Math.max(500, Number(config.runtimeVectorInputMaxChars) || DEFAULT_CONFIG.runtimeVectorInputMaxChars);
         const minQueryLength = Math.max(1, Number(config.minQueryLength) || DEFAULT_CONFIG.minQueryLength);
         const scoreThreshold = Number(config.scoreThreshold) || DEFAULT_CONFIG.scoreThreshold;
 
@@ -190,6 +206,7 @@
         container.insertBefore(loadingIndicator, searchResults);
 
         let vectorIndex = null;
+        let keywordDocuments = [];
         let fuse = null;
         let activeSearchToken = 0;
         let activeEmbeddingController = null;
@@ -339,6 +356,15 @@
             .join('\n\n')
             .slice(0, rerankDocumentMaxChars);
 
+        const buildEmbeddingDocument = (item) => [
+            item.title ? `标题：${item.title}` : '',
+            item.summary ? `摘要：${item.summary}` : '',
+            item.content ? `正文：${item.content}` : ''
+        ]
+            .filter(Boolean)
+            .join('\n\n')
+            .slice(0, runtimeVectorInputMaxChars);
+
         const extractEmbedding = (payload) => payload
             && payload.data
             && payload.data[0]
@@ -356,6 +382,117 @@
             return [];
         };
 
+        const isLocalPreview = () => ['127.0.0.1', 'localhost'].includes(window.location.hostname);
+
+        const buildLocalProxyUrl = (path) => {
+            const base = normalizeText(config.localProxyBaseUrl).replace(/\/+$/, '');
+            if (!base || !path.startsWith('/')) {
+                return '';
+            }
+            return `${base}${path}`;
+        };
+
+        const parseJsonResponse = async (response) => {
+            const text = await response.text();
+            try {
+                return text ? JSON.parse(text) : {};
+            } catch (error) {
+                return {};
+            }
+        };
+
+        const requestJson = async (endpoint, payload, controllerFactory) => {
+            const requestUrls = [endpoint];
+            if (isLocalPreview() && endpoint.startsWith('/')) {
+                const fallbackUrl = buildLocalProxyUrl(endpoint);
+                if (fallbackUrl) {
+                    requestUrls.push(fallbackUrl);
+                }
+            }
+
+            let lastError = null;
+
+            for (let index = 0; index < requestUrls.length; index += 1) {
+                const url = requestUrls[index];
+                const controller = controllerFactory();
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload),
+                        signal: controller.signal
+                    });
+
+                    const data = await parseJsonResponse(response);
+                    if (response.ok) {
+                        return data;
+                    }
+
+                    const message = data && (data.message || (data.error && data.error.message) || data.error);
+                    lastError = new Error(message || `HTTP ${response.status}`);
+
+                    const canRetry = index === 0
+                        && requestUrls.length > 1
+                        && (response.status === 404 || response.status === 502 || response.status === 503);
+                    if (!canRetry) {
+                        throw lastError;
+                    }
+                } catch (error) {
+                    if (error && error.name === 'AbortError') {
+                        throw error;
+                    }
+
+                    lastError = error instanceof Error ? error : new Error('请求失败');
+                    const canRetry = index === 0 && requestUrls.length > 1;
+                    if (!canRetry) {
+                        throw lastError;
+                    }
+                }
+            }
+
+            throw lastError || new Error('请求失败');
+        };
+
+        const createRuntimeVectorCacheKey = (documents) => {
+            const fingerprint = documents
+                .map((item) => `${item.permalink}|${item.title}|${item.summary.length}|${item.content.length}`)
+                .join('\n');
+            return `site-search-vectors:v2:${config.embeddingModel}:${hashText(fingerprint)}`;
+        };
+
+        const readRuntimeVectorCache = (cacheKey) => {
+            try {
+                const raw = window.localStorage.getItem(cacheKey);
+                if (!raw) {
+                    return null;
+                }
+
+                const payload = JSON.parse(raw);
+                if (!Array.isArray(payload && payload.documents) || !payload.documents.length) {
+                    return null;
+                }
+
+                return {
+                    model: payload.model || config.embeddingModel,
+                    dimensions: payload.dimensions || 0,
+                    documents: payload.documents.map(toSearchDocument).filter((item) => item.embedding && item.permalink)
+                };
+            } catch (error) {
+                return null;
+            }
+        };
+
+        const writeRuntimeVectorCache = (cacheKey, payload) => {
+            try {
+                window.localStorage.setItem(cacheKey, JSON.stringify(payload));
+            } catch (error) {
+                // Ignore quota or privacy mode failures.
+            }
+        };
+
         const fetchQueryEmbedding = async (query) => {
             if (!vectorIndex || !vectorIndex.documents.length) {
                 throw new Error('向量索引不可用');
@@ -365,25 +502,13 @@
                 throw new Error('Embedding 接口未配置');
             }
 
-            activeEmbeddingController = new AbortController();
-
-            const response = await fetch(config.embeddingEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    input: query.trim(),
-                    model: vectorIndex.model || config.embeddingModel
-                }),
-                signal: activeEmbeddingController.signal
+            const payload = await requestJson(config.embeddingEndpoint, {
+                input: query.trim(),
+                model: vectorIndex.model || config.embeddingModel
+            }, () => {
+                activeEmbeddingController = new AbortController();
+                return activeEmbeddingController;
             });
-
-            const payload = await response.json().catch(() => ({}));
-            if (!response.ok) {
-                const message = payload && (payload.message || (payload.error && payload.error.message) || payload.error);
-                throw new Error(message || `Embedding 请求失败: HTTP ${response.status}`);
-            }
 
             const queryVector = normalizeVector(extractEmbedding(payload));
             if (!queryVector) {
@@ -421,27 +546,15 @@
                 return null;
             }
 
-            activeRerankController = new AbortController();
-
-            const response = await fetch(config.rerankEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: config.rerankModel,
-                    query: query.trim(),
-                    documents: candidates.map((candidate) => buildRerankDocument(candidate.item)),
-                    top_n: Math.min(rerankTopN, candidates.length)
-                }),
-                signal: activeRerankController.signal
+            const payload = await requestJson(config.rerankEndpoint, {
+                model: config.rerankModel,
+                query: query.trim(),
+                documents: candidates.map((candidate) => buildRerankDocument(candidate.item)),
+                top_n: Math.min(rerankTopN, candidates.length)
+            }, () => {
+                activeRerankController = new AbortController();
+                return activeRerankController;
             });
-
-            const payload = await response.json().catch(() => ({}));
-            if (!response.ok) {
-                const message = payload && (payload.message || (payload.error && payload.error.message) || payload.error);
-                throw new Error(message || `Rerank 请求失败: HTTP ${response.status}`);
-            }
 
             const results = extractRerankResults(payload);
             if (!results.length) {
@@ -504,6 +617,78 @@
                 results: selectVectorResults(candidates),
                 modeLabel: '向量召回'
             };
+        };
+
+        const buildRuntimeVectorIndex = async (documents) => {
+            if (!runtimeVectorBuildEnabled || !documents.length) {
+                return null;
+            }
+
+            const cacheKey = createRuntimeVectorCacheKey(documents);
+            const cached = readRuntimeVectorCache(cacheKey);
+            if (cached && cached.documents.length === documents.length) {
+                return cached;
+            }
+
+            loadingIndicator.textContent = '未找到预计算向量，正在生成临时向量索引...';
+
+            const generatedDocuments = [];
+            let dimensions = 0;
+
+            for (let index = 0; index < documents.length; index += runtimeEmbeddingBatchSize) {
+                const batch = documents.slice(index, index + runtimeEmbeddingBatchSize);
+                const payload = await requestJson(config.embeddingEndpoint, {
+                    model: config.embeddingModel,
+                    input: batch.map(buildEmbeddingDocument)
+                }, () => {
+                    activeEmbeddingController = new AbortController();
+                    return activeEmbeddingController;
+                });
+
+                const embeddings = Array.isArray(payload && payload.data)
+                    ? payload.data
+                        .slice()
+                        .sort((left, right) => left.index - right.index)
+                        .map((item) => normalizeVector(item.embedding))
+                    : [];
+
+                batch.forEach((item, batchIndex) => {
+                    const embedding = embeddings[batchIndex];
+                    if (!embedding) {
+                        return;
+                    }
+
+                    if (!dimensions) {
+                        dimensions = embedding.length;
+                    }
+
+                    generatedDocuments.push({
+                        title: item.title,
+                        permalink: item.permalink,
+                        summary: item.summary,
+                        content: item.content,
+                        embedding: Array.from(embedding)
+                    });
+                });
+            }
+
+            if (!generatedDocuments.length) {
+                throw new Error('运行时向量索引生成失败');
+            }
+
+            const runtimeIndex = {
+                model: config.embeddingModel,
+                dimensions,
+                documents: generatedDocuments.map(toSearchDocument).filter((item) => item.embedding && item.permalink)
+            };
+
+            writeRuntimeVectorCache(cacheKey, {
+                model: runtimeIndex.model,
+                dimensions: runtimeIndex.dimensions,
+                documents: generatedDocuments
+            });
+
+            return runtimeIndex;
         };
 
         const performSearch = async (rawQuery) => {
@@ -616,12 +801,13 @@
                 throw new Error('向量索引中没有有效 embedding');
             }
 
+            keywordDocuments = validDocuments;
             vectorIndex = {
                 model: payload.model || config.embeddingModel || '',
                 dimensions: payload.dimensions || 0,
                 documents: semanticDocuments
             };
-            fuse = createFuseIndex(validDocuments);
+            fuse = createFuseIndex(keywordDocuments);
             setModeLabel(defaultModeLabel());
 
             console.log(`搜索向量索引加载完成，共 ${vectorIndex.documents.length} 条记录`);
@@ -634,7 +820,7 @@
                     throw new Error(`HTTP ${response.status}`);
                 }
 
-                const keywordDocuments = (await response.json())
+                keywordDocuments = (await response.json())
                     .map(toSearchDocument)
                     .filter((item) => item.permalink);
 
@@ -643,7 +829,17 @@
                 }
 
                 fuse = createFuseIndex(keywordDocuments);
-                setModeLabel('关键词');
+                if (config.embeddingEndpoint) {
+                    try {
+                        vectorIndex = await buildRuntimeVectorIndex(keywordDocuments);
+                    } catch (runtimeError) {
+                        console.warn('Runtime vector index generation failed, falling back to keyword search.', runtimeError);
+                    } finally {
+                        activeEmbeddingController = null;
+                    }
+                }
+
+                setModeLabel(defaultModeLabel());
             } catch (keywordError) {
                 searchResults.innerHTML = buildErrorMarkup(keywordError instanceof Error ? keywordError.message : '未知错误');
                 searchResults.style.opacity = '1';
