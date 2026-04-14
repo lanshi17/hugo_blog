@@ -401,12 +401,14 @@
             }
         };
 
+        const isRetriableStatus = (status) => [404, 405, 429, 500, 502, 503, 504].includes(status);
+
         const requestJson = async (endpoint, payload, controllerFactory) => {
             const requestUrls = [endpoint];
             if (isLocalPreview() && endpoint.startsWith('/')) {
                 const fallbackUrl = buildLocalProxyUrl(endpoint);
                 if (fallbackUrl) {
-                    requestUrls.push(fallbackUrl);
+                    requestUrls.unshift(fallbackUrl);
                 }
             }
 
@@ -434,9 +436,8 @@
                     const message = data && (data.message || (data.error && data.error.message) || data.error);
                     lastError = new Error(message || `HTTP ${response.status}`);
 
-                    const canRetry = index === 0
-                        && requestUrls.length > 1
-                        && (response.status === 404 || response.status === 502 || response.status === 503);
+                    const canRetry = index < requestUrls.length - 1
+                        && isRetriableStatus(response.status);
                     if (!canRetry) {
                         throw lastError;
                     }
@@ -446,7 +447,7 @@
                     }
 
                     lastError = error instanceof Error ? error : new Error('请求失败');
-                    const canRetry = index === 0 && requestUrls.length > 1;
+                    const canRetry = index < requestUrls.length - 1;
                     if (!canRetry) {
                         throw lastError;
                     }

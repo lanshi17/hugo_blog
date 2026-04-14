@@ -86,9 +86,15 @@
 }
 
 html {
-	scroll-behavior: smooth;
+	scroll-behavior: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
 }
 
 /* 通用样式 - 沉浸式阅读体验 */
@@ -153,7 +159,7 @@ h6 {
 }
 
 /* 导航栏增强 - 现代化设计 */
-header {
+.header {
 	position: sticky;
 	top: 0;
 	z-index: 100;
@@ -163,11 +169,11 @@ header {
 	transition: all 0.3s ease;
 }
 
-.dark header {
+.dark .header {
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
-header nav {
+.header nav {
 	background: transparent !important;
 	box-shadow: none !important;
 	padding: 0 !important;
@@ -177,7 +183,7 @@ header nav {
 	margin: 0 auto;
 }
 
-nav a {
+.header nav a {
 	color: var(--text-color) !important;
 	transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 	padding: 8px 16px !important;
@@ -187,7 +193,7 @@ nav a {
 	font-weight: 500;
 }
 
-nav a::after {
+.header nav a::after {
 	content: "";
 	position: absolute;
 	bottom: 0;
@@ -201,13 +207,13 @@ nav a::after {
 	transform: translateX(-50%);
 }
 
-nav a:hover {
+.header nav a:hover {
 	background: rgba(50, 157, 156, 0.08);
 	color: var(--secondary) !important;
 	transform: translateY(-1px);
 }
 
-nav a:hover::after {
+.header nav a:hover::after {
 	width: 20px;
 }
 
@@ -472,7 +478,7 @@ a:focus {
 }
 
 /* 页脚样式 */
-footer {
+.footer {
 	background: var(--light-bg);
 	border-top: 1px solid var(--border-color);
 	padding: 2rem 0;
@@ -483,15 +489,15 @@ footer {
 	transition: all 0.3s ease;
 }
 
-.dark footer {
+.dark .footer {
 	background: var(--entry);
 }
 
-footer a {
+.footer a {
 	color: var(--secondary);
 }
 
-footer a:hover {
+.footer a:hover {
 	color: var(--primary);
 }
 
@@ -523,7 +529,7 @@ footer a:hover {
 		border-radius: 8px;
 	}
 
-	nav a {
+	.header nav a {
 		padding: 6px 12px !important;
 		font-size: 0.9rem;
 	}
@@ -549,11 +555,11 @@ footer a:hover {
 		font-size: 1.1rem;
 	}
 
-	header nav {
+	.header nav {
 		padding: 0 1rem !important;
 	}
 
-	nav a {
+	.header nav a {
 		padding: 6px 10px !important;
 		font-size: 0.85rem;
 	}
@@ -586,8 +592,8 @@ footer a:hover {
 		color: black;
 	}
 
-	header,
-	footer,
+	.header,
+	.footer,
 	.pagination,
 	.tags {
 		display: none;
@@ -598,4 +604,260 @@ footer a:hover {
 		box-shadow: none;
 		page-break-inside: avoid;
 	}
+}
+
+:root {
+	--main-width: 920px;
+	--motion-fast: 180ms;
+	--motion-medium: 240ms;
+	--motion-slow: 320ms;
+	--theme: #f4f1eb;
+	--entry: #fbfaf6;
+	--primary: #1d2c3a;
+	--primary-rgb: 29, 44, 58;
+	--secondary: #5f7c81;
+	--secondary-rgb: 95, 124, 129;
+	--tertiary: #a2b1b0;
+	--accent: #8ba09b;
+	--light-bg: #ece8e1;
+	--dark-bg: #11171d;
+	--text-color: #253443;
+	--text-secondary: #687686;
+	--border-color: #dce2e6;
+	--reading-surface: #fcfbf7;
+	--reading-surface-soft: #f3f0ea;
+	--reading-heading: #1d2b38;
+	--reading-text: #2f3b49;
+	--reading-muted: #6c7b8a;
+	--reading-accent: #496c72;
+	--reading-border: rgba(37, 52, 67, 0.12);
+	--reading-quote-bg: rgba(73, 108, 114, 0.08);
+	--reading-code-bg: #161d25;
+	--reading-code-border: #2d3845;
+	--reading-table-head: linear-gradient(135deg, #314659, #557179);
+	--reading-selection-bg: #8ca8a3;
+	--reading-selection-text: #fcfbf7;
+	--line-height-base: 1.78;
+	--letter-spacing-base: 0.012em;
+}
+
+.dark {
+	--theme: #12171d;
+	--entry: #171d25;
+	--primary: #e8edf2;
+	--primary-rgb: 232, 237, 242;
+	--secondary: #98b2b5;
+	--secondary-rgb: 152, 178, 181;
+	--tertiary: #6b7d85;
+	--accent: #839b98;
+	--light-bg: #1b2129;
+	--dark-bg: #0c1116;
+	--text-color: #d7dde5;
+	--text-secondary: #95a2af;
+	--border-color: #2b3540;
+	--reading-surface: #161d25;
+	--reading-surface-soft: #1d2530;
+	--reading-heading: #eef2f5;
+	--reading-text: #d7dee6;
+	--reading-muted: #9aa7b4;
+	--reading-accent: #99b9b6;
+	--reading-border: rgba(154, 167, 180, 0.18);
+	--reading-quote-bg: rgba(153, 185, 182, 0.12);
+	--reading-code-bg: #0e141b;
+	--reading-code-border: #26313d;
+	--reading-table-head: linear-gradient(135deg, #233546, #47636a);
+	--reading-selection-bg: #89aaa4;
+	--reading-selection-text: #0b1117;
+}
+
+body {
+	transition:
+		background-color var(--motion-medium) ease,
+		color var(--motion-medium) ease;
+}
+
+.header {
+	background: rgba(251, 250, 246, 0.88);
+	border-bottom: 1px solid rgba(37, 52, 67, 0.08);
+	box-shadow: 0 10px 30px rgba(15, 23, 34, 0.05);
+	backdrop-filter: blur(14px) saturate(140%);
+	-webkit-backdrop-filter: blur(14px) saturate(140%);
+	transition:
+		background-color var(--motion-medium) ease,
+		border-color var(--motion-medium) ease,
+		box-shadow var(--motion-medium) ease,
+		transform var(--motion-medium) ease,
+		opacity var(--motion-medium) ease;
+}
+
+.dark .header {
+	background: rgba(23, 29, 37, 0.86);
+	border-bottom-color: rgba(154, 167, 180, 0.12);
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+.header nav {
+	max-width: 1120px;
+	padding: 0.35rem 0 !important;
+}
+
+.header nav a {
+	padding: 0.55rem 0.85rem !important;
+	border-radius: 999px;
+	transition:
+		background-color var(--motion-fast) ease,
+		color var(--motion-fast) ease,
+		border-color var(--motion-fast) ease,
+		box-shadow var(--motion-fast) ease;
+}
+
+.header nav a::after {
+	display: none;
+}
+
+.header nav a:hover,
+.header nav a:focus-visible {
+	background: rgba(var(--secondary-rgb), 0.08);
+	color: var(--reading-heading) !important;
+	transform: none;
+	box-shadow: none;
+}
+
+.post-entry {
+	box-shadow: 0 8px 24px rgba(15, 23, 34, 0.04);
+	transition:
+		border-color var(--motion-fast) ease,
+		box-shadow var(--motion-medium) ease,
+		background-color var(--motion-medium) ease;
+}
+
+.post-entry:hover {
+	transform: none;
+	border-color: rgba(var(--secondary-rgb), 0.24);
+	box-shadow: 0 16px 32px rgba(15, 23, 34, 0.08);
+}
+
+.dark .post-entry:hover {
+	box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+}
+
+button,
+.button {
+	background: var(--entry);
+	color: var(--reading-heading);
+	border: 1px solid var(--border-color);
+	box-shadow: none;
+	transition:
+		background-color var(--motion-fast) ease,
+		border-color var(--motion-fast) ease,
+		color var(--motion-fast) ease,
+		box-shadow var(--motion-fast) ease;
+}
+
+button::before,
+.button::before {
+	display: none;
+}
+
+button:hover,
+.button:hover {
+	background: rgba(var(--secondary-rgb), 0.08);
+	border-color: rgba(var(--secondary-rgb), 0.24);
+	color: var(--reading-heading);
+	transform: none;
+	box-shadow: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+.button:focus-visible {
+	outline: 2px solid rgba(var(--secondary-rgb), 0.45);
+	outline-offset: 2px;
+}
+
+#theme-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+	border-radius: 999px;
+	background: transparent;
+	border-color: transparent;
+}
+
+#theme-toggle:hover,
+#theme-toggle:focus-visible {
+	background: rgba(var(--secondary-rgb), 0.08);
+	border-color: rgba(var(--secondary-rgb), 0.16);
+}
+
+.copy-code {
+	display: block;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-2px);
+	background: rgba(15, 20, 27, 0.72);
+	color: rgba(248, 250, 252, 0.92);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 999px;
+	padding: 0.35rem 0.75rem;
+	font-size: 0.75rem;
+	letter-spacing: 0.02em;
+	backdrop-filter: blur(8px);
+	transition:
+		opacity var(--motion-fast) ease,
+		transform var(--motion-fast) ease,
+		visibility var(--motion-fast) ease,
+		background-color var(--motion-fast) ease;
+}
+
+div.highlight:hover .copy-code,
+pre:hover .copy-code,
+div.highlight:focus-within .copy-code,
+pre:focus-within .copy-code {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.pagination a,
+.tags a {
+	transition:
+		background-color var(--motion-fast) ease,
+		color var(--motion-fast) ease,
+		border-color var(--motion-fast) ease,
+		box-shadow var(--motion-fast) ease;
+}
+
+.pagination a:hover,
+.tags a:hover {
+	transform: none;
+	box-shadow: none;
+}
+
+.pagination a:hover {
+	background: rgba(var(--secondary-rgb), 0.08);
+	color: var(--reading-heading);
+	border-color: rgba(var(--secondary-rgb), 0.24);
+}
+
+.tags a:hover {
+	background: rgba(var(--secondary-rgb), 0.12);
+	color: var(--reading-heading);
+	border-color: rgba(var(--secondary-rgb), 0.24);
+}
+
+.footer {
+	background: transparent;
+	border-top-color: var(--reading-border);
+	color: var(--text-secondary);
+}
+
+.top-link {
+	transition:
+		opacity var(--motion-fast) ease,
+		visibility var(--motion-fast) ease,
+		background-color var(--motion-fast) ease;
 }

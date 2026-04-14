@@ -32,6 +32,24 @@
 - id: code_copied
   translation: "已复制！"
 
+- id: reading_toolbar
+  translation: "阅读工具"
+
+- id: focus_mode
+  translation: "专注阅读"
+
+- id: focus_mode_exit
+  translation: "退出专注"
+
+- id: image_viewer_close
+  translation: "关闭预览"
+
+- id: image_viewer_open
+  translation: "查看大图"
+
+- id: image_viewer_preview
+  translation: "图片预览"
+
 # 日期格式翻译
 - id: date_format
   translation: "2006年1月2日"

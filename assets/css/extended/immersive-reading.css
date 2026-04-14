@@ -1,127 +1,237 @@
 /* ================= 沉浸式阅读体验优化 ================= */
 
-/* 阅读进度条 */
+html {
+	scroll-padding-top: calc(var(--header-height) + 1.25rem);
+}
+
 .reading-progress {
 	position: fixed;
-	top: 0;
 	left: 0;
+	right: 0;
 	height: 3px;
-	background: linear-gradient(
-		90deg,
-		var(--secondary),
-		var(--reading-accent),
-		var(--accent)
-	);
-	width: 0%;
-	z-index: 9999;
-	transition: width 0.2s ease;
-	box-shadow: 0 0 10px rgba(82, 157, 156, 0.5);
+	z-index: 180;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity var(--motion-fast) ease;
 }
 
-.dark .reading-progress {
-	box-shadow: 0 0 10px rgba(82, 157, 156, 0.8);
+.reading-progress[data-position="top"] {
+	top: 0;
+	bottom: auto;
 }
 
-/* 焦点模式 - 阅读时隐藏侧边栏和干扰元素 */
-body.focus-mode header {
-	opacity: 0.8;
-	transition: opacity 0.3s ease;
+.reading-progress[data-position="bottom"] {
+	top: auto;
+	bottom: 0;
 }
 
-body.focus-mode aside {
-	display: none;
+.reading-progress.is-visible {
+	opacity: 1;
 }
 
-body.focus-mode .post-content {
-	padding: 0 3rem;
-	max-width: 700px;
+.reading-progress__bar {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, var(--reading-accent), var(--secondary));
+	transform: scaleX(var(--reading-progress, 0));
+	transform-origin: left center;
+	transition: transform var(--motion-fast) linear;
+	box-shadow: 0 0 0 1px rgba(var(--secondary-rgb), 0.08);
+	opacity: 0.9;
 }
 
-/* 响应式焦点模式 */
-@media (max-width: 768px) {
-	body.focus-mode .post-content {
-		padding: 0 1.5rem;
-	}
-}
-
-@media (max-width: 480px) {
-	body.focus-mode .post-content {
-		padding: 0 1rem;
-	}
-}
-
-/* 目录样式增强 */
-.toc {
+.post-single > .toc {
+	max-width: 65ch;
+	margin: 1.75rem auto 0;
+	padding: 0;
 	background: var(--reading-surface-soft);
 	border: 1px solid var(--reading-border);
-	border-radius: 12px;
-	padding: 1.5rem;
-	margin: 2rem 0;
+	border-radius: 18px;
+	box-shadow: 0 10px 30px rgba(15, 23, 34, 0.04);
 	position: sticky;
-	top: 80px;
-	max-height: calc(100vh - 120px);
-	overflow-y: auto;
+	top: calc(var(--header-height) + 1rem);
+	max-height: min(60vh, 30rem);
+	overflow: auto;
 }
 
-.dark .toc {
-	background: var(--reading-surface-soft);
-	border-color: var(--reading-border);
+.dark .post-single > .toc {
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
 }
 
-.toc h2 {
-	margin: 0 0 1rem 0;
-	font-size: 1rem;
-	border: none;
-	color: var(--reading-heading);
+.post-single > .toc details {
+	padding: 0.2rem;
 }
 
-.toc ul {
+.post-single > .toc summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.85rem 1rem;
+	margin-inline-start: 0;
+	cursor: pointer;
+}
+
+.post-single > .toc .details {
+	font-size: 0.82rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--reading-muted);
+}
+
+.post-single > .toc .inner {
+	margin: 0;
+	padding: 0 0.65rem 0.75rem;
+	opacity: 1;
+}
+
+.post-single > .toc ul {
 	list-style: none;
+	margin: 0;
 	padding: 0;
 }
 
-.toc li {
-	margin: 0.3rem 0;
+.post-single > .toc li + li {
+	margin-top: 0.2rem;
 }
 
-.toc a {
+.post-single > .toc li ul {
+	margin-inline-start: 0.75rem;
+	padding-inline-start: 0.75rem;
+	border-inline-start: 1px solid var(--reading-border);
+}
+
+.post-single > .toc a {
+	display: block;
+	padding: 0.45rem 0.6rem;
+	border-radius: 10px;
 	color: var(--reading-muted);
 	text-decoration: none;
-	transition: all 0.3s ease;
-	display: block;
-	padding: 0.4rem 0.8rem;
-	border-radius: 4px;
+	transition:
+		background-color var(--motion-fast) ease,
+		color var(--motion-fast) ease;
 }
 
-.toc a:hover {
-	background: rgba(var(--secondary-rgb), 0.12);
+.post-single > .toc a:hover,
+.post-single > .toc a:focus-visible {
+	background: rgba(var(--secondary-rgb), 0.08);
 	color: var(--reading-heading);
-	transform: translateX(4px);
+	box-shadow: none;
+	transform: none;
 }
 
-.toc ul ul {
-	margin-left: 1rem;
-	border-left: 2px solid var(--reading-border);
-	padding-left: 0.5rem;
+.post-single > .toc a.is-active,
+.post-single > .toc a[aria-current="true"] {
+	background: rgba(var(--secondary-rgb), 0.14);
+	color: var(--reading-heading);
+	font-weight: 600;
 }
 
-/* 平滑滚动 */
-html {
-	scroll-behavior: smooth;
+.reading-toolbar {
+	position: fixed;
+	right: clamp(1rem, 2vw, 2rem);
+	bottom: clamp(1rem, 2vw, 2rem);
+	z-index: 170;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.35rem;
+	border-radius: 999px;
+	background: rgba(252, 251, 247, 0.84);
+	border: 1px solid rgba(37, 52, 67, 0.1);
+	backdrop-filter: blur(14px) saturate(140%);
+	-webkit-backdrop-filter: blur(14px) saturate(140%);
+	box-shadow: 0 18px 40px rgba(15, 23, 34, 0.08);
 }
 
-/* 选中文本样式 */
+.dark .reading-toolbar {
+	background: rgba(18, 23, 29, 0.82);
+	border-color: rgba(154, 167, 180, 0.12);
+	box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+}
+
+.reading-toolbar__button {
+	min-width: 0;
+	padding: 0.65rem 0.95rem;
+	border: 0;
+	border-radius: 999px;
+	background: transparent;
+	color: var(--reading-heading);
+	font-size: 0.88rem;
+	font-weight: 600;
+	line-height: 1;
+	letter-spacing: 0.01em;
+}
+
+.reading-toolbar__button:hover,
+.reading-toolbar__button:focus-visible {
+	background: rgba(var(--secondary-rgb), 0.12);
+	border-color: transparent;
+	color: var(--reading-heading);
+	transform: none;
+	box-shadow: none;
+}
+
+.focus-mode .reading-toolbar__button {
+	background: rgba(var(--secondary-rgb), 0.14);
+}
+
+.post-single > .toc,
+.post-single > .post-footer,
+.post-single .giscus,
+.header,
+.footer,
+.top-link {
+	transition:
+		opacity var(--motion-medium) ease,
+		transform var(--motion-medium) ease,
+		max-height var(--motion-medium) ease,
+		padding var(--motion-medium) ease,
+		margin var(--motion-medium) ease;
+}
+
+.focus-mode .header {
+	opacity: 0;
+	transform: translateY(-100%);
+	pointer-events: none;
+	max-height: 0;
+	overflow: hidden;
+	border-bottom-width: 0;
+}
+
+.focus-mode .header nav {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	min-height: 0;
+}
+
+.focus-mode .post-single > .toc,
+.focus-mode .post-single > .post-footer,
+.focus-mode .post-single .giscus,
+.focus-mode .footer,
+.focus-mode .top-link {
+	opacity: 0;
+	max-height: 0;
+	overflow: hidden;
+	pointer-events: none;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	border-width: 0;
+	transform: translateY(8px);
+}
+
+.focus-mode .post-single .post-content {
+	max-width: 66ch;
+}
+
 .post-content ::selection {
 	background: var(--reading-selection-bg);
 	color: var(--reading-selection-text);
 }
 
-.dark .post-content ::selection {
-	background: var(--reading-selection-bg);
-	color: var(--reading-selection-text);
-}
-
-/* 脚注样式 */
 .post-content .footnote-ref {
 	font-size: 0.85rem;
 	vertical-align: super;
@@ -130,10 +240,90 @@ html {
 .post-content .footnote-ref a {
 	color: var(--reading-accent);
 	text-decoration: none;
-	border-bottom: 1px dotted var(--reading-accent);
+	border-bottom: 1px dotted currentColor;
 }
 
 .post-content .footnote-ref a:hover {
 	color: var(--reading-heading);
-	border-bottom-color: var(--reading-heading);
+	border-bottom-color: currentColor;
+}
+
+.post-content img.is-zoomable {
+	cursor: zoom-in;
+}
+
+.post-content img.is-zoomable:focus-visible {
+	outline: 2px solid rgba(var(--secondary-rgb), 0.45);
+	outline-offset: 4px;
+}
+
+.reading-image-viewer-open {
+	overflow: hidden;
+}
+
+.reading-image-viewer {
+	position: fixed;
+	inset: 0;
+	z-index: 190;
+	display: grid;
+	place-items: center;
+	padding: clamp(1rem, 4vw, 3rem);
+	background: rgba(9, 13, 18, 0.78);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	animation: fadeIn var(--motion-medium) ease;
+}
+
+.reading-image-viewer__panel {
+	display: grid;
+	gap: 0.9rem;
+	max-width: min(92vw, 1100px);
+	max-height: 92vh;
+	justify-items: center;
+}
+
+.reading-image-viewer__close {
+	justify-self: end;
+	padding: 0.55rem 0.85rem;
+	border-radius: 999px;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	background: rgba(255, 255, 255, 0.08);
+	color: #f8fafc;
+}
+
+.reading-image-viewer__close:hover,
+.reading-image-viewer__close:focus-visible {
+	background: rgba(255, 255, 255, 0.14);
+	color: #ffffff;
+	border-color: rgba(255, 255, 255, 0.22);
+}
+
+.reading-image-viewer__image {
+	max-width: 100%;
+	max-height: calc(92vh - 4rem);
+	object-fit: contain;
+	border-radius: 18px;
+	box-shadow: 0 28px 60px rgba(0, 0, 0, 0.32);
+}
+
+.reading-image-viewer__caption {
+	margin: 0;
+	color: rgba(248, 250, 252, 0.9);
+	font-size: 0.95rem;
+	line-height: 1.7;
+	text-align: center;
+	max-width: 72ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reading-progress,
+	.reading-progress__bar,
+	.reading-toolbar,
+	.reading-toolbar__button,
+	.reading-image-viewer,
+	.reading-image-viewer__close,
+	.post-single > .toc a {
+		transition: none !important;
+		animation: none !important;
+	}
 }

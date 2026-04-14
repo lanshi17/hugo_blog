@@ -6,7 +6,7 @@
 
 - 沉浸式阅读界面：优化文章页排版、目录、进度条与专注模式
 - 文章级 AI 助手：支持基于当前文章内容的提问与回答
-- 站内搜索：基于索引文件的前端搜索
+- 站内搜索：向量召回 + reranker 重排，异常时自动降级到纯向量或关键词搜索
 - Giscus 评论集成
 - Hugo 静态构建与部署脚本
 
@@ -40,6 +40,27 @@ npm run build
 
 - `npm run build` 会先执行 `./gen-pdfinfo.sh`
 - 然后运行 `hugo --minify`
+- 构建完成后会尝试基于 `public/index.json` 生成 `search-vectors.json`
+
+如果构建环境提供了：
+
+```bash
+export OPENAI_API_KEY="sk-..."
+export OPENAI_BASE_URL="https://api.openai.com/v1"
+export OPENAI_EMBEDDING_MODEL="baai/bge-m3(free)"
+```
+
+站内搜索会优先使用 embedding 向量索引；如果未配置或生成失败，搜索页会自动退回关键词搜索。
+
+如果你接的不是官方 OpenAI，而是其他 OpenAI 兼容服务，需要把 `OPENAI_EMBEDDING_MODEL` 改成该服务实际支持的 embedding 模型。
+
+如果你还配置了：
+
+```bash
+export OPENAI_RERANK_MODEL="BAAI/bge-reranker-v2-m3(free)"
+```
+
+搜索页会在向量召回后继续调用 reranker 做第二阶段精排。
 
 ## AI 文章助手
 
@@ -63,6 +84,15 @@ params:
       - "gpt-4.1"
 ```
 
+本地开发如果没有给站点域名配置 `/api/blog-assistant` 反代，可以直接覆盖前端请求地址：
+
+```bash
+export AI_ASSISTANT_ENDPOINT="http://127.0.0.1:8787/api/blog-assistant"
+hugo server
+```
+
+如果你要在手机或局域网其他设备上访问开发站点，把 `127.0.0.1` 换成当前机器的局域网 IP。
+
 ### 推荐接法：代理模式
 
 服务端代理脚本：
@@ -83,6 +113,17 @@ npm run ai-proxy
 ```text
 http://127.0.0.1:8787/api/blog-assistant
 ```
+
+开发环境下，前端注入的 `endpoint` 现在支持环境变量覆盖：
+
+```bash
+export AI_ASSISTANT_ENDPOINT="http://127.0.0.1:8787/api/blog-assistant"
+```
+
+优先级是：
+
+- `AI_ASSISTANT_ENDPOINT`
+- `config.yaml` 里的 `params.aiAssistant.endpoint`
 
 如果你使用 Nginx，可将站点同域的 `/api/blog-assistant` 反代到本机代理：
 

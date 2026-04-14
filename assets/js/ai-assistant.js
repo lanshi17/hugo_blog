@@ -11,6 +11,13 @@
 
     const STORAGE_KEY = 'ai-article-assistant-open';
     const MODEL_STORAGE_KEY = 'ai-article-assistant-model';
+    const POSITION_STORAGE_KEY = 'ai-article-assistant-position';
+    const DRAG_THRESHOLD = 6;
+    const HOVER_CLOSE_DELAY = 160;
+    const VIEWPORT_GAP = 18;
+    const INPUT_MIN_HEIGHT = 60;
+    const INPUT_MAX_HEIGHT = 160;
+    const STREAM_DONE_MARKER = '[DONE]';
     const SUMMARY_PATTERN = /(总结|概括|概述|摘要|主要讲|讲了什么|说了什么|要点|重点|总览|梳理)/i;
     const QUESTION_PATTERN = /[?？]|(为什么|如何|怎么|哪些|哪里|区别|作用|含义|定义|流程|步骤|原理|代码)/i;
 
@@ -30,6 +37,10 @@
             return text;
         }
         return `${text.slice(0, maxLength).trim()}…`;
+    }
+
+    function clampNumber(value, min, max) {
+        return Math.min(max, Math.max(min, value));
     }
 
     function escapeHtml(value) {
@@ -52,6 +63,35 @@
     function writePreference(value) {
         try {
             window.localStorage.setItem(STORAGE_KEY, value);
+        } catch (error) {
+            /* noop */
+        }
+    }
+
+    function readPosition() {
+        try {
+            const raw = window.localStorage.getItem(POSITION_STORAGE_KEY);
+            if (!raw) {
+                return null;
+            }
+
+            const parsed = JSON.parse(raw);
+            if (!parsed || typeof parsed.x !== 'number' || typeof parsed.y !== 'number') {
+                return null;
+            }
+
+            return {
+                x: parsed.x,
+                y: parsed.y
+            };
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function writePosition(position) {
+        try {
+            window.localStorage.setItem(POSITION_STORAGE_KEY, JSON.stringify(position));
         } catch (error) {
             /* noop */
         }
@@ -112,8 +152,8 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                statusText: '已连接 AI 代理',
-                actionHint: '基于当前文章 + 远程 AI 回答',
+                statusText: 'AI 代理模式',
+                actionHint: '结合当前文章内容作答',
                 warningText: ''
             };
         }
@@ -133,7 +173,7 @@
                 url: '',
                 headers: {},
                 statusText: '文章检索模式',
-                actionHint: '当前先用文章内容检索回答',
+                actionHint: '仅基于当前文章内容',
                 warningText: remote.enabled && baseURL && apiKey && !allowBrowserKey
                     ? '已检测到远程接口配置，但未开启前端暴露密钥开关，当前仍使用文章检索模式。'
                     : ''
@@ -150,8 +190,8 @@
             mode: 'direct',
             url: joinUrl(baseURL, apiPath),
             headers,
-            statusText: '前端直连 AI 接口',
-            actionHint: '基于当前文章 + 远程 LLM 回答',
+            statusText: '前端直连模式',
+            actionHint: '结合文章内容调用远程模型',
             warningText: '当前配置为前端直连，API Key 会暴露给所有访客，不适合生产环境。'
         };
     }
@@ -379,7 +419,64 @@
         };
     }
 
-    async function parseResponseText(payload) {
+    function collectTextParts(value) {
+        if (!value) {
+            return [];
+        }
+
+        if (typeof value === 'string') {
+            return [value];
+        }
+
+        if (Array.isArray(value)) {
+            return value.flatMap((item) => collectTextParts(item));
+        }
+
+        if (typeof value.text === 'string') {
+            return [value.text];
+        }
+
+        if (typeof value.content === 'string') {
+            return [value.content];
+        }
+
+        if (Array.isArray(value.content)) {
+            return collectTextParts(value.content);
+        }
+
+        if (typeof value.delta === 'string') {
+            return [value.delta];
+        }
+
+        return [];
+    }
+
+    function joinTextParts(value, joiner, trim) {
+        const text = collectTextParts(value).join(joiner);
+        return trim === false ? text : text.trim();
+    }
+
+    function extractPayloadError(payload) {
+        if (!payload) {
+            return '';
+        }
+
+        if (typeof payload.error === 'string') {
+            return payload.error.trim();
+        }
+
+        if (payload.error && typeof payload.error.message === 'string') {
+            return payload.error.message.trim();
+        }
+
+        if (payload.type === 'error' && typeof payload.message === 'string') {
+            return payload.message.trim();
+        }
+
+        return '';
+    }
+
+    function parseResponseText(payload) {
         if (!payload) {
             return '';
         }
@@ -397,21 +494,7 @@
         }
 
         if (Array.isArray(payload.content)) {
-            const contentText = payload.content
-                .map((item) => {
-                    if (typeof item === 'string') {
-                        return item;
-                    }
-
-                    if (item && typeof item.text === 'string') {
-                        return item.text;
-                    }
-
-                    return '';
-                })
-                .filter(Boolean)
-                .join('\n\n')
-                .trim();
+            const contentText = joinTextParts(payload.content, '\n\n');
 
             if (contentText) {
                 return contentText;
@@ -420,13 +503,8 @@
 
         if (Array.isArray(payload.output)) {
             const outputText = payload.output
-                .flatMap((item) => {
-                    if (!item || !Array.isArray(item.content)) {
-                        return [];
-                    }
-
-                    return item.content.map((contentItem) => contentItem?.text || '').filter(Boolean);
-                })
+                .map((item) => joinTextParts(item?.content || item, '\n\n'))
+                .filter(Boolean)
                 .join('\n\n')
                 .trim();
 
@@ -436,28 +514,162 @@
         }
 
         if (Array.isArray(payload.choices) && payload.choices[0]?.message?.content) {
-            const contentValue = payload.choices[0].message.content;
-            if (typeof contentValue === 'string') {
-                return contentValue.trim();
-            }
-
-            if (Array.isArray(contentValue)) {
-                return contentValue
-                    .map((item) => item?.text || '')
-                    .filter(Boolean)
-                    .join('\n\n')
-                    .trim();
-            }
+            return joinTextParts(payload.choices[0].message.content, '\n\n');
         }
 
         return '';
     }
 
-    async function requestRemoteAnswer(question, articleData, selectedChunks, selectedModel) {
-        if (!remoteClientConfig.enabled) {
+    function parseStreamDelta(payload) {
+        if (!payload) {
+            return '';
+        }
+
+        if (typeof payload.output_text_delta === 'string') {
+            return payload.output_text_delta;
+        }
+
+        if (payload.type === 'response.output_text.delta' && typeof payload.delta === 'string') {
+            return payload.delta;
+        }
+
+        if (Array.isArray(payload.choices)) {
+            const chunkText = payload.choices
+                .map((choice) => {
+                    if (!choice) {
+                        return '';
+                    }
+
+                    if (typeof choice.delta?.content === 'string') {
+                        return choice.delta.content;
+                    }
+
+                    if (Array.isArray(choice.delta?.content)) {
+                        return joinTextParts(choice.delta.content, '', false);
+                    }
+
+                    if (typeof choice.text === 'string') {
+                        return choice.text;
+                    }
+
+                    return '';
+                })
+                .filter(Boolean)
+                .join('');
+
+            if (chunkText) {
+                return chunkText;
+            }
+        }
+
+        if (typeof payload.delta === 'string') {
+            return payload.delta;
+        }
+
+        return '';
+    }
+
+    function getNextSseBlock(buffer) {
+        const match = buffer.match(/\r?\n\r?\n/);
+        if (!match || typeof match.index !== 'number') {
             return null;
         }
 
+        return {
+            block: buffer.slice(0, match.index),
+            rest: buffer.slice(match.index + match[0].length)
+        };
+    }
+
+    async function consumeEventStream(stream, handlers) {
+        const reader = stream.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        function handleEventBlock(block) {
+            const dataText = block
+                .split(/\r?\n/)
+                .filter((line) => line.startsWith('data:'))
+                .map((line) => line.slice(5).trimStart())
+                .join('\n');
+
+            if (!dataText) {
+                return false;
+            }
+
+            if (dataText === STREAM_DONE_MARKER) {
+                return true;
+            }
+
+            let payload;
+            try {
+                payload = JSON.parse(dataText);
+            } catch (error) {
+                return false;
+            }
+
+            const payloadError = extractPayloadError(payload);
+            if (payloadError) {
+                throw new Error(payloadError);
+            }
+
+            const deltaText = parseStreamDelta(payload);
+            if (deltaText) {
+                handlers.onDelta?.(deltaText, payload);
+            }
+
+            return false;
+        }
+
+        try {
+            while (true) {
+                const { value, done } = await reader.read();
+                buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
+
+                let eventBlock = getNextSseBlock(buffer);
+                while (eventBlock) {
+                    buffer = eventBlock.rest;
+                    if (handleEventBlock(eventBlock.block)) {
+                        return;
+                    }
+                    eventBlock = getNextSseBlock(buffer);
+                }
+
+                if (done) {
+                    break;
+                }
+            }
+
+            const tail = decoder.decode();
+            if (tail) {
+                buffer += tail;
+            }
+
+            if (buffer.trim()) {
+                handleEventBlock(buffer);
+            }
+        } finally {
+            reader.releaseLock();
+        }
+    }
+
+    async function readResponseError(response) {
+        const contentType = (response.headers.get('content-type') || '').toLowerCase();
+
+        try {
+            if (contentType.includes('application/json')) {
+                const payload = await response.json();
+                return extractPayloadError(payload) || `AI request failed: ${response.status}`;
+            }
+
+            const text = (await response.text()).trim();
+            return text || `AI request failed: ${response.status}`;
+        } catch (error) {
+            return `AI request failed: ${response.status}`;
+        }
+    }
+
+    function buildRemotePayload(question, articleData, selectedChunks, selectedModel, streamEnabled) {
         const contextText = selectedChunks
             .map((chunk, index) => {
                 const heading = chunk.heading ? `章节：${chunk.heading}\n` : '';
@@ -485,30 +697,45 @@
             .filter(Boolean)
             .join('\n');
 
-        let payload;
         if ((config.requestFormat || 'openai-chat') === 'openai-chat') {
-            payload = {
+            return {
                 model: selectedModel || config.model || 'gpt-4.1-mini',
                 temperature: Number(config.temperature) || 0.2,
+                stream: Boolean(streamEnabled),
                 messages: [
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: userPrompt }
                 ]
             };
-        } else {
-            payload = {
-                model: selectedModel || config.model || 'gpt-4.1-mini',
-                temperature: Number(config.temperature) || 0.2,
-                systemPrompt,
-                question,
-                article: {
-                    title: articleData.title,
-                    description: articleData.description,
-                    url: articleData.url
-                },
-                context: selectedChunks
-            };
         }
+
+        return {
+            model: selectedModel || config.model || 'gpt-4.1-mini',
+            temperature: Number(config.temperature) || 0.2,
+            stream: Boolean(streamEnabled),
+            systemPrompt,
+            question,
+            article: {
+                title: articleData.title,
+                description: articleData.description,
+                url: articleData.url
+            },
+            context: selectedChunks
+        };
+    }
+
+    async function requestRemoteAnswer(question, articleData, selectedChunks, selectedModel, handlers) {
+        if (!remoteClientConfig.enabled) {
+            return null;
+        }
+
+        const payload = buildRemotePayload(
+            question,
+            articleData,
+            selectedChunks,
+            selectedModel,
+            true
+        );
 
         const response = await fetch(remoteClientConfig.url, {
             method: 'POST',
@@ -517,11 +744,25 @@
         });
 
         if (!response.ok) {
-            throw new Error(`AI request failed: ${response.status}`);
+            throw new Error(await readResponseError(response));
+        }
+
+        const contentType = (response.headers.get('content-type') || '').toLowerCase();
+        if (contentType.includes('text/event-stream') && response.body) {
+            let answerText = '';
+
+            await consumeEventStream(response.body, {
+                onDelta(deltaText) {
+                    answerText += deltaText;
+                    handlers?.onDelta?.(answerText, deltaText);
+                }
+            });
+
+            return answerText.trim() || null;
         }
 
         const data = await response.json();
-        const answer = await parseResponseText(data);
+        const answer = parseResponseText(data);
         return answer || null;
     }
 
@@ -542,22 +783,39 @@
         this.root = null;
         this.panel = null;
         this.messages = null;
+        this.emptyState = null;
         this.form = null;
         this.input = null;
         this.toggle = null;
         this.status = null;
         this.sendButton = null;
         this.modelSelect = null;
+        this.suggestionContainer = null;
         this.isOpen = readPreference() === 'true';
+        this.isHoverPreview = false;
         this.isBusy = false;
         this.availableModels = getAvailableModels();
         this.selectedModel = readSelectedModel();
+        this.position = readPosition();
+        this.hoverCloseTimer = null;
+        this.dragState = {
+            active: false,
+            moved: false,
+            pointerId: null,
+            startPointerX: 0,
+            startPointerY: 0,
+            startX: 0,
+            startY: 0,
+            suppressClick: false
+        };
     }
 
     AssistantWidget.prototype.mount = function mount() {
         const root = document.createElement('aside');
         root.className = 'ai-article-assistant';
         root.setAttribute('aria-live', 'polite');
+        document.documentElement.classList.add('has-ai-article-assistant');
+        document.body.classList.add('has-ai-article-assistant');
 
         const modelSelector = remoteClientConfig.enabled && this.availableModels.length > 1
             ? `
@@ -573,28 +831,38 @@
             : '';
 
         root.innerHTML = `
-            <button class="ai-article-assistant__toggle" type="button" aria-expanded="${this.isOpen ? 'true' : 'false'}" aria-controls="ai-article-assistant-panel">
+            <button class="ai-article-assistant__toggle" type="button" aria-expanded="${this.isOpen ? 'true' : 'false'}" aria-pressed="${this.isOpen ? 'true' : 'false'}" aria-controls="ai-article-assistant-panel" aria-label="${this.isOpen ? '关闭 AI 文章助手' : '打开 AI 文章助手'}">
+                <span class="ai-article-assistant__toggle-hint">问这篇文章</span>
                 <span class="ai-article-assistant__toggle-icon">${createIcon('spark')}</span>
-                <span class="ai-article-assistant__toggle-label">问文章</span>
+                <span class="ai-article-assistant__toggle-label">AI 文章助手</span>
+                <span class="ai-article-assistant__toggle-dot" aria-hidden="true"></span>
             </button>
-            <section class="ai-article-assistant__panel${this.isOpen ? ' is-open' : ''}" id="ai-article-assistant-panel" ${this.isOpen ? '' : 'hidden'}>
+            <section class="ai-article-assistant__panel${this.isOpen ? ' is-open' : ''}" id="ai-article-assistant-panel" role="dialog" aria-modal="false" aria-label="${escapeHtml(config.title || 'AI 文章助手')}" ${this.isOpen ? '' : 'hidden'}>
                 <header class="ai-article-assistant__header">
-                    <div>
-                        <h2 class="ai-article-assistant__title">${escapeHtml(config.title || 'AI 文章助手')}</h2>
-                        <p class="ai-article-assistant__status">${escapeHtml(remoteClientConfig.statusText)}</p>
+                    <div class="ai-article-assistant__header-main">
+                        <div class="ai-article-assistant__header-copy">
+                            <p class="ai-article-assistant__eyebrow">当前文章</p>
+                            <h2 class="ai-article-assistant__title">${escapeHtml(config.title || 'AI 文章助手')}</h2>
+                            <p class="ai-article-assistant__status"></p>
+                        </div>
+                        <div class="ai-article-assistant__header-actions">
+                            ${modelSelector}
+                            <button class="ai-article-assistant__close" type="button" aria-label="关闭助手">
+                                ${createIcon('close')}
+                            </button>
+                        </div>
                     </div>
-                    <button class="ai-article-assistant__close" type="button" aria-label="关闭助手">
-                        ${createIcon('close')}
-                    </button>
+                    <div class="ai-article-assistant__meta">
+                        <span class="ai-article-assistant__meta-pill">${escapeHtml(remoteClientConfig.actionHint)}</span>
+                    </div>
                 </header>
                 <div class="ai-article-assistant__messages"></div>
                 <div class="ai-article-assistant__suggestions"></div>
                 <form class="ai-article-assistant__composer">
-                    ${modelSelector}
                     <label class="ai-article-assistant__sr-only" for="ai-article-assistant-input">提问内容</label>
-                    <textarea id="ai-article-assistant-input" class="ai-article-assistant__input" rows="3" placeholder="${escapeHtml(config.placeholder || '请输入问题')}"></textarea>
+                    <textarea id="ai-article-assistant-input" class="ai-article-assistant__input" rows="2" placeholder="${escapeHtml(config.placeholder || '请输入问题')}"></textarea>
                     <div class="ai-article-assistant__actions">
-                        <span class="ai-article-assistant__hint">${escapeHtml(remoteClientConfig.actionHint)}</span>
+                        <span class="ai-article-assistant__hint">${escapeHtml(remoteClientConfig.enabled ? '基于文章上下文作答' : '基于文章内容检索作答')}</span>
                         <button class="ai-article-assistant__send" type="submit">
                             ${createIcon('send')}
                             <span>发送</span>
@@ -615,21 +883,89 @@
         this.status = root.querySelector('.ai-article-assistant__status');
         this.sendButton = root.querySelector('.ai-article-assistant__send');
         this.modelSelect = root.querySelector('.ai-article-assistant__model-select');
+        this.suggestionContainer = root.querySelector('.ai-article-assistant__suggestions');
+        this.root.classList.add('is-open-up');
+        this.syncViewportMode();
+        this.syncPanelState();
+        this.refreshStatus();
+        this.syncInputHeight();
 
         this.bindEvents();
         this.renderIntro();
         this.renderSuggestions();
 
         if (this.isOpen) {
-            this.input.focus({ preventScroll: true });
+            window.requestAnimationFrame(() => {
+                this.updateFloatingClasses();
+                this.input.focus({ preventScroll: true });
+            });
         }
     };
 
     AssistantWidget.prototype.bindEvents = function bindEvents() {
         const closeButton = this.root.querySelector('.ai-article-assistant__close');
 
-        this.toggle.addEventListener('click', () => {
+        this.toggle.addEventListener('click', (event) => {
+            if (this.dragState.suppressClick) {
+                event.preventDefault();
+                event.stopPropagation();
+                this.dragState.suppressClick = false;
+                return;
+            }
+
             this.setOpen(!this.isOpen);
+        });
+
+        this.root.addEventListener('mouseenter', () => {
+            if (this.isCompactViewport() || this.dragState.active) {
+                return;
+            }
+
+            this.clearHoverCloseTimer();
+            this.setHoverPreview(true);
+        });
+
+        this.root.addEventListener('mouseleave', () => {
+            if (this.isCompactViewport() || this.dragState.active) {
+                return;
+            }
+
+            this.scheduleHoverClose();
+        });
+
+        this.root.addEventListener('focusin', () => {
+            this.clearHoverCloseTimer();
+            if (!this.isCompactViewport()) {
+                this.setHoverPreview(true);
+            }
+        });
+
+        this.root.addEventListener('focusout', () => {
+            window.requestAnimationFrame(() => {
+                if (!this.root.contains(document.activeElement)) {
+                    this.scheduleHoverClose();
+                }
+            });
+        });
+
+        this.toggle.addEventListener('pointerdown', (event) => {
+            this.startDrag(event);
+        });
+
+        this.toggle.addEventListener('pointermove', (event) => {
+            this.handleDragMove(event);
+        });
+
+        this.toggle.addEventListener('pointerup', (event) => {
+            this.handleDragEnd(event);
+        });
+
+        this.toggle.addEventListener('pointercancel', (event) => {
+            this.handleDragEnd(event);
+        });
+
+        this.toggle.addEventListener('dragstart', (event) => {
+            event.preventDefault();
         });
 
         closeButton.addEventListener('click', () => {
@@ -645,7 +981,7 @@
             this.modelSelect.addEventListener('change', () => {
                 this.selectedModel = normalizeWhitespace(this.modelSelect.value);
                 writeSelectedModel(this.selectedModel);
-                this.status.textContent = `${remoteClientConfig.statusText} · ${this.selectedModel}`;
+                this.refreshStatus();
             });
         }
 
@@ -655,53 +991,417 @@
                 this.submitQuestion();
             }
         });
+
+        this.input.addEventListener('input', () => {
+            this.syncInputHeight();
+        });
+
+        document.addEventListener('pointerdown', (event) => {
+            if (!this.isPanelVisible() || this.dragState.active || this.root.contains(event.target)) {
+                return;
+            }
+
+            this.setOpen(false);
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && this.isPanelVisible()) {
+                this.setOpen(false);
+                this.toggle.focus({ preventScroll: true });
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            this.handleResize();
+        }, { passive: true });
+    };
+
+    AssistantWidget.prototype.isPanelVisible = function isPanelVisible() {
+        return this.isOpen || this.isHoverPreview;
+    };
+
+    AssistantWidget.prototype.syncPanelState = function syncPanelState(options) {
+        const settings = options || {};
+        const panelVisible = this.isPanelVisible();
+
+        this.toggle.setAttribute('aria-expanded', String(panelVisible));
+        this.toggle.setAttribute('aria-pressed', String(this.isOpen));
+        this.toggle.setAttribute('aria-label', panelVisible ? '关闭 AI 文章助手' : '打开 AI 文章助手');
+        this.panel.classList.toggle('is-open', panelVisible);
+        this.root.classList.toggle('is-open', panelVisible);
+        this.root.classList.toggle('is-preview', !this.isOpen && this.isHoverPreview);
+        this.root.classList.toggle('is-pinned', this.isOpen);
+
+        if (panelVisible) {
+            this.panel.hidden = false;
+            window.requestAnimationFrame(() => {
+                this.updateFloatingClasses();
+                if (settings.focusInput) {
+                    this.input.focus({ preventScroll: true });
+                }
+            });
+            return;
+        }
+
+        this.panel.hidden = true;
+        this.root.classList.add('is-open-up');
+        this.root.classList.remove('is-open-down');
+    };
+
+    AssistantWidget.prototype.clearHoverCloseTimer = function clearHoverCloseTimer() {
+        if (!this.hoverCloseTimer) {
+            return;
+        }
+
+        window.clearTimeout(this.hoverCloseTimer);
+        this.hoverCloseTimer = null;
+    };
+
+    AssistantWidget.prototype.setHoverPreview = function setHoverPreview(nextHover, options) {
+        if (this.isCompactViewport() && nextHover) {
+            return;
+        }
+
+        if (this.isHoverPreview === nextHover) {
+            return;
+        }
+
+        this.isHoverPreview = nextHover;
+        this.syncPanelState(options);
+    };
+
+    AssistantWidget.prototype.scheduleHoverClose = function scheduleHoverClose() {
+        if (this.isCompactViewport() || this.isOpen) {
+            return;
+        }
+
+        this.clearHoverCloseTimer();
+        this.hoverCloseTimer = window.setTimeout(() => {
+            this.hoverCloseTimer = null;
+
+            if (
+                this.isOpen ||
+                this.dragState.active ||
+                this.root.matches(':hover') ||
+                this.root.contains(document.activeElement)
+            ) {
+                return;
+            }
+
+            this.setHoverPreview(false);
+        }, HOVER_CLOSE_DELAY);
     };
 
     AssistantWidget.prototype.setOpen = function setOpen(nextOpen) {
         this.isOpen = nextOpen;
-        this.toggle.setAttribute('aria-expanded', String(nextOpen));
-        this.panel.classList.toggle('is-open', nextOpen);
+        this.clearHoverCloseTimer();
 
-        if (nextOpen) {
-            this.panel.hidden = false;
-            this.input.focus({ preventScroll: true });
-        } else {
-            this.panel.hidden = true;
+        if (!nextOpen) {
+            this.isHoverPreview = false;
         }
 
         writePreference(String(nextOpen));
+        this.syncPanelState({ focusInput: nextOpen });
+    };
+
+    AssistantWidget.prototype.refreshStatus = function refreshStatus(overrideText) {
+        if (!this.status) {
+            return;
+        }
+
+        if (overrideText) {
+            this.status.textContent = overrideText;
+            return;
+        }
+
+        this.status.textContent = remoteClientConfig.enabled
+            ? `${remoteClientConfig.statusText}${this.selectedModel ? ` · ${this.selectedModel}` : ''}`
+            : '文章检索模式';
+    };
+
+    AssistantWidget.prototype.getToggleSize = function getToggleSize() {
+        return {
+            width: this.toggle ? this.toggle.offsetWidth || 68 : 68,
+            height: this.toggle ? this.toggle.offsetHeight || 68 : 68
+        };
+    };
+
+    AssistantWidget.prototype.isCompactViewport = function isCompactViewport() {
+        return window.innerWidth <= 768;
+    };
+
+    AssistantWidget.prototype.getDefaultPosition = function getDefaultPosition() {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const toggleSize = this.getToggleSize();
+
+        return {
+            x: viewportWidth - toggleSize.width - VIEWPORT_GAP,
+            y: viewportHeight - toggleSize.height - VIEWPORT_GAP
+        };
+    };
+
+    AssistantWidget.prototype.clampPosition = function clampPosition(position) {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const toggleSize = this.getToggleSize();
+        const maxX = Math.max(VIEWPORT_GAP, viewportWidth - toggleSize.width - VIEWPORT_GAP);
+        const maxY = Math.max(VIEWPORT_GAP, viewportHeight - toggleSize.height - VIEWPORT_GAP);
+
+        return {
+            x: clampNumber(position.x, VIEWPORT_GAP, maxX),
+            y: clampNumber(position.y, VIEWPORT_GAP, maxY)
+        };
+    };
+
+    AssistantWidget.prototype.snapPosition = function snapPosition(position) {
+        const clamped = this.clampPosition(position);
+        const viewportWidth = window.innerWidth;
+        const toggleSize = this.getToggleSize();
+        const dockLeft = VIEWPORT_GAP;
+        const dockRight = Math.max(VIEWPORT_GAP, viewportWidth - toggleSize.width - VIEWPORT_GAP);
+        const shouldDockRight = clamped.x + toggleSize.width / 2 >= viewportWidth / 2;
+
+        return {
+            x: shouldDockRight ? dockRight : dockLeft,
+            y: clamped.y
+        };
+    };
+
+    AssistantWidget.prototype.applyPosition = function applyPosition(position, options) {
+        const settings = options || {};
+        const nextPosition = this.clampPosition(position);
+
+        this.position = nextPosition;
+        if (this.isCompactViewport()) {
+            this.root.style.left = '';
+            this.root.style.top = '';
+            this.updateFloatingClasses();
+            if (settings.persist !== false) {
+                writePosition(nextPosition);
+            }
+            return;
+        }
+
+        this.root.style.left = `${nextPosition.x}px`;
+        this.root.style.top = `${nextPosition.y}px`;
+        this.updateFloatingClasses();
+
+        if (settings.persist !== false) {
+            writePosition(nextPosition);
+        }
+    };
+
+    AssistantWidget.prototype.updateFloatingClasses = function updateFloatingClasses() {
+        if (!this.root || !this.position) {
+            return;
+        }
+
+        const toggleSize = this.getToggleSize();
+        const isRight = this.position.x + toggleSize.width / 2 >= window.innerWidth / 2;
+
+        this.root.classList.toggle('is-align-right', isRight);
+        this.root.classList.toggle('is-align-left', !isRight);
+        this.updatePanelPlacement();
+    };
+
+    AssistantWidget.prototype.syncViewportMode = function syncViewportMode() {
+        const compact = this.isCompactViewport();
+
+        this.root.classList.toggle('is-compact', compact);
+
+        if (compact) {
+            this.clearHoverCloseTimer();
+            this.isHoverPreview = false;
+            this.root.style.left = '';
+            this.root.style.top = '';
+            this.root.classList.remove('is-align-left');
+            this.root.classList.add('is-align-right');
+            this.updatePanelPlacement();
+            this.syncPanelState();
+            return;
+        }
+
+        this.applyPosition(this.position || this.getDefaultPosition(), { persist: false });
+        this.syncPanelState();
+    };
+
+    AssistantWidget.prototype.updatePanelPlacement = function updatePanelPlacement() {
+        if (!this.root) {
+            return;
+        }
+
+        if (!this.isPanelVisible() || !this.panel || this.panel.hidden) {
+            this.root.classList.add('is-open-up');
+            this.root.classList.remove('is-open-down');
+            return;
+        }
+
+        const toggleRect = this.toggle.getBoundingClientRect();
+        const panelRect = this.panel.getBoundingClientRect();
+        const panelHeight = panelRect.height || 560;
+        const spaceAbove = toggleRect.top - VIEWPORT_GAP;
+        const spaceBelow = window.innerHeight - toggleRect.bottom - VIEWPORT_GAP;
+        const shouldOpenDown = spaceAbove < Math.min(panelHeight, 320) && spaceBelow > spaceAbove;
+
+        this.root.classList.toggle('is-open-down', shouldOpenDown);
+        this.root.classList.toggle('is-open-up', !shouldOpenDown);
+    };
+
+    AssistantWidget.prototype.startDrag = function startDrag(event) {
+        if (this.isCompactViewport() || (typeof event.button === 'number' && event.button !== 0)) {
+            return;
+        }
+
+        this.clearHoverCloseTimer();
+
+        if (!this.isOpen && this.isHoverPreview) {
+            this.isHoverPreview = false;
+            this.syncPanelState();
+        }
+
+        this.dragState.suppressClick = false;
+        this.dragState.active = true;
+        this.dragState.moved = false;
+        this.dragState.pointerId = event.pointerId;
+        this.dragState.startPointerX = event.clientX;
+        this.dragState.startPointerY = event.clientY;
+        this.dragState.startX = this.position ? this.position.x : this.getDefaultPosition().x;
+        this.dragState.startY = this.position ? this.position.y : this.getDefaultPosition().y;
+
+        if (this.toggle.setPointerCapture) {
+            try {
+                this.toggle.setPointerCapture(event.pointerId);
+            } catch (error) {
+                /* noop */
+            }
+        }
+    };
+
+    AssistantWidget.prototype.handleDragMove = function handleDragMove(event) {
+        if (!this.dragState.active || this.dragState.pointerId !== event.pointerId) {
+            return;
+        }
+
+        const deltaX = event.clientX - this.dragState.startPointerX;
+        const deltaY = event.clientY - this.dragState.startPointerY;
+
+        if (!this.dragState.moved && Math.hypot(deltaX, deltaY) >= DRAG_THRESHOLD) {
+            this.dragState.moved = true;
+            this.root.classList.add('is-dragging');
+        }
+
+        if (!this.dragState.moved) {
+            return;
+        }
+
+        event.preventDefault();
+        this.applyPosition(
+            {
+                x: this.dragState.startX + deltaX,
+                y: this.dragState.startY + deltaY
+            },
+            { persist: false }
+        );
+    };
+
+    AssistantWidget.prototype.handleDragEnd = function handleDragEnd(event) {
+        if (!this.dragState.active || this.dragState.pointerId !== event.pointerId) {
+            return;
+        }
+
+        if (this.toggle.releasePointerCapture) {
+            try {
+                this.toggle.releasePointerCapture(event.pointerId);
+            } catch (error) {
+                /* noop */
+            }
+        }
+
+        if (this.dragState.moved) {
+            this.dragState.suppressClick = true;
+            this.applyPosition(this.snapPosition(this.position), { persist: true });
+        }
+
+        this.root.classList.remove('is-dragging');
+        this.dragState.active = false;
+        this.dragState.moved = false;
+        this.dragState.pointerId = null;
+    };
+
+    AssistantWidget.prototype.handleResize = function handleResize() {
+        if (this.isCompactViewport()) {
+            this.syncViewportMode();
+            return;
+        }
+
+        const fallbackPosition = this.position || this.getDefaultPosition();
+        this.root.classList.remove('is-compact');
+        this.applyPosition(this.snapPosition(fallbackPosition), { persist: false });
+    };
+
+    AssistantWidget.prototype.syncInputHeight = function syncInputHeight() {
+        if (!this.input) {
+            return;
+        }
+
+        this.input.style.height = 'auto';
+        this.input.style.height = `${clampNumber(this.input.scrollHeight, INPUT_MIN_HEIGHT, INPUT_MAX_HEIGHT)}px`;
     };
 
     AssistantWidget.prototype.renderIntro = function renderIntro() {
-        this.appendMessage('assistant', config.greeting || '我可以结合当前文章内容回答问题。', {
-            sources: [],
-            subtle: true
+        if (remoteClientConfig.warningText) {
+            console.warn(`[ai-assistant] ${remoteClientConfig.warningText}`);
+        }
+
+        const emptyState = document.createElement('section');
+        emptyState.className = 'ai-article-assistant__empty';
+
+        const label = document.createElement('p');
+        label.className = 'ai-article-assistant__empty-kicker';
+        label.textContent = '直接提问';
+
+        const copy = document.createElement('p');
+        copy.className = 'ai-article-assistant__empty-copy';
+        copy.textContent = config.greeting || '可以直接问文章要点、术语或代码细节。';
+
+        const meta = document.createElement('div');
+        meta.className = 'ai-article-assistant__empty-meta';
+
+        [
+            remoteClientConfig.enabled ? '流式回复' : '文章检索回复',
+            this.articleData.headings.length
+                ? `${this.articleData.headings.length} 个小节可检索`
+                : '基于正文片段回答'
+        ].forEach((text) => {
+            const pill = document.createElement('span');
+            pill.className = 'ai-article-assistant__empty-pill';
+            pill.textContent = text;
+            meta.appendChild(pill);
         });
 
-        if (!remoteClientConfig.enabled) {
-            this.appendMessage('assistant', config.fallbackHint || '当前未配置 AI 接口，先使用文章检索模式回答。', {
-                sources: [],
-                subtle: true
-            });
-        }
+        emptyState.appendChild(label);
+        emptyState.appendChild(copy);
+        emptyState.appendChild(meta);
 
-        if (remoteClientConfig.warningText) {
-            this.appendMessage('assistant', remoteClientConfig.warningText, {
-                sources: [],
-                subtle: true
-            });
-        }
+        this.emptyState = emptyState;
+        this.messages.appendChild(emptyState);
     };
 
     AssistantWidget.prototype.renderSuggestions = function renderSuggestions() {
-        const suggestionContainer = this.root.querySelector('.ai-article-assistant__suggestions');
+        const suggestionContainer = this.suggestionContainer;
         const questions = Array.isArray(config.suggestedQuestions) ? config.suggestedQuestions : [];
+
+        if (!suggestionContainer) {
+            return;
+        }
 
         if (!questions.length) {
             suggestionContainer.hidden = true;
             return;
         }
 
+        suggestionContainer.hidden = false;
         suggestionContainer.innerHTML = '';
 
         questions.forEach((question) => {
@@ -709,50 +1409,143 @@
             button.type = 'button';
             button.className = 'ai-article-assistant__chip';
             button.textContent = question;
+            button.title = question;
+            button.setAttribute('aria-label', question);
             button.addEventListener('click', () => {
                 this.input.value = question;
+                this.syncInputHeight();
                 this.submitQuestion();
             });
             suggestionContainer.appendChild(button);
         });
     };
 
-    AssistantWidget.prototype.appendMessage = function appendMessage(role, text, options) {
+    AssistantWidget.prototype.clearIntro = function clearIntro() {
+        if (!this.emptyState) {
+            return;
+        }
+
+        this.emptyState.remove();
+        this.emptyState = null;
+    };
+
+    AssistantWidget.prototype.scrollMessagesToEnd = function scrollMessagesToEnd() {
+        if (!this.messages) {
+            return;
+        }
+
+        this.messages.scrollTop = this.messages.scrollHeight;
+    };
+
+    AssistantWidget.prototype.createMessage = function createMessage(role, options) {
+        const settings = options || {};
+        this.clearIntro();
+
         const message = document.createElement('article');
         message.className = `ai-article-assistant__message ai-article-assistant__message--${role}`;
-        if (options && options.subtle) {
+        if (settings.subtle) {
             message.classList.add('is-subtle');
+        }
+        if (settings.streaming) {
+            message.classList.add('is-streaming');
         }
 
         const bubble = document.createElement('div');
         bubble.className = 'ai-article-assistant__bubble';
-        bubble.textContent = text;
+        bubble.textContent = settings.text || '';
         message.appendChild(bubble);
 
-        if (options && Array.isArray(options.sources) && options.sources.length) {
-            const sourceList = document.createElement('div');
-            sourceList.className = 'ai-article-assistant__sources';
+        this.messages.appendChild(message);
+        this.scrollMessagesToEnd();
 
-            options.sources.slice(0, 3).forEach((source) => {
-                const item = document.createElement('div');
-                item.className = 'ai-article-assistant__source';
+        const messageRef = {
+            element: message,
+            bubble,
+            sources: null
+        };
 
-                const label = document.createElement('strong');
-                label.textContent = source.heading || '正文';
-
-                const excerpt = document.createElement('span');
-                excerpt.textContent = truncate(source.text, 86);
-
-                item.appendChild(label);
-                item.appendChild(excerpt);
-                sourceList.appendChild(item);
-            });
-
-            message.appendChild(sourceList);
+        if (Array.isArray(settings.sources) && settings.sources.length) {
+            this.setMessageSources(messageRef, settings.sources);
         }
 
-        this.messages.appendChild(message);
-        this.messages.scrollTop = this.messages.scrollHeight;
+        return messageRef;
+    };
+
+    AssistantWidget.prototype.setMessageText = function setMessageText(messageRef, text) {
+        if (!messageRef || !messageRef.bubble) {
+            return;
+        }
+
+        messageRef.bubble.textContent = text;
+        this.scrollMessagesToEnd();
+    };
+
+    AssistantWidget.prototype.getMessageText = function getMessageText(messageRef) {
+        if (!messageRef || !messageRef.bubble) {
+            return '';
+        }
+
+        return messageRef.bubble.textContent || '';
+    };
+
+    AssistantWidget.prototype.setMessageStreaming = function setMessageStreaming(messageRef, nextStreaming) {
+        if (!messageRef || !messageRef.element) {
+            return;
+        }
+
+        messageRef.element.classList.toggle('is-streaming', Boolean(nextStreaming));
+        this.scrollMessagesToEnd();
+    };
+
+    AssistantWidget.prototype.setMessageSources = function setMessageSources(messageRef, sources) {
+        if (!messageRef || !messageRef.element) {
+            return;
+        }
+
+        if (messageRef.sources) {
+            messageRef.sources.remove();
+            messageRef.sources = null;
+        }
+
+        if (!Array.isArray(sources) || !sources.length) {
+            return;
+        }
+
+        const sourceList = document.createElement('div');
+        sourceList.className = 'ai-article-assistant__sources';
+
+        sources.slice(0, 3).forEach((source) => {
+            const item = document.createElement('div');
+            item.className = 'ai-article-assistant__source';
+
+            const label = document.createElement('strong');
+            label.textContent = source.heading || '正文';
+
+            const excerpt = document.createElement('span');
+            excerpt.textContent = truncate(source.text, 86);
+
+            item.appendChild(label);
+            item.appendChild(excerpt);
+            sourceList.appendChild(item);
+        });
+
+        messageRef.sources = sourceList;
+        messageRef.element.appendChild(sourceList);
+        this.scrollMessagesToEnd();
+    };
+
+    AssistantWidget.prototype.appendMessage = function appendMessage(role, text, options) {
+        const messageRef = this.createMessage(role, {
+            subtle: options && options.subtle,
+            streaming: options && options.streaming,
+            text
+        });
+
+        if (options && Array.isArray(options.sources) && options.sources.length) {
+            this.setMessageSources(messageRef, options.sources);
+        }
+
+        return messageRef;
     };
 
     AssistantWidget.prototype.setBusy = function setBusy(nextBusy) {
@@ -763,11 +1556,7 @@
         if (this.modelSelect) {
             this.modelSelect.disabled = nextBusy;
         }
-        this.status.textContent = nextBusy
-            ? '正在整理答案...'
-            : (remoteClientConfig.enabled
-                ? `${remoteClientConfig.statusText}${this.selectedModel ? ` · ${this.selectedModel}` : ''}`
-                : '文章检索模式');
+        this.refreshStatus(nextBusy ? (remoteClientConfig.enabled ? '正在流式作答...' : '正在整理答案...') : '');
     };
 
     AssistantWidget.prototype.submitQuestion = async function submitQuestion() {
@@ -779,8 +1568,12 @@
         const selectedChunks = findRelevantChunks(question, this.articleData);
         this.appendMessage('user', question, { sources: [] });
         this.input.value = '';
+        this.syncInputHeight();
         this.setBusy(true);
         this.setOpen(true);
+        const assistantMessage = this.createMessage('assistant', {
+            streaming: remoteClientConfig.enabled
+        });
 
         try {
             let answerText = null;
@@ -791,28 +1584,44 @@
                         question,
                         this.articleData,
                         selectedChunks,
-                        this.selectedModel || config.model || ''
+                        this.selectedModel || config.model || '',
+                        {
+                            onDelta: (nextText) => {
+                                this.setMessageStreaming(assistantMessage, true);
+                                this.setMessageText(assistantMessage, nextText);
+                            }
+                        }
                     );
                 } catch (error) {
+                    if (this.getMessageText(assistantMessage)) {
+                        this.setMessageStreaming(assistantMessage, false);
+                        this.setMessageSources(assistantMessage, selectedChunks.slice(0, 3));
+                        return;
+                    }
+
                     const localResult = buildLocalAnswer(
                         question,
                         this.articleData,
                         selectedChunks,
                         config.errorHint || 'AI 接口暂时不可用，已自动切换到文章检索模式。'
                     );
-                    this.appendMessage('assistant', localResult.text, { sources: localResult.sources });
+                    this.setMessageText(assistantMessage, localResult.text);
+                    this.setMessageSources(assistantMessage, localResult.sources);
                     return;
                 }
             }
 
             if (answerText) {
-                this.appendMessage('assistant', answerText, { sources: selectedChunks.slice(0, 3) });
+                this.setMessageText(assistantMessage, answerText);
+                this.setMessageSources(assistantMessage, selectedChunks.slice(0, 3));
                 return;
             }
 
             const localResult = buildLocalAnswer(question, this.articleData, selectedChunks, '');
-            this.appendMessage('assistant', localResult.text, { sources: localResult.sources });
+            this.setMessageText(assistantMessage, localResult.text);
+            this.setMessageSources(assistantMessage, localResult.sources);
         } finally {
+            this.setMessageStreaming(assistantMessage, false);
             this.setBusy(false);
             this.input.focus({ preventScroll: true });
         }

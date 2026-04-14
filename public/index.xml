@@ -6,8 +6,22 @@
     <description>Recent content on lanshi个人博客</description>
     <generator>Hugo -- 0.152.2</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 31 Mar 2026 22:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 08 Apr 2026 22:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.lanshi.site/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 LFW 人脸数据上比较 Logistic Regression 与 Linear SVM：基于 Nested CV 的严谨实验</title>
+      <link>https://blog.lanshi.site/studynotes/aiot1.2.3/</link>
+      <pubDate>Wed, 08 Apr 2026 12:00:00 +0800</pubDate>
+      <guid>https://blog.lanshi.site/studynotes/aiot1.2.3/</guid>
+      <description>本文在 LFW 人脸数据集上比较 Logistic Regression 与 Linear SVM 的表现，使用 StandardScaler、PCA 和 Nested Cross Validation 构建严谨实验流程，从准确率、平衡准确率、Macro-F1 和训练耗时等维度进行分析。</description>
+    </item>
+    <item>
+      <title>工业蒸汽量预测实战：SVR、Lasso、ElasticNet 与加权融合</title>
+      <link>https://blog.lanshi.site/studynotes/aiot1.2.2/</link>
+      <pubDate>Sat, 04 Apr 2026 12:00:00 +0800</pubDate>
+      <guid>https://blog.lanshi.site/studynotes/aiot1.2.2/</guid>
+      <description>本文围绕天池工业蒸汽量预测任务，使用 SVR、Lasso、ElasticNet 等回归模型进行建模，并结合加权平均融合、最优权重搜索与结果可视化，系统分析回归预测与模型融合实践。</description>
+    </item>
     <item>
       <title>通过逻辑斯蒂回归实现手写数字多分类（0~9）</title>
       <link>https://blog.lanshi.site/studynotes/aiot1.2.1/</link>

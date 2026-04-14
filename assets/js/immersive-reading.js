@@ -251,6 +251,99 @@
         }
     }
 
+    class ResponsiveTables {
+        constructor(content) {
+            this.content = content;
+            this.items = [];
+            this.resizeObserver = null;
+            this.frame = 0;
+            this.onResize = this.onResize.bind(this);
+            this.update = this.update.bind(this);
+            this.init();
+        }
+
+        init() {
+            const tables = Array.from(this.content.querySelectorAll('table'));
+            if (!tables.length) {
+                return;
+            }
+
+            tables.forEach((table) => {
+                if (table.closest('.reading-table-wrap')) {
+                    return;
+                }
+
+                const block = document.createElement('div');
+                block.className = 'reading-table-block';
+
+                const scroll = document.createElement('div');
+                scroll.className = 'reading-table-wrap';
+                scroll.setAttribute('role', 'region');
+
+                const caption = table.querySelector('caption');
+                const captionText = caption ? normalizeStringValue(caption.textContent || '') : '';
+                const ariaLabel = captionText
+                    ? `${captionText}，表格内容可横向滚动`
+                    : '表格内容可横向滚动';
+                scroll.setAttribute('aria-label', ariaLabel);
+
+                const hint = document.createElement('p');
+                hint.className = 'reading-table-hint';
+                hint.textContent = '表格较宽，可左右滑动查看完整内容';
+                hint.hidden = true;
+
+                const parent = table.parentNode;
+                parent.insertBefore(block, table);
+                block.appendChild(scroll);
+                scroll.appendChild(table);
+                block.appendChild(hint);
+
+                this.items.push({ table, block, scroll, hint });
+            });
+
+            if (!this.items.length) {
+                return;
+            }
+
+            this.update();
+
+            if ('ResizeObserver' in window) {
+                this.resizeObserver = new ResizeObserver(this.update);
+                this.items.forEach(({ table, scroll }) => {
+                    this.resizeObserver.observe(table);
+                    this.resizeObserver.observe(scroll);
+                });
+                return;
+            }
+
+            window.addEventListener('resize', this.onResize, { passive: true });
+        }
+
+        onResize() {
+            if (this.frame) {
+                return;
+            }
+
+            this.frame = window.requestAnimationFrame(this.update);
+        }
+
+        update() {
+            this.frame = 0;
+
+            this.items.forEach(({ table, block, scroll, hint }) => {
+                const isOverflowing = table.scrollWidth - scroll.clientWidth > 8;
+                block.classList.toggle('is-overflowing', isOverflowing);
+                hint.hidden = !isOverflowing;
+
+                if (isOverflowing) {
+                    scroll.tabIndex = 0;
+                } else {
+                    scroll.removeAttribute('tabindex');
+                }
+            });
+        }
+    }
+
     class FocusMode {
         constructor(config, article) {
             this.config = config;
@@ -660,6 +753,8 @@
             if (toc) {
                 new TableOfContents(content, toc);
             }
+
+            new ResponsiveTables(content);
 
             if (this.config.focusMode) {
                 new FocusMode(this.config, article);

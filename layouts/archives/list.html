@@ -12,68 +12,88 @@
   </header>
 
   <!-- ==================== 统计卡片 ==================== -->
-  <div class="stats-card">
-    <div class="stats-row">
-      {{ $allPosts := where site.RegularPages "Section" "in" (slice "posts" "studynotes" "portfolio") }}
-      <div class="archive-stat-item">
-        <div class="archive-stat-number">{{ len $allPosts }}</div>
-        <div class="archive-stat-label">总文章</div>
+  <section class="archives-overview" aria-labelledby="archives-overview-title">
+    <div class="stats-card">
+      <div class="overview-header">
+        <div>
+          <p class="overview-eyebrow">快速概览</p>
+          <h2 id="archives-overview-title" class="overview-title">先从这里快速定位内容</h2>
+        </div>
+        <p class="overview-description">先看关键统计与高频入口，再进入按年份的完整归档。</p>
       </div>
-      <div class="archive-stat-item">
-        <div class="archive-stat-number">{{ len site.Taxonomies.categories }}</div>
-        <div class="archive-stat-label">分类</div>
-      </div>
-      <div class="archive-stat-item">
-        <div class="archive-stat-number">{{ len site.Taxonomies.tags }}</div>
-        <div class="archive-stat-label">标签</div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ==================== 分类/标签云 ==================== -->
-  <div class="taxonomy-clouds">
-    <!-- 分类云 -->
-    <div class="category-cloud">
-      <h3 class="cloud-title cloud-title-category">分类导航</h3>
-      <div class="cloud-tags">
-        {{ range first 15 site.Taxonomies.categories.ByCount }}
-        <a href="{{ .Page.RelPermalink }}" class="cloud-chip cloud-chip-category">
-          {{ .Page.Title }} ({{ .Count }})
-        </a>
-        {{ end }}
+      <div class="stats-row">
+        {{ $allPosts := where site.RegularPages "Section" "in" (slice "posts" "studynotes" "portfolio") }}
+        <div class="archive-stat-item">
+          <div class="archive-stat-number">{{ len $allPosts }}</div>
+          <div class="archive-stat-label">总文章</div>
+        </div>
+        <div class="archive-stat-item">
+          <div class="archive-stat-number">{{ len site.Taxonomies.categories }}</div>
+          <div class="archive-stat-label">分类</div>
+        </div>
+        <div class="archive-stat-item">
+          <div class="archive-stat-number">{{ len site.Taxonomies.tags }}</div>
+          <div class="archive-stat-label">标签</div>
+        </div>
       </div>
     </div>
 
-    <!-- 标签云 -->
-    <div class="tag-cloud">
-      <h3 class="cloud-title cloud-title-tag">热门标签</h3>
-      <div class="cloud-tags">
-        {{ $tags := first 15 site.Taxonomies.tags.ByCount }}
-        {{ range $tags }}
-        {{ $tagURL := printf "/tags/%s/" ( .Term | urlize ) }}
-        <a href="{{ $tagURL }}" class="cloud-chip cloud-chip-tag">
-          {{ .Term }} ({{ .Count }})
-        </a>
-        {{ end }}
-      </div>
+    <div class="taxonomy-clouds">
+      <section class="category-cloud" aria-labelledby="archives-categories-title">
+        <div class="cloud-header">
+          <div>
+            <h3 id="archives-categories-title" class="cloud-title cloud-title-category">分类导航</h3>
+            <p class="cloud-description">按主题快速进入最常访问的分类。</p>
+          </div>
+          <a href="{{ "categories/" | relLangURL }}" class="cloud-link">全部分类</a>
+        </div>
+
+        <div class="cloud-tags">
+          {{ range first 8 site.Taxonomies.categories.ByCount }}
+          <a href="{{ .Page.RelPermalink }}" class="cloud-chip cloud-chip-category" title="{{ .Page.Title }}（{{ .Count }}）">
+            <span class="cloud-chip-name">{{ .Page.Title }}</span>
+            <span class="cloud-chip-count">{{ .Count }}</span>
+          </a>
+          {{ end }}
+        </div>
+      </section>
+
+      <section class="tag-cloud" aria-labelledby="archives-tags-title">
+        <div class="cloud-header">
+          <div>
+            <h3 id="archives-tags-title" class="cloud-title cloud-title-tag">热门标签</h3>
+            <p class="cloud-description">高频标签作为捷径，其余标签可在完整标签页查看。</p>
+          </div>
+          <a href="{{ "tags/" | relLangURL }}" class="cloud-link">全部标签</a>
+        </div>
+
+        <div class="cloud-tags">
+          {{ $tags := first 8 site.Taxonomies.tags.ByCount }}
+          {{ range $tags }}
+          {{ $tagURL := printf "/tags/%s/" ( .Term | urlize ) }}
+          <a href="{{ $tagURL }}" class="cloud-chip cloud-chip-tag" title="{{ .Term }}（{{ .Count }}）">
+            <span class="cloud-chip-name">{{ .Term }}</span>
+            <span class="cloud-chip-count">{{ .Count }}</span>
+          </a>
+          {{ end }}
+        </div>
+      </section>
     </div>
-  </div>
+  </section>
 
   <!-- ==================== 时间线归档 ==================== -->
   {{ $pages := where site.RegularPages "Section" "in" (slice "posts" "studynotes" "portfolio") }}
   {{ $paginator := .Paginate $pages 5 }}
   
-  <div class="timeline">
+  <section class="timeline" aria-label="按年份归档时间线">
     {{ if $paginator.Pages }}
     {{ range ($paginator.Pages.GroupByDate "2006") }}
     <div class="year-section">
-      <h2 class="year-heading">
-        <span class="year-heading-icon" aria-hidden="true">📅</span>
-        {{ .Key }} 年
-      </h2>
-      <div class="archives-post-list">
+      <h2 class="year-heading">{{ .Key }} 年</h2>
+      <div class="archives-post-list" role="list">
         {{ range .Pages }}
-        <article class="post-item">
+        <article class="post-item" role="listitem">
           <div class="post-item-main">
             <time datetime="{{ .Date.Format "2006-01-02" }}" class="post-item-date">
               {{ .Date.Format "01-02" }}
@@ -95,17 +115,24 @@
                 {{ range . }}
                 {{ $categoryURL := printf "/categories/%s/" (. | urlize) }}
                 <a href="{{ $categoryURL }}" class="taxonomy-chip taxonomy-chip-category">
-                  <span aria-hidden="true">📂</span>{{ . }}
+                  {{ . }}
                 </a>
                 {{ end }}
                 {{ end }}
 
                 {{ with .Params.tags }}
-                {{ range . }}
+                {{ $totalTags := len . }}
+                {{ range first 3 . }}
                 {{ $tagURL := printf "/tags/%s/" (. | urlize) }}
                 <a href="{{ $tagURL }}" class="taxonomy-chip taxonomy-chip-tag">
-                  <span aria-hidden="true">🏷️</span>{{ . }}
+                  {{ . }}
                 </a>
+                {{ end }}
+                {{ if gt $totalTags 3 }}
+                {{ $hiddenTags := after 3 . }}
+                <span class="taxonomy-more" title="{{ delimit $hiddenTags "、" }}" aria-label="其余标签：{{ delimit $hiddenTags "、" }}">
+                  +{{ len $hiddenTags }} 个标签
+                </span>
                 {{ end }}
                 {{ end }}
               </div>
@@ -119,17 +146,17 @@
     {{ end }}
     {{ else }}
     <div class="no-articles">
-      <div class="no-articles-icon" aria-hidden="true">📭</div>
+      <div class="no-articles-icon" aria-hidden="true"></div>
       <p>暂时还没有归档内容哦~</p>
     </div>
     {{ end }}
-  </div>
+  </section>
 
   <!-- ==================== 分页导航 ==================== -->
   {{ if gt $paginator.TotalPages 1 }}
-  <div class="pagination archives-pagination">
+  <nav class="pagination archives-pagination" aria-label="归档分页">
     {{ if $paginator.HasPrev }}
-    <a href="{{ $paginator.Prev.URL }}" class="pager-link pager-link-prev">
+    <a href="{{ $paginator.Prev.URL }}" class="pager-link pager-link-prev" aria-label="上一页归档">
       ← 上一页
     </a>
     {{ end }}
@@ -148,7 +175,7 @@
       {{ range $paginator.Pagers }}
       {{ if and (ge .PageNumber (sub $currentPage 2)) (le .PageNumber (add $currentPage 2)) }}
       {{ if eq .PageNumber $currentPage }}
-      <span class="pager-number pager-number-current">{{ .PageNumber }}</span>
+      <span class="pager-number pager-number-current" aria-current="page">{{ .PageNumber }}</span>
       {{ else }}
       <a href="{{ .URL }}" class="pager-number">{{ .PageNumber }}</a>
       {{ end }}
@@ -164,11 +191,11 @@
     </div>
 
     {{ if $paginator.HasNext }}
-    <a href="{{ $paginator.Next.URL }}" class="pager-link pager-link-next">
+    <a href="{{ $paginator.Next.URL }}" class="pager-link pager-link-next" aria-label="下一页归档">
       下一页 →
     </a>
     {{ end }}
-  </div>
+  </nav>
 
   <div class="pagination-summary">
     第 {{ $paginator.PageNumber }} 页 / 共 {{ $paginator.TotalPages }} 页 | 共 {{ len $pages }} 篇文章

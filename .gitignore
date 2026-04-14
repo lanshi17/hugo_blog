@@ -35,6 +35,21 @@ hs_err_pid*.log
 # IDE / Editor Directories
 .idea/
 .vscode/
+.agent/
+.claude/
+.codebuddy/
+.codex/
+.continue/
+.cursor/
+.gemini/
+.kiro/
+.opencode/
+.qoder/
+.roo/
+.trae/
+.windsurf/
+__pycache__/
+*.pyc
 
 # Compiled files (if you build it locally before hosting)
 dist/

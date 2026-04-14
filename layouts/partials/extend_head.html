@@ -23,6 +23,7 @@
 </script>
 
 {{- if .IsPage -}}
+{{- $disableFingerprinting := eq site.Params.assets.disableFingerprinting true -}}
 {{- $immersiveReading := resources.Get "js/immersive-reading.js" | minify -}}
 <script>
     window.immersiveReadingConfig = {
@@ -39,11 +40,22 @@
         }
     };
 </script>
+{{- if not $disableFingerprinting -}}
+{{- $immersiveReading = $immersiveReading | fingerprint -}}
+<script defer crossorigin="anonymous" src="{{ $immersiveReading.RelPermalink }}" integrity="{{ $immersiveReading.Data.Integrity }}"></script>
+{{- else -}}
 <script defer src="{{ $immersiveReading.RelPermalink }}"></script>
+{{- end -}}
 {{- end -}}
 
 {{- if and .IsPage site.Params.aiAssistant.enabled -}}
 {{- $assistant := site.Params.aiAssistant -}}
+{{- $disableFingerprinting := eq site.Params.assets.disableFingerprinting true -}}
+{{- $assistantEndpointEnv := getenv "AI_ASSISTANT_ENDPOINT" -}}
+{{- $assistantEndpoint := ($assistant.endpoint | default "") -}}
+{{- if $assistantEndpointEnv -}}
+  {{- $assistantEndpoint = $assistantEndpointEnv -}}
+{{- end -}}
 {{- $directRemoteEnabled := ($assistant.directRemote.enabled | default false) -}}
 {{- $directRemoteExpose := ($assistant.directRemote.exposeApiKeyInBrowser | default false) -}}
 {{- $directRemoteInject := and $directRemoteEnabled $directRemoteExpose -}}
@@ -58,11 +70,11 @@
 {{- $assistantConfig := dict
     "enabled" true
     "title" ($assistant.title | default "AI 文章助手")
-    "greeting" ($assistant.greeting | default "我可以结合当前文章内容回答问题。")
-    "placeholder" ($assistant.placeholder | default "试着问：这篇文章主要讲了什么？")
+    "greeting" ($assistant.greeting | default "可以直接问文章要点、术语或代码细节。")
+    "placeholder" ($assistant.placeholder | default "问文章内容、术语或结论")
     "fallbackHint" ($assistant.fallbackHint | default "当前未配置 AI 接口，先使用文章检索模式回答。")
     "errorHint" ($assistant.errorHint | default "AI 接口暂时不可用，已自动切换到文章检索模式。")
-    "endpoint" ($assistant.endpoint | default "")
+    "endpoint" $assistantEndpoint
     "remote" (dict
       "enabled" $directRemoteEnabled
       "baseURL" ($assistant.directRemote.baseURL | default "")
@@ -79,7 +91,7 @@
     "temperature" ($assistant.temperature | default 0.2)
     "maxContextChars" ($assistant.maxContextChars | default 12000)
     "maxChunks" ($assistant.maxChunks | default 6)
-    "suggestedQuestions" ($assistant.suggestedQuestions | default (slice "这篇文章主要讲了什么？" "请总结这篇文章的 3 个要点" "文中最关键的代码或结论是什么？"))
+    "suggestedQuestions" ($assistant.suggestedQuestions | default (slice "一句话总结" "3 个重点" "关键代码/结论"))
     "page" (dict
       "title" .Title
       "description" (.Description | default "")
@@ -90,5 +102,10 @@
 <script>
     window.aiArticleAssistantConfig = {{ $assistantConfig | jsonify | safeJS }};
 </script>
+{{- if not $disableFingerprinting -}}
+{{- $aiAssistant = $aiAssistant | fingerprint -}}
+<script defer crossorigin="anonymous" src="{{ $aiAssistant.RelPermalink }}" integrity="{{ $aiAssistant.Data.Integrity }}"></script>
+{{- else -}}
 <script defer src="{{ $aiAssistant.RelPermalink }}"></script>
+{{- end -}}
 {{- end -}}

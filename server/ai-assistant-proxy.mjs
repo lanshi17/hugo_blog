@@ -29,11 +29,17 @@ if (!OPENAI_API_KEY) {
     process.exit(1);
 }
 
-function writeJson(response, statusCode, payload) {
-    response.writeHead(statusCode, {
+function getCorsHeaders() {
+    return {
         'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    };
+}
+
+function writeJson(response, statusCode, payload) {
+    response.writeHead(statusCode, {
+        ...getCorsHeaders(),
         'Content-Type': 'application/json; charset=utf-8',
         'Cache-Control': 'no-store'
     });
@@ -106,15 +112,20 @@ async function readRequestBody(request) {
     return JSON.parse(raw);
 }
 
-async function forwardUpstream(upstreamPath, payload) {
-    const upstream = await fetch(`${OPENAI_BASE_URL}${upstreamPath}`, {
+async function requestUpstream(upstreamPath, payload, signal) {
+    return fetch(`${OPENAI_BASE_URL}${upstreamPath}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${OPENAI_API_KEY}`
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal
     });
+}
+
+async function forwardUpstream(upstreamPath, payload) {
+    const upstream = await requestUpstream(upstreamPath, payload);
 
     const text = await upstream.text();
     let data = {};
@@ -134,12 +145,83 @@ async function forwardUpstream(upstreamPath, payload) {
     };
 }
 
+function writeUpstreamText(response, statusCode, contentType, text) {
+    response.writeHead(statusCode, {
+        ...getCorsHeaders(),
+        'Content-Type': contentType || 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store'
+    });
+    response.end(text);
+}
+
+async function forwardUpstreamStream(upstreamPath, payload, response) {
+    const controller = new AbortController();
+    const abortUpstream = () => controller.abort();
+
+    response.on('close', abortUpstream);
+
+    try {
+        const upstream = await requestUpstream(upstreamPath, payload, controller.signal);
+        const contentType = (upstream.headers.get('content-type') || '').toLowerCase();
+
+        if (!upstream.ok || !upstream.body || !contentType.includes('text/event-stream')) {
+            const text = await upstream.text();
+            writeUpstreamText(response, upstream.status, contentType || 'application/json; charset=utf-8', text);
+            return;
+        }
+
+        response.writeHead(upstream.status, {
+            ...getCorsHeaders(),
+            'Content-Type': 'text/event-stream; charset=utf-8',
+            'Cache-Control': 'no-store',
+            Connection: 'keep-alive',
+            'X-Accel-Buffering': 'no'
+        });
+
+        const reader = upstream.body.getReader();
+
+        try {
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) {
+                    break;
+                }
+
+                response.write(Buffer.from(value));
+            }
+        } finally {
+            reader.releaseLock();
+        }
+
+        response.end();
+    } catch (error) {
+        if (controller.signal.aborted) {
+            if (!response.writableEnded) {
+                response.end();
+            }
+            return;
+        }
+
+        if (!response.headersSent) {
+            writeJson(response, 502, {
+                error: 'Proxy stream failed',
+                message: error instanceof Error ? error.message : 'Unknown error'
+            });
+            return;
+        }
+
+        if (!response.writableEnded) {
+            response.end();
+        }
+    } finally {
+        response.off('close', abortUpstream);
+    }
+}
+
 const server = http.createServer(async (request, response) => {
     if (request.method === 'OPTIONS') {
         response.writeHead(204, {
-            'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            ...getCorsHeaders(),
             'Access-Control-Max-Age': '86400'
         });
         response.end();
@@ -244,8 +326,14 @@ const server = http.createServer(async (request, response) => {
         const upstreamPayload = {
             model,
             temperature: typeof body.temperature === 'number' ? body.temperature : 0.2,
+            stream: Boolean(body.stream),
             messages: createMessages(body)
         };
+
+        if (body.stream) {
+            await forwardUpstreamStream(OPENAI_CHAT_PATH, upstreamPayload, response);
+            return;
+        }
 
         const upstream = await forwardUpstream(OPENAI_CHAT_PATH, upstreamPayload);
         writeJson(response, upstream.status, upstream.data);

@@ -43,6 +43,38 @@ Nginx 示例见：
 
 如果你使用项目自带的 `[deploy.sh](/home/dave_paine/hugo_blog/deploy.sh)`，部署流程会一并安装/更新 AI 代理的 systemd 服务并自动重启。
 
+## 开发环境 endpoint 覆盖
+
+如果你本地跑的是：
+
+- Hugo 预览：`http://127.0.0.1:1313`
+- AI 代理：`http://127.0.0.1:8787`
+
+那前端默认写死成相对路径 `/api/blog-assistant` 并不一定能打到代理，除非你本地也做了反代。
+
+现在项目支持用环境变量覆盖前端注入的接口地址：
+
+```bash
+export AI_ASSISTANT_ENDPOINT="http://127.0.0.1:8787/api/blog-assistant"
+hugo server
+```
+
+如果你要从手机、平板或局域网其他设备访问开发站点，可以改成宿主机 IP：
+
+```bash
+export AI_ASSISTANT_ENDPOINT="http://192.168.1.20:8787/api/blog-assistant"
+hugo server --bind 0.0.0.0 --baseURL http://192.168.1.20:1313
+```
+
+覆盖优先级：
+
+1. `AI_ASSISTANT_ENDPOINT`
+2. `config.yaml` 中的 `params.aiAssistant.endpoint`
+
+对应注入逻辑见：
+
+- `[layouts/partials/extend_head.html](/home/dave_paine/hugo_blog/layouts/partials/extend_head.html#L45)`
+
 ## 1. 用 `.zshrc` 存明文密钥，`config.yaml` 只配变量名
 
 先在 `~/.zshrc` 里导出：

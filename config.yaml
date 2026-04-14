@@ -29,6 +29,7 @@ security:
       - '^CI$'
       - '^OPENAI_'
       - '^AI_ASSISTANT_'
+      - '^AI_SEARCH_'
 
 # --- 菜单配置 ---
 menu:
@@ -93,7 +94,7 @@ params:
   letterSpacing: 0.02
   fontSize: 17
   assets:
-    disableFingerprinting: true
+    disableFingerprinting: false
     favicon: "/favicon.ico"
     disableHLJS: false
   navbar:
@@ -183,13 +184,26 @@ params:
     appendFilePath: true
   search:
     enabled: true
-    engine: "fusejs"
-    placeholder: "搜索文章..."
+    engine: "embedding"
+    placeholder: "输入问题、主题或关键词..."
     maxResultsPerSection: 10
     liveReload: true
     highlightMatches: true
     showEmptyResult: true
     indexFile: "index.json"
+    embedding:
+      endpoint: "/api/blog-search-embedding"
+      vectorIndexFile: "search-vectors.json"
+      model: "baai/bge-m3(free)"
+      minQueryLength: 2
+      maxResults: 8
+      scoreThreshold: 0.18
+    rerank:
+      enabled: true
+      endpoint: "/api/blog-search-rerank"
+      model: "BAAI/bge-reranker-v2-m3(free)"
+      recallK: 24
+      topN: 8
     fuseOpts:
       tokenize: true
       matchAllTokens: true
@@ -205,16 +219,16 @@ params:
     enabled: true
     endpoint: "/api/blog-assistant"
     requestFormat: "openai-chat"
-    model: "gpt-4.1-mini"
+    model: "qwen/qwen3.5-27b(free)"
     models:
-      - "gpt-4.1-mini"
-      - "gpt-4.1"
+      - "qwen/qwen3.5-27b(free)"
+      - "qwen/qwen3.5-35b-a3b(free)"
     temperature: 0.2
     maxContextChars: 12000
     maxChunks: 6
     title: "AI 文章助手"
-    greeting: "我可以结合当前文章内容回答问题，也能帮你快速定位关键段落。"
-    placeholder: "试着问：这篇文章主要讲了什么？"
+    greeting: "可以直接问文章要点、术语或代码细节。"
+    placeholder: "问文章内容、术语或结论"
     fallbackHint: "当前未配置 AI 接口，先使用文章检索模式回答。"
     errorHint: "AI 接口暂时不可用，已自动切换到文章检索模式。"
     directRemote:
@@ -227,9 +241,9 @@ params:
       apiKeyPrefix: "Bearer "
       exposeApiKeyInBrowser: false
     suggestedQuestions:
-      - "这篇文章主要讲了什么？"
-      - "请总结这篇文章的 3 个要点"
-      - "文中最关键的代码或结论是什么？"
+      - "一句话总结"
+      - "3 个重点"
+      - "关键代码/结论"
 
 # --- 输出格式配置 ---
 outputFormats:
