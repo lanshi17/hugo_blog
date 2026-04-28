@@ -218,6 +218,7 @@ params:
   aiAssistant:
     enabled: true
     endpoint: "/api/blog-assistant"
+    localProxyBaseUrl: "http://127.0.0.1:8787"
     requestFormat: "openai-chat"
     model: "qwen/qwen3.5-27b(free)"
     models:

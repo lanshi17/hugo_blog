@@ -1,31 +1,34 @@
 import http from 'node:http';
+import { once } from 'node:events';
 
 const PORT = Number(process.env.PORT || 8787);
 const OPENAI_BASE_URL = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, '');
+const AI_SEARCH_BASE_URL = (process.env.AI_SEARCH_BASE_URL || OPENAI_BASE_URL).replace(/\/+$/, '');
 const OPENAI_CHAT_PATH = process.env.OPENAI_CHAT_PATH || '/chat/completions';
-const OPENAI_EMBEDDING_PATH = process.env.OPENAI_EMBEDDING_PATH || '/embeddings';
-const OPENAI_RERANK_PATH = process.env.OPENAI_RERANK_PATH || '/rerank';
+const OPENAI_EMBEDDING_PATH = process.env.OPENAI_EMBEDDING_PATH || process.env.AI_SEARCH_EMBEDDING_PATH || '/embeddings';
+const OPENAI_RERANK_PATH = process.env.OPENAI_RERANK_PATH || process.env.AI_SEARCH_RERANK_PATH || '/rerank';
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+const AI_SEARCH_API_KEY = process.env.AI_SEARCH_API_KEY || OPENAI_API_KEY;
 const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
-const OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL || 'baai/bge-m3(free)';
-const OPENAI_RERANK_MODEL = process.env.OPENAI_RERANK_MODEL || 'BAAI/bge-reranker-v2-m3(free)';
+const OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL || process.env.AI_SEARCH_EMBEDDING_MODEL || 'baai/bge-m3(free)';
+const OPENAI_RERANK_MODEL = process.env.OPENAI_RERANK_MODEL || process.env.AI_SEARCH_RERANK_MODEL || 'BAAI/bge-reranker-v2-m3(free)';
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '*';
 const MAX_BODY_BYTES = Number(process.env.MAX_BODY_BYTES || 256 * 1024);
 const ALLOWED_MODELS = (process.env.ALLOWED_MODELS || '')
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean);
-const ALLOWED_EMBEDDING_MODELS = (process.env.ALLOWED_EMBEDDING_MODELS || '')
+const ALLOWED_EMBEDDING_MODELS = (process.env.ALLOWED_EMBEDDING_MODELS || process.env.AI_SEARCH_ALLOWED_EMBEDDING_MODELS || '')
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean);
-const ALLOWED_RERANK_MODELS = (process.env.ALLOWED_RERANK_MODELS || '')
+const ALLOWED_RERANK_MODELS = (process.env.ALLOWED_RERANK_MODELS || process.env.AI_SEARCH_ALLOWED_RERANK_MODELS || '')
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean);
 
-if (!OPENAI_API_KEY) {
-    console.error('[ai-proxy] Missing OPENAI_API_KEY');
+if (!OPENAI_API_KEY && !AI_SEARCH_API_KEY) {
+    console.error('[ai-proxy] Missing OPENAI_API_KEY or AI_SEARCH_API_KEY');
     process.exit(1);
 }
 
@@ -112,20 +115,20 @@ async function readRequestBody(request) {
     return JSON.parse(raw);
 }
 
-async function requestUpstream(upstreamPath, payload, signal) {
-    return fetch(`${OPENAI_BASE_URL}${upstreamPath}`, {
+async function requestUpstream(baseUrl, upstreamPath, payload, apiKey, signal) {
+    return fetch(`${baseUrl}${upstreamPath}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${OPENAI_API_KEY}`
+            Authorization: `Bearer ${apiKey}`
         },
         body: JSON.stringify(payload),
         signal
     });
 }
 
-async function forwardUpstream(upstreamPath, payload) {
-    const upstream = await requestUpstream(upstreamPath, payload);
+async function forwardUpstream(baseUrl, upstreamPath, payload, apiKey) {
+    const upstream = await requestUpstream(baseUrl, upstreamPath, payload, apiKey);
 
     const text = await upstream.text();
     let data = {};
@@ -154,14 +157,21 @@ function writeUpstreamText(response, statusCode, contentType, text) {
     response.end(text);
 }
 
-async function forwardUpstreamStream(upstreamPath, payload, response) {
+async function waitForWritableDrain(response) {
+    await Promise.race([
+        once(response, 'drain'),
+        once(response, 'close')
+    ]);
+}
+
+async function forwardUpstreamStream(baseUrl, upstreamPath, payload, apiKey, response) {
     const controller = new AbortController();
     const abortUpstream = () => controller.abort();
 
     response.on('close', abortUpstream);
 
     try {
-        const upstream = await requestUpstream(upstreamPath, payload, controller.signal);
+        const upstream = await requestUpstream(baseUrl, upstreamPath, payload, apiKey, controller.signal);
         const contentType = (upstream.headers.get('content-type') || '').toLowerCase();
 
         if (!upstream.ok || !upstream.body || !contentType.includes('text/event-stream')) {
@@ -177,6 +187,7 @@ async function forwardUpstreamStream(upstreamPath, payload, response) {
             Connection: 'keep-alive',
             'X-Accel-Buffering': 'no'
         });
+        response.flushHeaders?.();
 
         const reader = upstream.body.getReader();
 
@@ -187,7 +198,12 @@ async function forwardUpstreamStream(upstreamPath, payload, response) {
                     break;
                 }
 
-                response.write(Buffer.from(value));
+                if (!response.write(Buffer.from(value))) {
+                    await waitForWritableDrain(response);
+                    if (response.destroyed || response.writableEnded) {
+                        break;
+                    }
+                }
             }
         } finally {
             reader.releaseLock();
@@ -219,6 +235,8 @@ async function forwardUpstreamStream(upstreamPath, payload, response) {
 }
 
 const server = http.createServer(async (request, response) => {
+    const pathname = new URL(request.url || '/', 'http://127.0.0.1').pathname;
+
     if (request.method === 'OPTIONS') {
         response.writeHead(204, {
             ...getCorsHeaders(),
@@ -228,7 +246,7 @@ const server = http.createServer(async (request, response) => {
         return;
     }
 
-    if (request.method !== 'POST' || !['/api/blog-assistant', '/api/blog-search-embedding', '/api/blog-search-rerank'].includes(request.url)) {
+    if (request.method !== 'POST' || !['/api/blog-assistant', '/api/blog-search-embedding', '/api/blog-search-rerank'].includes(pathname)) {
         writeJson(response, 404, {
             error: 'Not found',
             message: 'Use POST /api/blog-assistant or POST /api/blog-search-embedding or POST /api/blog-search-rerank'
@@ -238,7 +256,15 @@ const server = http.createServer(async (request, response) => {
 
     try {
         const body = await readRequestBody(request);
-        if (request.url === '/api/blog-search-embedding') {
+        if (pathname === '/api/blog-search-embedding') {
+            if (!AI_SEARCH_API_KEY) {
+                writeJson(response, 500, {
+                    error: 'Missing API key',
+                    message: 'Embedding proxy requires OPENAI_API_KEY or AI_SEARCH_API_KEY'
+                });
+                return;
+            }
+
             const model = pickModel(body, OPENAI_EMBEDDING_MODEL, ALLOWED_EMBEDDING_MODELS);
             if (!model) {
                 writeJson(response, 400, {
@@ -270,12 +296,20 @@ const server = http.createServer(async (request, response) => {
                 upstreamPayload.encoding_format = body.encoding_format.trim();
             }
 
-            const upstream = await forwardUpstream(OPENAI_EMBEDDING_PATH, upstreamPayload);
+            const upstream = await forwardUpstream(AI_SEARCH_BASE_URL, OPENAI_EMBEDDING_PATH, upstreamPayload, AI_SEARCH_API_KEY);
             writeJson(response, upstream.status, upstream.data);
             return;
         }
 
-        if (request.url === '/api/blog-search-rerank') {
+        if (pathname === '/api/blog-search-rerank') {
+            if (!AI_SEARCH_API_KEY) {
+                writeJson(response, 500, {
+                    error: 'Missing API key',
+                    message: 'Rerank proxy requires OPENAI_API_KEY or AI_SEARCH_API_KEY'
+                });
+                return;
+            }
+
             const model = pickModel(body, OPENAI_RERANK_MODEL, ALLOWED_RERANK_MODELS);
             if (!model) {
                 writeJson(response, 400, {
@@ -309,8 +343,16 @@ const server = http.createServer(async (request, response) => {
                 upstreamPayload.return_documents = body.return_documents;
             }
 
-            const upstream = await forwardUpstream(OPENAI_RERANK_PATH, upstreamPayload);
+            const upstream = await forwardUpstream(AI_SEARCH_BASE_URL, OPENAI_RERANK_PATH, upstreamPayload, AI_SEARCH_API_KEY);
             writeJson(response, upstream.status, upstream.data);
+            return;
+        }
+
+        if (!OPENAI_API_KEY) {
+            writeJson(response, 500, {
+                error: 'Missing API key',
+                message: 'Chat proxy requires OPENAI_API_KEY'
+            });
             return;
         }
 
@@ -331,11 +373,11 @@ const server = http.createServer(async (request, response) => {
         };
 
         if (body.stream) {
-            await forwardUpstreamStream(OPENAI_CHAT_PATH, upstreamPayload, response);
+            await forwardUpstreamStream(OPENAI_BASE_URL, OPENAI_CHAT_PATH, upstreamPayload, OPENAI_API_KEY, response);
             return;
         }
 
-        const upstream = await forwardUpstream(OPENAI_CHAT_PATH, upstreamPayload);
+        const upstream = await forwardUpstream(OPENAI_BASE_URL, OPENAI_CHAT_PATH, upstreamPayload, OPENAI_API_KEY);
         writeJson(response, upstream.status, upstream.data);
     } catch (error) {
         writeJson(response, 500, {
@@ -350,8 +392,8 @@ server.listen(PORT, () => {
     console.log(`[ai-proxy] Embedding endpoint on http://127.0.0.1:${PORT}/api/blog-search-embedding`);
     console.log(`[ai-proxy] Rerank endpoint on http://127.0.0.1:${PORT}/api/blog-search-rerank`);
     console.log(`[ai-proxy] Forwarding to ${OPENAI_BASE_URL}${OPENAI_CHAT_PATH}`);
-    console.log(`[ai-proxy] Embedding forward target: ${OPENAI_BASE_URL}${OPENAI_EMBEDDING_PATH}`);
-    console.log(`[ai-proxy] Rerank forward target: ${OPENAI_BASE_URL}${OPENAI_RERANK_PATH}`);
+    console.log(`[ai-proxy] Embedding forward target: ${AI_SEARCH_BASE_URL}${OPENAI_EMBEDDING_PATH}`);
+    console.log(`[ai-proxy] Rerank forward target: ${AI_SEARCH_BASE_URL}${OPENAI_RERANK_PATH}`);
     console.log(`[ai-proxy] Default model: ${OPENAI_MODEL}`);
     console.log(`[ai-proxy] Default embedding model: ${OPENAI_EMBEDDING_MODEL}`);
     console.log(`[ai-proxy] Default rerank model: ${OPENAI_RERANK_MODEL}`);

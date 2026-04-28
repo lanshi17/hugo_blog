@@ -66,6 +66,14 @@ export AI_ASSISTANT_ENDPOINT="http://192.168.1.20:8787/api/blog-assistant"
 hugo server --bind 0.0.0.0 --baseURL http://192.168.1.20:1313
 ```
 
+如果不覆盖 `AI_ASSISTANT_ENDPOINT`，开发页在 `127.0.0.1` 或 `localhost` 下会先尝试把相对路径 `/api/blog-assistant` 改写到本地代理：
+
+```text
+http://127.0.0.1:8787/api/blog-assistant
+```
+
+这个本地代理根地址可以用 `AI_ASSISTANT_LOCAL_PROXY_BASE_URL` 覆盖。
+
 覆盖优先级：
 
 1. `AI_ASSISTANT_ENDPOINT`

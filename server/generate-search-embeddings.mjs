@@ -4,14 +4,14 @@ import path from 'node:path';
 const OUTPUT_DIR = process.env.SEARCH_OUTPUT_DIR || process.env.HUGO_PUBLIC_DIR || path.resolve(process.cwd(), 'public');
 const SOURCE_FILE = process.env.SEARCH_SOURCE_FILE || path.join(OUTPUT_DIR, 'index.json');
 const OUTPUT_FILE = process.env.SEARCH_VECTOR_OUTPUT_FILE || path.join(OUTPUT_DIR, 'search-vectors.json');
-const OPENAI_BASE_URL = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, '');
-const OPENAI_EMBEDDING_PATH = process.env.OPENAI_EMBEDDING_PATH || '/embeddings';
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
-const CUSTOM_OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL || '';
+const OPENAI_BASE_URL = (process.env.OPENAI_BASE_URL || process.env.AI_SEARCH_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, '');
+const OPENAI_EMBEDDING_PATH = process.env.OPENAI_EMBEDDING_PATH || process.env.AI_SEARCH_EMBEDDING_PATH || '/embeddings';
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || process.env.AI_SEARCH_API_KEY || '';
+const CUSTOM_OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL || process.env.AI_SEARCH_EMBEDDING_MODEL || '';
 const OPENAI_EMBEDDING_MODEL = CUSTOM_OPENAI_EMBEDDING_MODEL || 'baai/bge-m3(free)';
-const SEARCH_EMBEDDING_BATCH_SIZE = Math.max(1, Number(process.env.SEARCH_EMBEDDING_BATCH_SIZE || 16));
-const SEARCH_EMBEDDING_MAX_CHARS = Math.max(500, Number(process.env.SEARCH_EMBEDDING_MAX_CHARS || 6000));
-const SEARCH_PREVIEW_MAX_CHARS = Math.max(200, Number(process.env.SEARCH_PREVIEW_MAX_CHARS || 1600));
+const SEARCH_EMBEDDING_BATCH_SIZE = Math.max(1, Number(process.env.SEARCH_EMBEDDING_BATCH_SIZE || process.env.AI_SEARCH_EMBEDDING_BATCH_SIZE || 16));
+const SEARCH_EMBEDDING_MAX_CHARS = Math.max(500, Number(process.env.SEARCH_EMBEDDING_MAX_CHARS || process.env.AI_SEARCH_EMBEDDING_MAX_CHARS || 6000));
+const SEARCH_PREVIEW_MAX_CHARS = Math.max(200, Number(process.env.SEARCH_PREVIEW_MAX_CHARS || process.env.AI_SEARCH_PREVIEW_MAX_CHARS || 1600));
 
 function log(message) {
     console.log(`[search-embeddings] ${message}`);
@@ -23,7 +23,7 @@ function buildProviderHint(message) {
     }
 
     if (typeof message === 'string' && /model|channel/i.test(message)) {
-        return ' 当前提供商可能不支持默认的 baai/bge-m3(free)，请设置 OPENAI_EMBEDDING_MODEL 为该服务商可用的 embedding 模型。';
+        return ' 当前提供商可能不支持默认的 baai/bge-m3(free)，请设置 OPENAI_EMBEDDING_MODEL 或 AI_SEARCH_EMBEDDING_MODEL 为该服务商可用的 embedding 模型。';
     }
 
     return '';
@@ -77,6 +77,33 @@ function normalizeVector(values) {
     return values.map((value) => Number((Number(value) / divisor).toFixed(6)));
 }
 
+function pickEmbeddingValues(item) {
+    if (Array.isArray(item)) {
+        return item;
+    }
+
+    if (!item || typeof item !== 'object') {
+        return null;
+    }
+
+    return item.embedding || item.vector || item.values || null;
+}
+
+function sortEmbeddingData(data) {
+    return data
+        .slice()
+        .sort((left, right) => {
+            const leftIndex = Number(left && left.index);
+            const rightIndex = Number(right && right.index);
+
+            if (!Number.isFinite(leftIndex) || !Number.isFinite(rightIndex)) {
+                return 0;
+            }
+
+            return leftIndex - rightIndex;
+        });
+}
+
 async function loadSourceDocuments() {
     const raw = await fs.readFile(SOURCE_FILE, 'utf8');
     const payload = JSON.parse(raw);
@@ -127,14 +154,17 @@ async function requestEmbeddings(inputs) {
         throw new Error(message || `Embedding 请求失败: HTTP ${response.status}`);
     }
 
-    if (!Array.isArray(payload.data) || payload.data.length !== inputs.length) {
+    const embeddings = Array.isArray(payload.data)
+        ? sortEmbeddingData(payload.data).map(pickEmbeddingValues)
+        : Array.isArray(payload.embeddings)
+            ? payload.embeddings.map(pickEmbeddingValues)
+            : [];
+
+    if (embeddings.length !== inputs.length) {
         throw new Error('Embedding 返回数量与输入数量不一致');
     }
 
-    return payload.data
-        .slice()
-        .sort((left, right) => left.index - right.index)
-        .map((item) => item.embedding);
+    return embeddings;
 }
 
 async function writeVectorIndex(documents, dimensions) {
@@ -193,6 +223,10 @@ async function main() {
 
                 if (!dimensions) {
                     dimensions = normalizedEmbedding.length;
+                }
+
+                if (normalizedEmbedding.length !== dimensions) {
+                    return;
                 }
 
                 outputDocuments.push({

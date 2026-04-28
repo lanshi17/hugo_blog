@@ -18,6 +18,7 @@
     const INPUT_MIN_HEIGHT = 60;
     const INPUT_MAX_HEIGHT = 160;
     const STREAM_DONE_MARKER = '[DONE]';
+    const DEFAULT_LOCAL_PROXY_BASE_URL = 'http://127.0.0.1:8787';
     const SUMMARY_PATTERN = /(总结|概括|概述|摘要|主要讲|讲了什么|说了什么|要点|重点|总览|梳理)/i;
     const QUESTION_PATTERN = /[?？]|(为什么|如何|怎么|哪些|哪里|区别|作用|含义|定义|流程|步骤|原理|代码)/i;
 
@@ -29,6 +30,23 @@
         const safeBase = normalizeWhitespace(baseURL).replace(/\/+$/, '');
         const safePath = `/${normalizeWhitespace(path || '').replace(/^\/+/, '')}`;
         return `${safeBase}${safePath}`;
+    }
+
+    function isLocalPreview() {
+        return ['127.0.0.1', 'localhost'].includes(window.location.hostname);
+    }
+
+    function buildLocalProxyUrl(path) {
+        const base = normalizeWhitespace(config.localProxyBaseUrl || DEFAULT_LOCAL_PROXY_BASE_URL).replace(/\/+$/, '');
+        if (!base || !path.startsWith('/')) {
+            return '';
+        }
+
+        return `${base}${path}`;
+    }
+
+    function uniqueStrings(values) {
+        return values.filter((value, index, array) => value && array.indexOf(value) === index);
     }
 
     function truncate(value, maxLength) {
@@ -145,10 +163,16 @@
     function getRemoteClientConfig() {
         const endpoint = normalizeWhitespace(config.endpoint);
         if (endpoint) {
+            const urls = [endpoint];
+            if (isLocalPreview() && endpoint.startsWith('/')) {
+                urls.unshift(buildLocalProxyUrl(endpoint));
+            }
+
             return {
                 enabled: true,
                 mode: 'endpoint',
                 url: endpoint,
+                urls: uniqueStrings(urls),
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -171,6 +195,7 @@
                 enabled: false,
                 mode: 'local',
                 url: '',
+                urls: [],
                 headers: {},
                 statusText: '文章检索模式',
                 actionHint: '仅基于当前文章内容',
@@ -189,6 +214,7 @@
             enabled: true,
             mode: 'direct',
             url: joinUrl(baseURL, apiPath),
+            urls: [joinUrl(baseURL, apiPath)],
             headers,
             statusText: '前端直连模式',
             actionHint: '结合文章内容调用远程模型',
@@ -520,53 +546,65 @@
         return '';
     }
 
-    function parseStreamDelta(payload) {
+    function parseStreamChunk(payload) {
+        const chunk = {
+            answerDelta: '',
+            reasoningDelta: ''
+        };
+
         if (!payload) {
-            return '';
+            return chunk;
         }
 
         if (typeof payload.output_text_delta === 'string') {
-            return payload.output_text_delta;
-        }
-
-        if (payload.type === 'response.output_text.delta' && typeof payload.delta === 'string') {
-            return payload.delta;
-        }
-
-        if (Array.isArray(payload.choices)) {
-            const chunkText = payload.choices
-                .map((choice) => {
-                    if (!choice) {
-                        return '';
-                    }
-
-                    if (typeof choice.delta?.content === 'string') {
-                        return choice.delta.content;
-                    }
-
-                    if (Array.isArray(choice.delta?.content)) {
-                        return joinTextParts(choice.delta.content, '', false);
-                    }
-
-                    if (typeof choice.text === 'string') {
-                        return choice.text;
-                    }
-
-                    return '';
-                })
-                .filter(Boolean)
-                .join('');
-
-            if (chunkText) {
-                return chunkText;
-            }
+            chunk.answerDelta += payload.output_text_delta;
         }
 
         if (typeof payload.delta === 'string') {
-            return payload.delta;
+            if (payload.type === 'response.output_text.delta') {
+                chunk.answerDelta += payload.delta;
+            } else if (typeof payload.type === 'string' && payload.type.includes('reasoning')) {
+                chunk.reasoningDelta += payload.delta;
+            }
         }
 
-        return '';
+        if (Array.isArray(payload.choices)) {
+            payload.choices.forEach((choice) => {
+                if (!choice) {
+                    return;
+                }
+
+                if (typeof choice.delta?.content === 'string') {
+                    chunk.answerDelta += choice.delta.content;
+                }
+
+                if (Array.isArray(choice.delta?.content)) {
+                    chunk.answerDelta += joinTextParts(choice.delta.content, '', false);
+                }
+
+                if (typeof choice.delta?.reasoning_content === 'string') {
+                    chunk.reasoningDelta += choice.delta.reasoning_content;
+                }
+
+                if (typeof choice.delta?.reasoning === 'string') {
+                    chunk.reasoningDelta += choice.delta.reasoning;
+                }
+
+                if (typeof choice.text === 'string') {
+                    chunk.answerDelta += choice.text;
+                }
+            });
+        }
+
+        if (typeof payload.delta === 'string' && !payload.type) {
+            chunk.answerDelta += payload.delta;
+        }
+
+        if (typeof payload.reasoning_content === 'string') {
+            chunk.reasoningDelta += payload.reasoning_content;
+        }
+
+        return chunk;
     }
 
     function getNextSseBlock(buffer) {
@@ -613,9 +651,13 @@
                 throw new Error(payloadError);
             }
 
-            const deltaText = parseStreamDelta(payload);
-            if (deltaText) {
-                handlers.onDelta?.(deltaText, payload);
+            const streamChunk = parseStreamChunk(payload);
+            if (streamChunk.reasoningDelta) {
+                handlers.onReasoning?.(streamChunk.reasoningDelta, payload);
+            }
+
+            if (streamChunk.answerDelta) {
+                handlers.onDelta?.(streamChunk.answerDelta, payload);
             }
 
             return false;
@@ -667,6 +709,52 @@
         } catch (error) {
             return `AI request failed: ${response.status}`;
         }
+    }
+
+    function isRetriableStatus(status) {
+        return [404, 405, 408, 429, 500, 502, 503, 504].includes(status);
+    }
+
+    async function fetchRemotePayload(payload, streamEnabled) {
+        const requestUrls = Array.isArray(remoteClientConfig.urls) && remoteClientConfig.urls.length
+            ? remoteClientConfig.urls
+            : [remoteClientConfig.url].filter(Boolean);
+        let lastError = null;
+
+        for (let index = 0; index < requestUrls.length; index += 1) {
+            const url = requestUrls[index];
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        ...remoteClientConfig.headers,
+                        Accept: streamEnabled ? 'text/event-stream, application/json' : 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    return response;
+                }
+
+                lastError = new Error(await readResponseError(response));
+                if (index < requestUrls.length - 1 && isRetriableStatus(response.status)) {
+                    continue;
+                }
+
+                throw lastError;
+            } catch (error) {
+                lastError = error instanceof Error ? error : new Error('AI 请求失败');
+                if (index < requestUrls.length - 1) {
+                    continue;
+                }
+
+                throw lastError;
+            }
+        }
+
+        throw lastError || new Error('AI 请求失败');
     }
 
     function buildRemotePayload(question, articleData, selectedChunks, selectedModel, streamEnabled) {
@@ -729,38 +817,56 @@
             return null;
         }
 
-        const payload = buildRemotePayload(
+        const streamPayload = buildRemotePayload(
             question,
             articleData,
             selectedChunks,
             selectedModel,
             true
         );
+        let answerText = '';
+        let streamError = null;
 
-        const response = await fetch(remoteClientConfig.url, {
-            method: 'POST',
-            headers: remoteClientConfig.headers,
-            body: JSON.stringify(payload)
-        });
+        try {
+            const response = await fetchRemotePayload(streamPayload, true);
+            const contentType = (response.headers.get('content-type') || '').toLowerCase();
 
-        if (!response.ok) {
-            throw new Error(await readResponseError(response));
+            if (contentType.includes('text/event-stream') && response.body) {
+                await consumeEventStream(response.body, {
+                    onReasoning(deltaText, payload) {
+                        handlers?.onReasoning?.(deltaText, payload);
+                    },
+                    onDelta(deltaText, payload) {
+                        answerText += deltaText;
+                        handlers?.onDelta?.(answerText, deltaText, payload);
+                    }
+                });
+
+                return answerText.trim() || null;
+            }
+
+            const data = await response.json();
+            const answer = parseResponseText(data);
+            return answer || null;
+        } catch (error) {
+            if (answerText.trim()) {
+                throw error;
+            }
+
+            streamError = error;
         }
 
-        const contentType = (response.headers.get('content-type') || '').toLowerCase();
-        if (contentType.includes('text/event-stream') && response.body) {
-            let answerText = '';
-
-            await consumeEventStream(response.body, {
-                onDelta(deltaText) {
-                    answerText += deltaText;
-                    handlers?.onDelta?.(answerText, deltaText);
-                }
+        const fallbackPayload = buildRemotePayload(
+            question,
+            articleData,
+            selectedChunks,
+            selectedModel,
+            false
+        );
+        const response = await fetchRemotePayload(fallbackPayload, false)
+            .catch((error) => {
+                throw error || streamError;
             });
-
-            return answerText.trim() || null;
-        }
-
         const data = await response.json();
         const answer = parseResponseText(data);
         return answer || null;
@@ -1577,6 +1683,7 @@
 
         try {
             let answerText = null;
+            let hasRemoteAnswerDelta = false;
 
             if (remoteClientConfig.enabled) {
                 try {
@@ -1586,14 +1693,21 @@
                         selectedChunks,
                         this.selectedModel || config.model || '',
                         {
+                            onReasoning: () => {
+                                if (!hasRemoteAnswerDelta && !this.getMessageText(assistantMessage)) {
+                                    this.setMessageStreaming(assistantMessage, true);
+                                    this.setMessageText(assistantMessage, '正在推理...');
+                                }
+                            },
                             onDelta: (nextText) => {
+                                hasRemoteAnswerDelta = true;
                                 this.setMessageStreaming(assistantMessage, true);
                                 this.setMessageText(assistantMessage, nextText);
                             }
                         }
                     );
                 } catch (error) {
-                    if (this.getMessageText(assistantMessage)) {
+                    if (hasRemoteAnswerDelta) {
                         this.setMessageStreaming(assistantMessage, false);
                         this.setMessageSources(assistantMessage, selectedChunks.slice(0, 3));
                         return;

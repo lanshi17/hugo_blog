@@ -52,9 +52,14 @@
 {{- $assistant := site.Params.aiAssistant -}}
 {{- $disableFingerprinting := eq site.Params.assets.disableFingerprinting true -}}
 {{- $assistantEndpointEnv := getenv "AI_ASSISTANT_ENDPOINT" -}}
+{{- $assistantLocalProxyBaseUrlEnv := getenv "AI_ASSISTANT_LOCAL_PROXY_BASE_URL" -}}
 {{- $assistantEndpoint := ($assistant.endpoint | default "") -}}
+{{- $assistantLocalProxyBaseUrl := ($assistant.localProxyBaseUrl | default "http://127.0.0.1:8787") -}}
 {{- if $assistantEndpointEnv -}}
   {{- $assistantEndpoint = $assistantEndpointEnv -}}
+{{- end -}}
+{{- if $assistantLocalProxyBaseUrlEnv -}}
+  {{- $assistantLocalProxyBaseUrl = $assistantLocalProxyBaseUrlEnv -}}
 {{- end -}}
 {{- $directRemoteEnabled := ($assistant.directRemote.enabled | default false) -}}
 {{- $directRemoteExpose := ($assistant.directRemote.exposeApiKeyInBrowser | default false) -}}
@@ -75,6 +80,7 @@
     "fallbackHint" ($assistant.fallbackHint | default "当前未配置 AI 接口，先使用文章检索模式回答。")
     "errorHint" ($assistant.errorHint | default "AI 接口暂时不可用，已自动切换到文章检索模式。")
     "endpoint" $assistantEndpoint
+    "localProxyBaseUrl" $assistantLocalProxyBaseUrl
     "remote" (dict
       "enabled" $directRemoteEnabled
       "baseURL" ($assistant.directRemote.baseURL | default "")

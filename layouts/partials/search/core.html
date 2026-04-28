@@ -2,17 +2,58 @@
 {{- $searchParams := site.Params.search -}}
 {{- $embedding := ($searchParams.embedding | default (dict)) -}}
 {{- $rerank := ($searchParams.rerank | default (dict)) -}}
+{{- $embeddingEndpointEnv := getenv "AI_SEARCH_EMBEDDING_ENDPOINT" -}}
+{{- $embeddingModelEnv := getenv "AI_SEARCH_EMBEDDING_MODEL" -}}
+{{- $rerankEndpointEnv := getenv "AI_SEARCH_RERANK_ENDPOINT" -}}
+{{- $rerankModelEnv := getenv "AI_SEARCH_RERANK_MODEL" -}}
+{{- $rerankEnabledEnv := getenv "AI_SEARCH_RERANK_ENABLED" -}}
+{{- $localProxyBaseUrlEnv := getenv "AI_SEARCH_LOCAL_PROXY_BASE_URL" -}}
+{{- $runtimeVectorBuildEnv := getenv "AI_SEARCH_RUNTIME_VECTOR_BUILD" -}}
 {{- $embeddingEndpoint := ($embedding.endpoint | default "/api/blog-search-embedding") -}}
 {{- $rerankEndpoint := ($rerank.endpoint | default "/api/blog-search-rerank") -}}
+{{- $embeddingModel := ($embedding.model | default "baai/bge-m3(free)") -}}
+{{- $rerankModel := ($rerank.model | default "BAAI/bge-reranker-v2-m3(free)") -}}
+{{- $localProxyBaseUrl := ($searchParams.localProxyBaseUrl | default ($embedding.localProxyBaseUrl | default "http://127.0.0.1:8787")) -}}
+{{- $rerankEnabled := true -}}
+{{- if isset $rerank "enabled" -}}
+  {{- $rerankEnabled = $rerank.enabled -}}
+{{- end -}}
+{{- $runtimeVectorBuildEnabled := true -}}
+{{- if isset $embedding "runtimeVectorBuildEnabled" -}}
+  {{- $runtimeVectorBuildEnabled = $embedding.runtimeVectorBuildEnabled -}}
+{{- end -}}
+{{- if $embeddingEndpointEnv -}}
+  {{- $embeddingEndpoint = $embeddingEndpointEnv -}}
+{{- end -}}
+{{- if $embeddingModelEnv -}}
+  {{- $embeddingModel = $embeddingModelEnv -}}
+{{- end -}}
+{{- if $rerankEndpointEnv -}}
+  {{- $rerankEndpoint = $rerankEndpointEnv -}}
+{{- end -}}
+{{- if $rerankModelEnv -}}
+  {{- $rerankModel = $rerankModelEnv -}}
+{{- end -}}
+{{- if $localProxyBaseUrlEnv -}}
+  {{- $localProxyBaseUrl = $localProxyBaseUrlEnv -}}
+{{- end -}}
+{{- if $rerankEnabledEnv -}}
+  {{- $rerankEnabled = in (slice "1" "true" "yes" "on") (lower $rerankEnabledEnv) -}}
+{{- end -}}
+{{- if $runtimeVectorBuildEnv -}}
+  {{- $runtimeVectorBuildEnabled = in (slice "1" "true" "yes" "on") (lower $runtimeVectorBuildEnv) -}}
+{{- end -}}
 {{- $keywordIndexFile := printf "/%s" (replaceRE "^/+" "" ($searchParams.indexFile | default "index.json")) -}}
 {{- $vectorIndexFile := printf "/%s" (replaceRE "^/+" "" ($embedding.vectorIndexFile | default "search-vectors.json")) -}}
 {{- $searchConfig := dict
     "engine" ($searchParams.engine | default "embedding")
     "embeddingEndpoint" $embeddingEndpoint
-    "embeddingModel" ($embedding.model | default "baai/bge-m3(free)")
-    "rerankEnabled" ($rerank.enabled | default true)
+    "embeddingModel" $embeddingModel
+    "rerankEnabled" $rerankEnabled
     "rerankEndpoint" $rerankEndpoint
-    "rerankModel" ($rerank.model | default "BAAI/bge-reranker-v2-m3(free)")
+    "rerankModel" $rerankModel
+    "localProxyBaseUrl" $localProxyBaseUrl
+    "runtimeVectorBuildEnabled" $runtimeVectorBuildEnabled
     "keywordIndexFile" $keywordIndexFile
     "vectorIndexFile" $vectorIndexFile
     "minQueryLength" ($embedding.minQueryLength | default 2)

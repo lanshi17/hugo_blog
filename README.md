@@ -62,6 +62,16 @@ export OPENAI_RERANK_MODEL="BAAI/bge-reranker-v2-m3(free)"
 
 搜索页会在向量召回后继续调用 reranker 做第二阶段精排。
 
+搜索前端也支持单独的 `AI_SEARCH_*` 覆盖，方便本地预览或把搜索服务接到不同代理：
+
+```bash
+export AI_SEARCH_EMBEDDING_ENDPOINT="http://127.0.0.1:8787/api/blog-search-embedding"
+export AI_SEARCH_RERANK_ENDPOINT="http://127.0.0.1:8787/api/blog-search-rerank"
+export AI_SEARCH_LOCAL_PROXY_BASE_URL="http://127.0.0.1:8787"
+```
+
+`AI_SEARCH_EMBEDDING_MODEL` 和 `AI_SEARCH_RERANK_MODEL` 也会被前端、索引生成脚本和代理共同识别，避免文档向量与查询向量使用不同模型。
+
 ## AI 文章助手
 
 站点已集成文章页 AI 浮窗助手。默认推荐使用“代理模式”，避免在前端暴露密钥。
@@ -90,6 +100,14 @@ params:
 export AI_ASSISTANT_ENDPOINT="http://127.0.0.1:8787/api/blog-assistant"
 hugo server
 ```
+
+如果保持默认的相对路径 `/api/blog-assistant`，本地预览页会自动先尝试：
+
+```text
+http://127.0.0.1:8787/api/blog-assistant
+```
+
+可用 `AI_ASSISTANT_LOCAL_PROXY_BASE_URL` 覆盖这个本地代理地址。
 
 如果你要在手机或局域网其他设备上访问开发站点，把 `127.0.0.1` 换成当前机器的局域网 IP。
 
@@ -124,6 +142,11 @@ export AI_ASSISTANT_ENDPOINT="http://127.0.0.1:8787/api/blog-assistant"
 
 - `AI_ASSISTANT_ENDPOINT`
 - `config.yaml` 里的 `params.aiAssistant.endpoint`
+
+本地代理地址优先级是：
+
+- `AI_ASSISTANT_LOCAL_PROXY_BASE_URL`
+- `config.yaml` 里的 `params.aiAssistant.localProxyBaseUrl`
 
 如果你使用 Nginx，可将站点同域的 `/api/blog-assistant` 反代到本机代理：
 

@@ -39,6 +39,11 @@
 
     const clampScore = (value) => Math.max(0, Math.min(1, Number(value) || 0));
 
+    const toNumber = (value, fallback) => {
+        const number = Number(value);
+        return Number.isFinite(number) ? number : fallback;
+    };
+
     const normalizeText = (text) => {
         if (typeof text !== 'string') {
             return '';
@@ -185,7 +190,7 @@
         const runtimeEmbeddingBatchSize = Math.max(1, Number(config.runtimeEmbeddingBatchSize) || DEFAULT_CONFIG.runtimeEmbeddingBatchSize);
         const runtimeVectorInputMaxChars = Math.max(500, Number(config.runtimeVectorInputMaxChars) || DEFAULT_CONFIG.runtimeVectorInputMaxChars);
         const minQueryLength = Math.max(1, Number(config.minQueryLength) || DEFAULT_CONFIG.minQueryLength);
-        const scoreThreshold = Number(config.scoreThreshold) || DEFAULT_CONFIG.scoreThreshold;
+        const scoreThreshold = toNumber(config.scoreThreshold, DEFAULT_CONFIG.scoreThreshold);
 
         const searchInput = document.getElementById('searchQuery');
         const searchResults = document.getElementById('searchResults');
@@ -365,10 +370,54 @@
             .join('\n\n')
             .slice(0, runtimeVectorInputMaxChars);
 
-        const extractEmbedding = (payload) => payload
-            && payload.data
-            && payload.data[0]
-            && payload.data[0].embedding;
+        const pickEmbeddingValues = (item) => {
+            if (Array.isArray(item)) {
+                return item;
+            }
+
+            if (!item || typeof item !== 'object') {
+                return null;
+            }
+
+            return item.embedding || item.vector || item.values || null;
+        };
+
+        const sortEmbeddingData = (data) => data
+            .slice()
+            .sort((left, right) => {
+                const leftIndex = Number(left && left.index);
+                const rightIndex = Number(right && right.index);
+
+                if (!Number.isFinite(leftIndex) || !Number.isFinite(rightIndex)) {
+                    return 0;
+                }
+
+                return leftIndex - rightIndex;
+            });
+
+        const extractEmbedding = (payload) => {
+            if (Array.isArray(payload && payload.data)) {
+                return pickEmbeddingValues(sortEmbeddingData(payload.data)[0]);
+            }
+
+            if (Array.isArray(payload && payload.embeddings)) {
+                return pickEmbeddingValues(payload.embeddings[0]);
+            }
+
+            return pickEmbeddingValues(payload && (payload.embedding || payload.vector || payload.values));
+        };
+
+        const extractEmbeddingBatch = (payload) => {
+            if (Array.isArray(payload && payload.data)) {
+                return sortEmbeddingData(payload.data).map(pickEmbeddingValues);
+            }
+
+            if (Array.isArray(payload && payload.embeddings)) {
+                return payload.embeddings.map(pickEmbeddingValues);
+            }
+
+            return [];
+        };
 
         const extractRerankResults = (payload) => {
             if (Array.isArray(payload && payload.results)) {
@@ -381,6 +430,24 @@
 
             return [];
         };
+
+        const extractRerankIndex = (entry) => {
+            const index = Number(entry && (
+                entry.index
+                ?? entry.document_index
+                ?? entry.documentIndex
+            ));
+
+            return Number.isInteger(index) ? index : -1;
+        };
+
+        const extractRerankScore = (entry) => toNumber(entry && (
+            entry.relevance_score
+            ?? entry.relevanceScore
+            ?? entry.score
+            ?? entry.rerank_score
+            ?? entry.rerankScore
+        ), 0);
 
         const isLocalPreview = () => ['127.0.0.1', 'localhost'].includes(window.location.hostname);
 
@@ -404,9 +471,14 @@
         const isRetriableStatus = (status) => [404, 405, 429, 500, 502, 503, 504].includes(status);
 
         const requestJson = async (endpoint, payload, controllerFactory) => {
-            const requestUrls = [endpoint];
-            if (isLocalPreview() && endpoint.startsWith('/')) {
-                const fallbackUrl = buildLocalProxyUrl(endpoint);
+            const normalizedEndpoint = normalizeText(endpoint);
+            if (!normalizedEndpoint) {
+                throw new Error('接口未配置');
+            }
+
+            const requestUrls = [normalizedEndpoint];
+            if (isLocalPreview() && normalizedEndpoint.startsWith('/')) {
+                const fallbackUrl = buildLocalProxyUrl(normalizedEndpoint);
                 if (fallbackUrl) {
                     requestUrls.unshift(fallbackUrl);
                 }
@@ -476,10 +548,15 @@
                     return null;
                 }
 
+                const dimensions = Number(payload.dimensions) || 0;
+                const documents = payload.documents
+                    .map(toSearchDocument)
+                    .filter((item) => item.embedding && item.permalink && (!dimensions || item.embedding.length === dimensions));
+
                 return {
                     model: payload.model || config.embeddingModel,
-                    dimensions: payload.dimensions || 0,
-                    documents: payload.documents.map(toSearchDocument).filter((item) => item.embedding && item.permalink)
+                    dimensions,
+                    documents
                 };
             } catch (error) {
                 return null;
@@ -514,6 +591,10 @@
             const queryVector = normalizeVector(extractEmbedding(payload));
             if (!queryVector) {
                 throw new Error('未获取到有效的查询向量');
+            }
+
+            if (vectorIndex.dimensions && queryVector.length !== vectorIndex.dimensions) {
+                throw new Error(`查询向量维度 ${queryVector.length} 与索引维度 ${vectorIndex.dimensions} 不一致`);
             }
 
             return queryVector;
@@ -564,13 +645,13 @@
 
             return results
                 .map((entry) => {
-                    const index = Number(entry && entry.index);
-                    if (!Number.isInteger(index) || index < 0 || index >= candidates.length) {
+                    const index = extractRerankIndex(entry);
+                    if (index < 0 || index >= candidates.length) {
                         return null;
                     }
 
                     const candidate = candidates[index];
-                    const rerankScore = clampScore(entry && entry.relevance_score);
+                    const rerankScore = clampScore(extractRerankScore(entry));
 
                     return {
                         item: candidate.item,
@@ -646,12 +727,7 @@
                     return activeEmbeddingController;
                 });
 
-                const embeddings = Array.isArray(payload && payload.data)
-                    ? payload.data
-                        .slice()
-                        .sort((left, right) => left.index - right.index)
-                        .map((item) => normalizeVector(item.embedding))
-                    : [];
+                const embeddings = extractEmbeddingBatch(payload).map(normalizeVector);
 
                 batch.forEach((item, batchIndex) => {
                     const embedding = embeddings[batchIndex];
@@ -661,6 +737,10 @@
 
                     if (!dimensions) {
                         dimensions = embedding.length;
+                    }
+
+                    if (embedding.length !== dimensions) {
+                        return;
                     }
 
                     generatedDocuments.push({
@@ -797,16 +877,18 @@
             const documents = Array.isArray(payload && payload.documents) ? payload.documents.map(toSearchDocument) : [];
             const validDocuments = documents.filter((item) => item.permalink);
             const semanticDocuments = validDocuments.filter((item) => item.embedding);
+            const dimensions = Number(payload && payload.dimensions) || (semanticDocuments[0] && semanticDocuments[0].embedding.length) || 0;
+            const compatibleDocuments = semanticDocuments.filter((item) => !dimensions || item.embedding.length === dimensions);
 
-            if (!semanticDocuments.length) {
+            if (!compatibleDocuments.length) {
                 throw new Error('向量索引中没有有效 embedding');
             }
 
             keywordDocuments = validDocuments;
             vectorIndex = {
                 model: payload.model || config.embeddingModel || '',
-                dimensions: payload.dimensions || 0,
-                documents: semanticDocuments
+                dimensions,
+                documents: compatibleDocuments
             };
             fuse = createFuseIndex(keywordDocuments);
             setModeLabel(defaultModeLabel());
