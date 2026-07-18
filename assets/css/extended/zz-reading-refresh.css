@@ -35,6 +35,10 @@
 	--font-family-reading:
 		"Newsreader", "Source Han Serif SC", "Noto Serif SC", "Songti SC", serif;
 	--font-family-mono: "JetBrains Mono", "Fira Code", monospace;
+	--article-shell-width: 74rem;
+	--article-feature-width: 60rem;
+	--article-reading-width: 56rem;
+	--article-aside-width: 14rem;
 }
 
 :root[data-theme="dark"],
@@ -1106,7 +1110,7 @@ button#theme-toggle:focus-visible {
 }
 
 .post-single {
-	max-width: min(1180px, calc(100vw - 2rem));
+	max-width: min(var(--article-shell-width), calc(100vw - 2rem));
 	margin: 0 auto 2rem;
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
@@ -1119,7 +1123,7 @@ button#theme-toggle:focus-visible {
 .post-single .giscus,
 .post-single iframe.giscus-frame {
 	width: 100%;
-	max-width: 72ch;
+	max-width: min(100%, var(--article-feature-width));
 	margin-inline: auto;
 }
 
@@ -1230,12 +1234,12 @@ button#theme-toggle:focus-visible {
 }
 
 .post-single .post-content {
-	max-width: 66ch;
+	max-width: min(100%, var(--article-reading-width));
 	margin-top: 2.1rem;
 	font-family: var(--font-family-reading);
-	font-size: clamp(1.08rem, 1.03rem + 0.2vw, 1.18rem);
+	font-size: 1.12rem;
 	line-height: 2.02;
-	letter-spacing: 0.012em;
+	letter-spacing: 0;
 	color: var(--reading-text);
 }
 
@@ -1455,7 +1459,7 @@ pre code {
 }
 
 .post-single .post-footer {
-	max-width: 66ch;
+	max-width: min(100%, var(--article-reading-width));
 	margin-top: 2.8rem;
 	padding-top: 1.4rem;
 }
@@ -1522,7 +1526,7 @@ pre code {
 
 .post-single .giscus,
 .post-single iframe.giscus-frame {
-	max-width: 72ch;
+	max-width: min(100%, var(--article-feature-width));
 }
 
 .reading-toolbar {
@@ -1630,9 +1634,9 @@ body.has-ai-article-assistant .reading-toolbar {
 
 @media (min-width: 1380px) {
 	.post-single {
-		max-width: min(1480px, calc(100vw - 2.5rem));
-		grid-template-columns: minmax(0, 18rem) minmax(0, 68ch) minmax(0, 18rem);
-		column-gap: clamp(1.5rem, 3vw, 2.75rem);
+		max-width: min(100rem, calc(100vw - 2.5rem));
+		grid-template-columns: minmax(0, var(--article-aside-width)) minmax(0, var(--article-feature-width)) minmax(0, var(--article-aside-width));
+		column-gap: clamp(1.25rem, 2.4vw, 2rem);
 		align-items: start;
 		justify-content: center;
 	}
@@ -1647,7 +1651,7 @@ body.has-ai-article-assistant .reading-toolbar {
 
 	.post-single .post-content {
 		grid-column: 2;
-		margin: 2.2rem 0 0;
+		margin: 2.2rem auto 0;
 	}
 
 	.post-single > .toc {

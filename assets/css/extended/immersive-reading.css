@@ -224,7 +224,7 @@ html {
 }
 
 .focus-mode .post-single .post-content {
-	max-width: 66ch;
+	max-width: min(100%, var(--article-reading-width, 56rem));
 }
 
 .post-content ::selection {
